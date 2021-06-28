@@ -17,10 +17,9 @@ npm install -g @tencent/tdesign-vue2-pro-cli
 # 步骤一：初始化项目
 td-pro init
 
-# 步骤二：填写`项目名称`、`项目描述`，并选择`模板`
+# 步骤二：填写`项目名称`、`项目描述`
 ? 请输入项目名称： 【项目名称】
 ? 请输入项目描述： Base on @tencent/tdesign-vue2-pro
-? 选择模板类型： 【选择模板】
 ```
 
 <br/>
