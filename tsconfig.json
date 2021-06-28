@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "ESNext",
+    "sourceMap": false,
+    "declaration": false,
+    "outDir": "./bin",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "removeComments": false,
+    "importHelpers": true,
+    "strict": true,
+    "lib": ["ES6", "DOM"]
+  },
+  "types": [
+    "node"
+  ],
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
