@@ -32,3 +32,4 @@ package-lock.json
 .env.test
 src/config/ConfigDev.ts
 /test
+/bin/*
