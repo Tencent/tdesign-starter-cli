@@ -8,7 +8,7 @@ program.version(chalk.green(`v${pkg.version}`), '-v, --version');
 program
 	.command('init')
 	.alias('i')
-	.description('欢迎使用 TDesign-Vue2-Pro')
+	.description('欢迎使用 TDesign-Starter')
 	.action(() => {
 		const builder = new Creater();
 		builder.init();
