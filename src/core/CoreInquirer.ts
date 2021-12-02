@@ -22,7 +22,7 @@ export function interactionsHandler() {
 			type: 'input',
 			name: 'description',
 			message: '请输入项目描述：',
-			default: 'Base on @tencent/tdesign-starter'
+			default: 'Base on tdesign-starter-cli'
 		},
 		// {
 		// 	type: 'list',
