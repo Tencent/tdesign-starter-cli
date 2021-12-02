@@ -1,4 +1,4 @@
-# Tdesign Starter CLI
+# TDesign Starter CLI
 
 ## 使用手册
 
