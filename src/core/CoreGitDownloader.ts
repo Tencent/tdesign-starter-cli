@@ -7,10 +7,15 @@ import chalk from 'chalk';
  * 模板地址
  */
 const templates: any = {
-	pc: {
-		url: 'https://github.com/tencent/tdesign-vue-starter.git',
-		description: 'TDesign Starter',
-		downloadUrl: 'direct:git@github.com:Tencent/tdesign-vue-starter.git#develop'
+	vue2: {
+		url: 'https://github.com/Tencent/tdesign-vue-starter.git',
+		description: 'TDesign Vue2 Starter',
+		downloadUrl: 'direct:git@github.com:Tencent/tdesign-vue-starter.git#main'
+	},
+	vue3: {
+		url: 'https://github.com/Tencent/tdesign-vue-next-starter.git',
+		description: 'TDesign Vue3 Starter',
+		downloadUrl: 'direct:git@github.com:Tencent/tdesign-vue-next-starter.git#main'
 	}
 };
 
