@@ -42,7 +42,7 @@ http://localhost:3001/
 <br/>
 
 ### 4.安装效果
-<img src="docs/td.jpg" width="1024">
+<img src="https://tdesign.gtimg.com/starter/home-page/feature-startup.png" width="1024">
 
 <br/>
 <br/>
