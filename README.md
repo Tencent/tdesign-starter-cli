@@ -38,14 +38,3 @@ npm run dev
 # 启动访问
 http://localhost:3001/
 ```
-
-<br/>
-
-### 4.安装效果
-<img src="https://tdesign.gtimg.com/starter/home-page/feature-startup.png" width="1024">
-
-<br/>
-<br/>
-
-### 5.项目结构
-<img src="docs/20210627-114325.png" width="1024">
