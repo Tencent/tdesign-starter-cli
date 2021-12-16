@@ -1,31 +1,34 @@
-# TDesign Starter CLI
+<p align="center">
+  <a href="http://tdesgin.tencent.com/starter/vue/#/dashboard/base"><img src="https://tdesign.gtimg.com/starter/brand-logo.svg" /></a>
+</p>
 
-## 使用手册
+<p align="center">
+   <a href="https://www.npmjs.com/package/tdesign-starter-cli">
+    <img src="https://img.shields.io/npm/l/tdesign-starter-cli.svg?sanitize=true" alt="License" />
+  </a>
+  <a href="https://www.npmjs.com/package/tdesign-starter-cli">
+    <img src="https://img.shields.io/npm/v/tdesign-starter-cli.svg?sanitize=true" alt="Version">
+  </a>
+</p>
 
-### 1. 安装全局命令：
+## 安装
 
-```sh
-npm install -g  tdesign-starter-cli
+```shell
+npm install tdesign-starter-cli -g
 ```
 
-<br/>
-
-### 2. 创建项目：
+## 使用
 
 `tdesign-starter-cli`命令符为`td-starter`
+
 ```sh
-# 步骤一：初始化项目
+# 初始化项目
 td-starter init
 
-# 步骤二：填写`项目名称`、`项目描述`
-? 请输入项目名称： 【项目名称】
+# 填写 项目名称、项目描述
+? 请输入项目名称： [项目名称]
 ? 请输入项目描述： Base on tdesign-starter-cli
-```
 
-<br/>
-
-### 3、进入项目，安装依赖并运行
-```sh
 # 进入项目
 cd [项目名称]
 
@@ -38,3 +41,7 @@ npm run dev
 # 启动访问
 http://localhost:3001/
 ```
+
+## 开源协议
+
+TDesign 遵循 [MIT 协议](https://github.com/Tencent/tdesign-starter-cli/LICENSE)。
