@@ -11,12 +11,12 @@ const templates: any = {
   vue2: {
     url: 'https://github.com/Tencent/tdesign-vue-starter.git',
     description: 'TDesign Vue2 Starter',
-    downloadUrl: 'direct:https://github.com/Tencent/tdesign-vue-starter.git#main'
+    downloadUrl: 'github.com:Tencent/tdesign-vue-starter#main'
   },
   vue3: {
     url: 'https://github.com/Tencent/tdesign-vue-next-starter.git',
     description: 'TDesign Vue3 Starter',
-    downloadUrl: 'direct:https://github.com/Tencent/tdesign-vue-next-starter.git#main'
+    downloadUrl: 'github.com:Tencent/tdesign-vue-next-starter#main'
   }
 };
 
@@ -29,7 +29,7 @@ export function getTemplate(options: any): any {
   const spinner = ora('正在构建模板...').start();
   const { downloadUrl } = templates[`${options.type || 'pc'}`];
 
-  download(downloadUrl, options.name, { clone: true }, (err: any) => {
+  download(downloadUrl, options.name, { clone: false }, (err: any) => {
     if (err) {
       spinner.fail(chalk.red('❗错误：下载模板失败')); // 下载失败提示
       console.log(chalk.red('❗错误信息：'), chalk.red(err));
