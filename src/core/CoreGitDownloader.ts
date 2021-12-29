@@ -11,12 +11,12 @@ const templates: any = {
   vue2: {
     url: 'https://github.com/Tencent/tdesign-vue-starter.git',
     description: 'TDesign Vue2 Starter',
-    downloadUrl: 'github.com:Tencent/tdesign-vue-starter#main'
+    downloadUrl: 'hub.fastgit.org:Tencent/tdesign-vue-starter#main'
   },
   vue3: {
     url: 'https://github.com/Tencent/tdesign-vue-next-starter.git',
     description: 'TDesign Vue3 Starter',
-    downloadUrl: 'github.com:Tencent/tdesign-vue-next-starter#main'
+    downloadUrl: 'hub.fastgit.org:Tencent/tdesign-vue-next-starter#main'
   }
 };
 
