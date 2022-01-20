@@ -5,7 +5,7 @@ import clear from 'clear';
 import ora from 'ora';
 import figlet from 'figlet';
 import { directoryExists } from '../utils/UtilsIndex';
-class Creater {
+class Creator {
 	constructor() {
 		clear();
 		console.log('*****************************');
@@ -13,11 +13,11 @@ class Creater {
 		console.log('*****************************');
 		console.log();
 		console.log();
-    // console.log(chalk.blue('❗或者可以通过以下其它途径下载本脚手架工程：'));
-    // console.log(chalk.blue('❗1.直接前往：https://github.com/tencent/tdesign-vue-starter 在线下载。'));
-    // console.log(chalk.blue('❗2.使用 git clone git@github.com:Tencent/tdesign-vue-starter.git'));
-    // console.log(chalk.blue('❗3.目前我们最新代码的稳定分支为develop'));
-    // console.log();
+		// console.log(chalk.blue('❗或者可以通过以下其它途径下载本脚手架工程：'));
+		// console.log(chalk.blue('❗1.直接前往：https://github.com/tencent/tdesign-vue-starter 在线下载。'));
+		// console.log(chalk.blue('❗2.使用 git clone git@github.com:Tencent/tdesign-vue-starter.git'));
+		// console.log(chalk.blue('❗3.目前我们最新代码的稳定分支为develop'));
+		// console.log();
 
 		const spinner = ora('👉 检查构建环境...').start();
 
@@ -40,4 +40,4 @@ class Creater {
 	}
 }
 
-export default Creater;
+export default Creator;
