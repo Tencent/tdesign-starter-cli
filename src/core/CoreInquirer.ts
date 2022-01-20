@@ -11,7 +11,7 @@ export function interactionsHandler() {
 			type: 'input',
 			name: 'name',
 			message: '请输入项目名称：',
-			validate: (input: any) => {
+			validate: (input: string) => {
 				if (!input) {
 					return '请输入项目名称!';
 				}
