@@ -2,6 +2,19 @@ import inquirer from 'inquirer';
 import { SupportedTemplate, templates } from './CoreTemplate';
 
 /**
+ * 数据结构接口
+ *
+ * @export
+ * @interface IParsedSourceData
+ */
+export interface IParsedSourceData {
+  name: string;
+}
+
+/** 解析的原始数据结构配置 */
+export const parsedConfigData: Array<IParsedSourceData> = [];
+
+/**
  * 分段内容选择
  *
  * @export
@@ -29,8 +42,11 @@ export class CoreSelector {
       console.log(routerData);
 
       // 下载模板config
+      // const downloadConfigSource = await this.downloadConfigData(routerData);
 
-      // TIPS模拟得到下载内容
+      // 解析VUE2配置文件
+      // parsedConfigData = this.parseConfigSourceVue2(downloadConfigSource);
+      // TODO: TIPS模拟得到下载内容
 
       // 让用户选择
       questions.push(
@@ -54,4 +70,28 @@ export class CoreSelector {
     return inquirer.prompt(questions);
 
   }
+
+  /**
+   * 下载配置文件
+   *
+   * @param {string} routerData
+   * @returns {string}
+   *
+   * @memberOf CoreSelector
+   */
+  // public downloadConfigData(routerData: string): string {
+  //   // TODO:
+  // }
+
+  /**
+   * 解析下载配置文件
+   *
+   * @param {string} routerData
+   * @returns {string}
+   *
+   * @memberOf CoreSelector
+   */
+  // public parseConfigSourceVue2(downloadConfigSource: string): string {
+  //   // TODO:
+  // }
 }
