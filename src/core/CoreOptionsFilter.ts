@@ -299,6 +299,18 @@ export class CoreOptionsFilter {
       configDataContent = configDataContent.replace(/"@\/pages/ig, "'@/pages");
       configDataContent = configDataContent.replace(/index.vue"/ig, "index.vue'");
 
+      configDataContent = configDataContent.replace(/ +/ig, '');
+      configDataContent = configDataContent.replace(/[\r\n]/ig, '');
+
+      // 清除临时内容
+      configDataContent = configDataContent.replace(/],/ig, "]");
+      configDataContent = configDataContent.replace(/];/ig, "]");
+      configDataContent = configDataContent.replace(/},},{/ig, "}},{");
+      configDataContent = configDataContent.replace(/},]},{/ig, "}]},{");
+      configDataContent = configDataContent.replace(/]},]/ig, "]}]");
+      configDataContent = configDataContent.replace(/},}]},{/ig, "}}]},{");
+      configDataContent = configDataContent.replace(/},},]}]/ig, "}}]}]");
+
       try {
         configDataContent = JSON.parse(configDataContent);
         console.log('generate parsed content..', configDataContent);
