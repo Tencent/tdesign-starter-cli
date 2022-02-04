@@ -37,9 +37,6 @@ export class CoreInquier {
       }
     ];
 
-    // 增加选择范围
-    // 去除生成目录内容 .github  .husky .vscode
-
     return inquirer.prompt(questions);
   }
 }

@@ -1,4 +1,3 @@
-import { getTemplate } from './CoreGitDownloader';
 import chalk from 'chalk';
 import clear from 'clear';
 import ora from 'ora';
@@ -6,6 +5,7 @@ import figlet from 'figlet';
 import { directoryExists } from '../utils/UtilsIndex';
 import { CoreSelector } from './CoreSelector';
 import { CoreInquier } from './CoreInquirer';
+import { CoreGitDownloader } from './CoreGitDownloader';
 class Creator {
 	constructor() {
 		clear();
@@ -41,7 +41,7 @@ class Creator {
     const finalAnswer = await new CoreSelector().interactonsSelect(answer);
 
     // 构建配置
-		await getTemplate(finalAnswer);
+		await new CoreGitDownloader().syncDownload(answer, finalAnswer);
 	}
 }
 
