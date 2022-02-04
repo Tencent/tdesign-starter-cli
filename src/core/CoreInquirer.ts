@@ -6,7 +6,7 @@ import inquirer from 'inquirer';
  */
 export function interactionsHandler() {
 	// 提问模式
-	const questions = [
+	const questions: Array<any> = [
 		{
 			type: 'input',
 			name: 'name',
@@ -35,5 +35,9 @@ export function interactionsHandler() {
 			default: 'vue2' // 默认值为列表项编号，起始为 0
 		}
 	];
+
+  // 增加选择范围
+  // 去除生成目录内容 .github  .husky .vscode
+
 	return inquirer.prompt(questions);
 }
