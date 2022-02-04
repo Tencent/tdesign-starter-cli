@@ -9,10 +9,12 @@ import { SupportedTemplate, templates } from './CoreTemplate';
  */
 export interface IParsedSourceData {
   name: string;
+  path: string;
+  meta: any;
 }
 
 /** 解析的原始数据结构配置 */
-export const parsedConfigData: Array<IParsedSourceData> = [];
+export let parsedConfigData: Array<IParsedSourceData> = [];
 
 /**
  * 分段内容选择
@@ -28,7 +30,7 @@ export class CoreSelector {
         // 是否选择全部
         type: 'list',
         name: 'selectSource',
-        message: '选择包括模块：',
+        message: '选择包含模块：',
         choices: [
           { name: '全部', value: 'all' },
           { name: '自定义选择', value: 'custom' }
@@ -47,6 +49,38 @@ export class CoreSelector {
       // 解析VUE2配置文件
       // parsedConfigData = this.parseConfigSourceVue2(downloadConfigSource);
       // TODO: TIPS模拟得到下载内容
+      parsedConfigData = [
+        // config flag
+        {
+          path: '/list',
+          name: 'list',
+          meta: { title: '列表页' },
+        },
+        // split flag
+        {
+          path: '/form',
+          name: 'form',
+          meta: { title: '表单页' },
+        },
+        // split flag
+        {
+          path: '/detail',
+          name: 'detail',
+          meta: { title: '详情页' }
+        },
+        // split flag
+        {
+          path: '/result',
+          name: 'result',
+          meta: { title: '结果页' },
+        },
+        // config flag
+      ]
+
+      const choiceList: Array<string> = [];
+      parsedConfigData.filter((item: IParsedSourceData): any => {
+        choiceList.push(item.meta.title);
+      })
 
       // 让用户选择
       questions.push(
@@ -54,15 +88,10 @@ export class CoreSelector {
           type: 'checkbox',
           name: 'seletTypes',
           message: '选择您需要生成的模块内容',
-          choices: [
-            'Alligators', 'Snakes', 'Turtles', 'Lizards',
-          ],
+          choices: choiceList,
         }
       );
 
-      // 增加选择范围
-      // 去除生成目录内容 .github  .husky .vscode
-      // 添加原来的内容给下载目录选择
     } else {
       // TODO:
       console.log('TODO:待实现VUE3');
