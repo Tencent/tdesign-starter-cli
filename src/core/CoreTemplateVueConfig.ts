@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 export const configData: string =
-`// import flag
+`
 import Layout from '@/layouts';
 import ListIcon from '@/assets/assets-slide-list.svg';
 import FormIcon from '@/assets/assets-slide-form.svg';
 import DetailIcon from '@/assets/assets-slide-detail.svg';
-// import flag
+
 
 export default [
-  // config flag
   {
     path: '/list',
     name: 'list',
@@ -42,7 +41,6 @@ export default [
       },
     ],
   },
-  // split flag
   {
     path: '/form',
     name: 'form',
@@ -64,7 +62,6 @@ export default [
       },
     ],
   },
-  // split flag
   {
     path: '/detail',
     name: 'detail',
@@ -98,7 +95,6 @@ export default [
       },
     ],
   },
-  // split flag
   {
     path: '/result',
     name: 'result',
@@ -150,6 +146,5 @@ export default [
       },
     ],
   },
-  // config flag
 ];
 `;
