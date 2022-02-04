@@ -1,10 +1,11 @@
-import { interactionsHandler } from './CoreInquirer';
 import { getTemplate } from './CoreGitDownloader';
 import chalk from 'chalk';
 import clear from 'clear';
 import ora from 'ora';
 import figlet from 'figlet';
 import { directoryExists } from '../utils/UtilsIndex';
+import { CoreSelector } from './CoreSelector';
+import { CoreInquier } from './CoreInquirer';
 class Creator {
 	constructor() {
 		clear();
@@ -33,10 +34,14 @@ class Creator {
 	}
 
 	async init() {
-		const answer = await interactionsHandler();
-		console.log();
-		console.log(chalk.green('👉  开始构建，请稍侯.'));
-		await getTemplate(answer);
+    // 基本配置数据获取
+		const answer = await new CoreInquier().interactionsHandler();
+
+    // 依据基本配置载下配置文件路由模板
+    const finalAnswer = await new CoreSelector().interactonsSelect(answer);
+
+    // 构建配置
+		await getTemplate(finalAnswer);
 	}
 }
 

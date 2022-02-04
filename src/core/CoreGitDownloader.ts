@@ -9,16 +9,18 @@ type SupportedTemplate = 'vue2' | 'vue3';
 /**
  * 模板地址
  */
-const templates: Record<SupportedTemplate, { url: string, description: string, downloadUrl: string }> = {
+export const templates: Record<SupportedTemplate, { url: string, description: string, downloadUrl: string, routerData: string }> = {
   vue2: {
     url: 'https://github.com/Tencent/tdesign-vue-starter.git',
     description: 'TDesign Vue2 Starter',
-    downloadUrl: 'github.com.cnpmjs.org:Tencent/tdesign-vue-starter#main'
+    downloadUrl: 'github.com.cnpmjs.org:Tencent/tdesign-vue-starter#main',
+    routerData: 'https://github.com/Tencent/tdesign-vue-starter/blob/develop/src/router/modules/components.ts'
   },
   vue3: {
     url: 'https://github.com/Tencent/tdesign-vue-next-starter.git',
     description: 'TDesign Vue3 Starter',
-    downloadUrl: 'github.com.cnpmjs.org:Tencent/tdesign-vue-next-starter#main'
+    downloadUrl: 'github.com.cnpmjs.org:Tencent/tdesign-vue-next-starter#main',
+    routerData: ''  // TODO: add vue3 router config
   }
 };
 
@@ -27,6 +29,8 @@ const templates: Record<SupportedTemplate, { url: string, description: string, d
  * @returns 命令行数组
  */
 export function getTemplate(options: { type: SupportedTemplate, name: string, description: string }) {
+  console.log();
+  console.log(chalk.green('👉  开始构建，请稍侯.'));
   console.log();
   const spinner = ora('正在构建模板...').start();
   const { downloadUrl, url } = templates[`${options.type || 'vue2'}`];

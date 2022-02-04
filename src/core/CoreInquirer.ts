@@ -1,43 +1,45 @@
 import inquirer from 'inquirer';
 
-/**
- * 交互命令
- * @returns 命令行数组
- */
-export function interactionsHandler() {
-	// 提问模式
-	const questions: Array<any> = [
-		{
-			type: 'input',
-			name: 'name',
-			message: '请输入项目名称：',
-			validate: (input: string) => {
-				if (!input) {
-					return '请输入项目名称!';
-				}
-				return true;
-			}
-		},
-		{
-			type: 'input',
-			name: 'description',
-			message: '请输入项目描述：',
-			default: 'Base on tdesign-starter-cli'
-		},
-		{
-			type: 'list',
-			name: 'type',
-			message: '选择模板类型：',
-			choices: [
-				{ name: '【Vue2】模板', value: 'vue2' },
-				{ name: '【Vue3】模板', value: 'vue3' }
-			],
-			default: 'vue2' // 默认值为列表项编号，起始为 0
-		}
-	];
+export class CoreInquier {
+  /**
+   * 交互命令
+   * @returns 命令行数组
+   */
+  public interactionsHandler() {
+    // 提问模式
+    const questions: Array<any> = [
+      {
+        type: 'input',
+        name: 'name',
+        message: '请输入项目名称：',
+        validate: (input: string) => {
+          if (!input) {
+            return '请输入项目名称!';
+          }
+          return true;
+        }
+      },
+      {
+        type: 'input',
+        name: 'description',
+        message: '请输入项目描述：',
+        default: 'Base on tdesign-starter-cli'
+      },
+      {
+        type: 'list',
+        name: 'type',
+        message: '选择模板类型：',
+        choices: [
+          { name: '【Vue2】模板', value: 'vue2' },
+          { name: '【Vue3】模板', value: 'vue3' }
+        ],
+        default: 'vue2' // 默认值为列表项编号，起始为 0
+      }
+    ];
 
-  // 增加选择范围
-  // 去除生成目录内容 .github  .husky .vscode
+    // 增加选择范围
+    // 去除生成目录内容 .github  .husky .vscode
 
-	return inquirer.prompt(questions);
+    return inquirer.prompt(questions);
+  }
 }
