@@ -1,5 +1,5 @@
 import inquirer from 'inquirer';
-import { SupportedTemplate, templates } from './CoreGitDownloader';
+import { SupportedTemplate, templates } from './CoreTemplate';
 
 /**
  * 分段内容选择
@@ -30,7 +30,7 @@ export class CoreSelector {
 
       // 下载模板config
 
-      // 模拟得到下载内容
+      // TIPS模拟得到下载内容
 
       // 让用户选择
       questions.push(
