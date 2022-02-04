@@ -8,9 +8,10 @@ import { SupportedTemplate, templates } from './CoreTemplate';
  * @interface IParsedSourceData
  */
 export interface IParsedSourceData {
-  name: string;
-  path: string;
-  meta: any;
+  name?: string;
+  path?: string;
+  meta?: any;
+  exclude?: boolean;
 }
 
 /** 解析的原始数据结构配置 */

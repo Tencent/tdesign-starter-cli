@@ -4,6 +4,7 @@ import ora from 'ora';
 import chalk from 'chalk';
 import path from 'path';
 import { SupportedTemplate, templates } from './CoreTemplate';
+import { CoreOptionsFilter } from './CoreOptionsFilter';
 export class CoreGitDownloader {
   /**
    * 下载工程目录，依据配置选择是否需要筛选不需要目录
@@ -28,14 +29,21 @@ export class CoreGitDownloader {
 
       // TODO: 写入后依据用户选择内容，清除部份内容
       // 选择包括模块：
+      const optionsFilter: CoreOptionsFilter = new CoreOptionsFilter();
       if (finalOptions.selectSource !== 'all') {
-        finalOptions.seletTypes; // 选择包括模块：
+        // finalOptions.seletTypes;
+        // 选择包括模块：
         // 排除不用内容
+        optionsFilter.excludeModules(options, finalOptions);
+
+        // 生成特定路由配置
+        optionsFilter.generateModulesRoute(options, finalOptions);
       }
 
       // 增加选择范围
       // 去除生成目录内容 .github  .husky .vscode
       // 添加原来的内容给下载目录选择
+      optionsFilter.clearUnusedDirectorys(options, finalOptions);
 
       console.log();
       spinner.succeed(chalk.green('构建成功！'));
