@@ -274,13 +274,6 @@ export class CoreOptionsFilter {
     if (configDataVueList && configDataVueList.length) {
       let configDataContent = configDataVueList[1];
 
-      // 去除引号
-      configDataContent = configDataContent.replace(/'/ig, '"');
-
-      // 还原特殊引号
-      configDataContent = configDataContent.replace(/"@\/pages/ig, "'@/pages");
-      configDataContent = configDataContent.replace(/index.vue"/ig, "index.vue'");
-
       // 特殊标识
       configDataContent = configDataContent.replace(listIconFlag, listIconFlagRestore);
       configDataContent = configDataContent.replace(formIconFlag, formIconFlagRestore);
@@ -290,14 +283,21 @@ export class CoreOptionsFilter {
       configDataContent = configDataContent.replace(extFlag, extFlagRestore);
 
       // 所有句柄加上"
-      configDataContent = configDataContent.replace(/path/ig, '"path"');
-      configDataContent = configDataContent.replace(/name/ig, '"name"');
-      configDataContent = configDataContent.replace(/component/ig, '"component"');
-      configDataContent = configDataContent.replace(/redirect/ig, '"redirect"');
-      configDataContent = configDataContent.replace(/meta/ig, '"meta"');
-      configDataContent = configDataContent.replace(/title/ig, '"title"');
-      configDataContent = configDataContent.replace(/icon/ig, '"icon"');
-      configDataContent = configDataContent.replace(/children/ig, '"children"');
+      configDataContent = configDataContent.replace(/path:/ig, '"path":');
+      configDataContent = configDataContent.replace(/name:/ig, '"name":');
+      configDataContent = configDataContent.replace(/component:/ig, '"component":');
+      configDataContent = configDataContent.replace(/redirect:/ig, '"redirect":');
+      configDataContent = configDataContent.replace(/meta:/ig, '"meta":');
+      configDataContent = configDataContent.replace(/title:/ig, '"title":');
+      configDataContent = configDataContent.replace(/icon:/ig, '"icon":');
+      configDataContent = configDataContent.replace(/children:/ig, '"children":');
+
+      // 去除引号
+      configDataContent = configDataContent.replace(/'/ig, '"');
+
+      // 还原特殊引号
+      configDataContent = configDataContent.replace(/"@\/pages/ig, "'@/pages");
+      configDataContent = configDataContent.replace(/index.vue"/ig, "index.vue'");
 
       try {
         configDataContent = JSON.parse(configDataContent);
