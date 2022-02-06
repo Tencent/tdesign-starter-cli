@@ -2,7 +2,7 @@ import path from "path";
 import { SupportedTemplate } from "./CoreTemplate";
 import fs from 'fs';
 import { IParsedSourceData, parsedConfigData } from "./CoreSelector";
-import { configData } from "./CoreTemplateVueConfig";
+import coreTemplateVue2Config from "./CoreTemplateVue2Config";
 
 // ===================== 拆分内容 ==============================
 // 分离头部
@@ -206,7 +206,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     const saveedList = this.generateExcludeRouter(keepedTypeList, sourceModulesData, options, finalOptions);
 
     // 保存路由配置文件
-    this.saveRouterFilter(saveedList, configData, options, finalOptions);
+    this.saveRouterFilter(saveedList, coreTemplateVue2Config.getConfig(), options, finalOptions);
   }
 
   /** 生成原始配置 */
@@ -357,7 +357,11 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     //     ],
     //   },
     // ];`;
-    let configDataVue = configData;
+    // 存
+    coreTemplateVue2Config.setConfig(downloadConfigSource);
+
+    // 取
+    let configDataVue = coreTemplateVue2Config.getConfig();
 
     if (downloadConfigSource) {
       configDataVue = downloadConfigSource;

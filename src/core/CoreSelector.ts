@@ -2,7 +2,6 @@ import inquirer from 'inquirer';
 import { SupportedTemplate, templates } from './CoreTemplate';
 import axios from 'axios';
 import { CoreOptionsFilterForVue2 } from './CoreOptionsFilter';
-import { configData } from './CoreTemplateVueConfig';
 
 /**
  * 数据结构接口
