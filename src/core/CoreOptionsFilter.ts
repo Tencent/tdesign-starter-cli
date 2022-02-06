@@ -357,8 +357,10 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     //     ],
     //   },
     // ];`;
-    // 存
-    coreTemplateVue2Config.setConfig(downloadConfigSource);
+    // 存,存时空值判断
+    if (downloadConfigSource) {
+      coreTemplateVue2Config.setConfig(downloadConfigSource);
+    }
 
     // 取
     let configDataVue = coreTemplateVue2Config.getConfig();
