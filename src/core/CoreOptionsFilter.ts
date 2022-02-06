@@ -55,7 +55,9 @@ export class CoreOptionsFilter {
     for (let index = 0; index < selectTypeList.length; index++) {
       const needToExcludeItem: IParsedSourceData = selectTypeList[index];
       try {
-        fs.unlinkSync(path.join(options.name, `./src/pages/${needToExcludeItem.name}`));
+        if (needToExcludeItem.name) {
+          fs.unlinkSync(path.join(options.name, `./src/pages/${needToExcludeItem.name}`));
+        }
       } catch (error) {
         console.log('excludeModules error..', error);
       }
@@ -71,14 +73,15 @@ export class CoreOptionsFilter {
    *
    * @memberOf CoreOptionsFilter
    */
-  private checkNeedToExclude(elementSelectTypeItem: string): IParsedSourceData {
-    let parsedSourceData: IParsedSourceData = {};
+  public checkNeedToExclude(elementSelectTypeItem: string): IParsedSourceData {
+    let parsedSourceData: IParsedSourceData = {isInExcludeList: false};
 
     for (let index = 0; index < parsedConfigData.length; index++) {
       const elementParsedData: IParsedSourceData = parsedConfigData[index];
 
       if (elementParsedData.meta.title === elementSelectTypeItem) {
         parsedSourceData = elementParsedData;
+        parsedSourceData.isInExcludeList = true;
         break;
       }
 
@@ -95,6 +98,21 @@ export class CoreOptionsFilter {
    * @memberOf CoreOptionsFilter
    */
   public async generateModulesRoute(options: any, finalOptions: any) {
+    // 生成原始配置
+    const sourceModulesData = this.generateSourceModulesData(options, finalOptions);
+
+    // 生成排除目录后的路由配置
+    const keepedTypeList = this.restoreSourceModulesRouterData(sourceModulesData, options, finalOptions);
+
+    // 依据原始配置移除需要排除的目录
+    this.excludeSouceDeleteFolder(keepedTypeList, options, finalOptions);
+
+    // 生成排除后的路由配置
+    this.generateExcludeRouter(keepedTypeList, options, finalOptions);
+  }
+
+  /** 生成原始配置 */
+  private generateSourceModulesData(options: any, finalOptions: any) {
     const configDataVue = `import Layout from '@/layouts';
     import ListIcon from '@/assets/assets-slide-list.svg';
     import FormIcon from '@/assets/assets-slide-form.svg';
@@ -270,9 +288,9 @@ export class CoreOptionsFilter {
 
     // 转换正确JSON
     const configDataVueList = configDataVue.split(headerFlag);
-
+    let configDataContent = '';
     if (configDataVueList && configDataVueList.length) {
-      let configDataContent = configDataVueList[1];
+      configDataContent = configDataVueList[1];
 
       // 特殊标识
       configDataContent = configDataContent.replace(listIconFlag, listIconFlagRestore);
@@ -318,5 +336,65 @@ export class CoreOptionsFilter {
         console.log('generate json parse error..', error);
       }
     }
+
+    return configDataContent;
+  }
+
+  /**
+   * 还原排除目录后的路由配置
+   *
+   * @private
+   * @param {string} sourceModulesData
+   * @param {*} options
+   * @param {*} finalOptions
+   *
+   * @memberOf CoreOptionsFilter
+   */
+  private restoreSourceModulesRouterData(sourceModulesData: string, options: any, finalOptions: any) {
+     // 找出不在列表中的目录，即为需要排除内容
+     const keepedTypeList: Array<IParsedSourceData> = [];
+     // 找出需要保留的
+     for (let index = 0; index < finalOptions.seletTypes.length; index++) {
+       const elementSelectTypeItem: string = finalOptions.seletTypes[index];
+       const addToExcludeItem: IParsedSourceData = this.checkNeedToExclude(elementSelectTypeItem);
+
+       if (!addToExcludeItem.isInExcludeList) {
+         keepedTypeList.push(addToExcludeItem);
+       }
+     }
+
+     return keepedTypeList;
+  }
+
+  /**
+   * 依据原始配置移除需要排除的目录
+   *
+   * @private
+   * @param {string} sourceModulesData
+   * @param {*} options
+   * @param {*} finalOptions
+   *
+   * @memberOf CoreOptionsFilter
+   */
+  private excludeSouceDeleteFolder(keepedTypeList: Array<IParsedSourceData>, options: any, finalOptions: any) {
+    for (let index = 0; index < keepedTypeList.length; index++) {
+      const element: IParsedSourceData = keepedTypeList[index];
+      const elementPath = `${options.name}/src/pages`;
+      try {
+        fs.unlinkSync(path.join(elementPath, element.path || ''));
+      } catch (error) {
+        console.log('excludeSouceDeleteFolder..', error);
+      }
+    }
+  }
+
+  /**
+   * 生成排除后的路由配置
+   *
+   *
+   * @memberOf CoreOptionsFilter
+   */
+  private generateExcludeRouter(keepedTypeList: Array<IParsedSourceData>, options: any, finalOptions: any) {
+    // hole
   }
 }

@@ -11,7 +11,8 @@ export interface IParsedSourceData {
   name?: string;
   path?: string;
   meta?: any;
-  exclude?: boolean;
+  /** 是否需要在要排除的目录中 */
+  isInExcludeList?: boolean;
 }
 
 /** 解析的原始数据结构配置 */
