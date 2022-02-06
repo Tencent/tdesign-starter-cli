@@ -4,7 +4,7 @@ import ora from 'ora';
 import chalk from 'chalk';
 import path from 'path';
 import { SupportedTemplate, templates } from './CoreTemplate';
-import { CoreOptionsFilter } from './CoreOptionsFilter';
+import { CoreOptionsFilterForVue2, IOptionsFilter } from './CoreOptionsFilter';
 export class CoreGitDownloader {
   /**
    * 下载工程目录，依据配置选择是否需要筛选不需要目录
@@ -28,22 +28,34 @@ export class CoreGitDownloader {
       }
 
       // TODO: 写入后依据用户选择内容，清除部份内容
-      // 选择包括模块：
-      const optionsFilter: CoreOptionsFilter = new CoreOptionsFilter();
-      if (finalOptions.selectSource !== 'all') {
-        // finalOptions.seletTypes;
-        // 选择包括模块：
-        // 排除不用内容
-        optionsFilter.excludeModules(options, finalOptions);
+      let optionsFilter!: IOptionsFilter;
+      switch (options.type) {
+        case 'vue2':
+           // 选择包括模块：
+          // eslint-disable-next-line no-case-declarations
+          optionsFilter = new CoreOptionsFilterForVue2();
+          if (finalOptions.selectSource !== 'all') {
+            // finalOptions.seletTypes;
+            // 选择包括模块：
+            // 排除不用内容
+            optionsFilter.excludeModules(options, finalOptions);
 
-        // 生成特定路由配置
-        optionsFilter.generateModulesRoute(options, finalOptions);
+            // 生成特定路由配置
+            optionsFilter.generateModulesRoute(options, finalOptions);
+          }
+
+          break;
+        // case other...
+          default:
+            break;
       }
 
-      // 增加选择范围
-      // 去除生成目录内容 .github  .husky .vscode
-      // 添加原来的内容给下载目录选择
-      optionsFilter.clearUnusedDirectorys(options, finalOptions);
+      if (optionsFilter) {
+         // 增加选择范围
+          // 去除生成目录内容 .github  .husky .vscode
+          // 添加原来的内容给下载目录选择
+          optionsFilter.clearUnusedDirectorys(options, finalOptions);
+      }
 
       console.log();
       spinner.succeed(chalk.green('构建成功！'));

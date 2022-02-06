@@ -4,13 +4,108 @@ import fs from 'fs';
 import { IParsedSourceData, parsedConfigData } from "./CoreSelector";
 import { configData } from "./CoreTemplateVueConfig";
 
+// ===================== 拆分内容 ==============================
+// 分离头部
+const headerFlag = 'export default ';
+
+// 特殊图标
+const listIconFlag = new RegExp(/icon: ListIcon/ig);
+const listIconFlagRestore = 'icon: "ListIcon"';
+
+const formIconFlag = new RegExp(/icon: FormIcon/ig);
+const formIconFlagRestore = 'icon: "FormIcon"';
+
+const detailIconFlag = new RegExp(/icon: DetailIcon/ig);
+const detailIconFlagRestore = 'icon: "DetailIcon"';
+
+// layout falg
+const layoutFlag = new RegExp(/component: Layout/ig);
+const layoutFlagRestore = 'component: "Layout"';
+
+// import flag
+const importFlag = new RegExp(/\(\) => import\(/ig);
+const importFlagRestore = '"() => import(';
+
+// import flag
+const extFlag = new RegExp(/\.vue'\)/ig);
+const extFlagRestore = `.vue')"`;
+// ===================== 拆分内容 ==============================
+
+
+// ===================== 还原内容 ==============================
+// 特殊图标
+const listIconFlagBack = new RegExp(/icon: "ListIcon"/ig);
+const listIconFlagRestoreBack = 'icon: ListIcon';
+
+const formIconFlagBack = new RegExp(/icon: "FormIcon"/ig);
+const formIconFlagRestoreBack = 'icon: FormIcon';
+
+const detailIconFlagBack = new RegExp(/icon: "DetailIcon"/ig);
+const detailIconFlagRestoreBack = 'icon: DetailIcon';
+
+// layout falg
+const layoutFlagBack = new RegExp(/component: "Layout"/ig);
+const layoutFlagRestoreBack = 'component: Layout';
+
+// import flag
+const importFlagBack = new RegExp(/"\(\) => import\(/ig);
+const importFlagRestoreBack = '() => import(';
+
+// import flag
+const extFlagBack = new RegExp(/\.vue'\)"/ig);
+const extFlagRestoreBack = `.vue')`;
+// ===================== 还原内容 ==============================
+
+export interface IOptionsFilter {
+  /**
+   * 去除生成目录内容 .github  .husky .vscode
+   *
+   * @returns {Promise<any>}
+   *
+   * @memberOf IOptionsFilter
+   */
+  clearUnusedDirectorys(options: any, finalOptions: any): Promise<any>;
+
+  /**
+   * 排除模块
+   *
+   * @param {*} options
+   * @param {*} finalOptions
+   * @returns {*}
+   *
+   * @memberOf IOptionsFilter
+   */
+  excludeModules(options: any, finalOptions: any): any;
+
+  /**
+   * 生成原始配置
+   *
+   * @param {*} options
+   * @param {*} finalOptions
+   * @returns {*}
+   *
+   * @memberOf IOptionsFilter
+   */
+   generateModulesRoute(options: any, finalOptions: any): any;
+}
+
 /**
- * 过滤器
+ * 过滤器 VUE2
  *
  * @export
  * @class CoreOptionsFilter
  */
-export class CoreOptionsFilter {
+export class CoreOptionsFilterForVue2 implements IOptionsFilter {
+
+  /**
+   * 前部内容
+   *
+   * @private
+   * @type {string}
+   * @memberOf CoreOptionsFilter
+   */
+  private headerFlagFirst = '';
+
   /**
    * 去除生成目录内容 .github  .husky .vscode
    *
@@ -20,7 +115,7 @@ export class CoreOptionsFilter {
    * @memberOf CoreOptionsFilter
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public async clearUnusedDirectorys(options: any, finalOptions: any) {
+  public async clearUnusedDirectorys(options: any, finalOptions: any): Promise<any> {
     try {
       fs.unlinkSync(path.join(options.name, '.github'));
       fs.unlinkSync(path.join(options.name, '.husky'));
@@ -108,11 +203,14 @@ export class CoreOptionsFilter {
     this.excludeSouceDeleteFolder(keepedTypeList, options, finalOptions);
 
     // 生成排除后的路由配置
-    this.generateExcludeRouter(keepedTypeList, options, finalOptions);
+    const saveedList = this.generateExcludeRouter(keepedTypeList, sourceModulesData, options, finalOptions);
+
+    // 保存路由配置文件
+    this.saveRouterFilter(saveedList, configData, options, finalOptions);
   }
 
   /** 生成原始配置 */
-  private generateSourceModulesData(options: any, finalOptions: any) {
+  public generateSourceModulesData(options: any, finalOptions: any) {
     const configDataVue = `import Layout from '@/layouts';
     import ListIcon from '@/assets/assets-slide-list.svg';
     import FormIcon from '@/assets/assets-slide-form.svg';
@@ -261,36 +359,12 @@ export class CoreOptionsFilter {
     ];`;
     // const configDataVue = configData;
 
-    // 分离头部
-    const headerFlag = 'export default ';
-
-    // 特殊图标
-    const listIconFlag = new RegExp(/icon: ListIcon/ig);
-    const listIconFlagRestore = 'icon: "ListIcon"';
-
-    const formIconFlag = new RegExp(/icon: FormIcon/ig);
-    const formIconFlagRestore = 'icon: "FormIcon"';
-
-    const detailIconFlag = new RegExp(/icon: DetailIcon/ig);
-    const detailIconFlagRestore = 'icon: "DetailIcon"';
-
-    // layout falg
-    const layoutFlag = new RegExp(/component: Layout/ig);
-    const layoutFlagRestore = 'component: "Layout"';
-
-    // import flag
-    const importFlag = new RegExp(/\(\) => import\(/ig);
-    const importFlagRestore = '"() => import(';
-
-    // import flag
-    const extFlag = new RegExp(/\.vue'\)/ig);
-    const extFlagRestore = `.vue')"`;
-
     // 转换正确JSON
     const configDataVueList = configDataVue.split(headerFlag);
     let configDataContent = '';
     if (configDataVueList && configDataVueList.length) {
       configDataContent = configDataVueList[1];
+      this.headerFlagFirst = configDataVueList[0];
 
       // 特殊标识
       configDataContent = configDataContent.replace(listIconFlag, listIconFlagRestore);
@@ -394,7 +468,52 @@ export class CoreOptionsFilter {
    *
    * @memberOf CoreOptionsFilter
    */
-  private generateExcludeRouter(keepedTypeList: Array<IParsedSourceData>, options: any, finalOptions: any) {
-    // hole
+  private generateExcludeRouter(keepedTypeList: Array<IParsedSourceData>, sourceModulesData: any, options: any, finalOptions: any) {
+    const saveedList = [];
+    for (let indexKeepedTypeItem = 0; indexKeepedTypeItem < keepedTypeList.length; indexKeepedTypeItem++) {
+      const elementKeepedTypeItem = keepedTypeList[indexKeepedTypeItem];
+
+      for (let index = 0; index < sourceModulesData.length; index++) {
+        const elementSourceItem = sourceModulesData[index];
+        if (elementSourceItem.meta.title === elementKeepedTypeItem.meta.title) {
+          saveedList.push(elementSourceItem);
+          break;
+        }
+      }
+    }
+
+    return saveedList;
+  }
+
+  /**
+   * 生成路由配置文件
+   *
+   * @private
+   * @param {any[]} saveedList
+   * @param {string} configData
+   *
+   * @memberOf CoreOptionsFilter
+   */
+  private saveRouterFilter(saveedList: any[], configData: string, options: any, finalOptions: any) {
+    let configDataContent = JSON.stringify(saveedList);
+
+    // 还原标识
+    configDataContent = configDataContent.replace(listIconFlagBack, listIconFlagRestoreBack);
+    configDataContent = configDataContent.replace(formIconFlagBack, formIconFlagRestoreBack);
+    configDataContent = configDataContent.replace(detailIconFlagBack, detailIconFlagRestoreBack);
+    configDataContent = configDataContent.replace(layoutFlagBack, layoutFlagRestoreBack);
+    configDataContent = configDataContent.replace(importFlagBack, importFlagRestoreBack);
+    configDataContent = configDataContent.replace(extFlagBack, extFlagRestoreBack);
+
+    // 保留内容 {..export default...}
+    const saveFileContent = `${this.headerFlagFirst}${headerFlag}${configDataContent}`;
+
+    // 生成文件
+    const elementPath = `${options.name}/src/`;
+    try {
+      fs.writeFileSync(path.join(elementPath,'router/modules/components.ts'), saveFileContent);
+    } catch (error) {
+      console.log('saveRouterFilter..', error);
+    }
   }
 }
