@@ -1,5 +1,8 @@
 import inquirer from 'inquirer';
 import { SupportedTemplate, templates } from './CoreTemplate';
+import axios from 'axios';
+import { CoreOptionsFilterForVue2 } from './CoreOptionsFilter';
+import { configData } from './CoreTemplateVueConfig';
 
 /**
  * 数据结构接口
@@ -46,38 +49,10 @@ export class CoreSelector {
       console.log(routerData);
 
       // 下载模板config
-      // const downloadConfigSource = await this.downloadConfigData(routerData);
+      const downloadConfigSource = await this.downloadConfigData(routerData);
 
       // 解析VUE2配置文件
-      // parsedConfigData = this.parseConfigSourceVue2(downloadConfigSource);
-      // TODO: TIPS模拟得到下载内容
-      parsedConfigData = [
-        // config flag
-        {
-          path: '/list',
-          name: 'list',
-          meta: { title: '列表页' },
-        },
-        // split flag
-        {
-          path: '/form',
-          name: 'form',
-          meta: { title: '表单页' },
-        },
-        // split flag
-        {
-          path: '/detail',
-          name: 'detail',
-          meta: { title: '详情页' }
-        },
-        // split flag
-        {
-          path: '/result',
-          name: 'result',
-          meta: { title: '结果页' },
-        },
-        // config flag
-      ]
+      parsedConfigData = this.parseConfigSourceVue2(downloadConfigSource);
 
       const choiceList: Array<string> = [];
       parsedConfigData.filter((item: IParsedSourceData): any => {
@@ -110,9 +85,20 @@ export class CoreSelector {
    *
    * @memberOf CoreSelector
    */
-  // public downloadConfigData(routerData: string): string {
-  //   // TODO:
-  // }
+  public async downloadConfigData(routerData: string): Promise<any> {
+    let resData = {};
+    try {
+      resData = await axios.get(routerData);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log('handleAxiosError==', error);
+      } else {
+        console.log('handleUnexpectedError==', error);
+      }
+    }
+
+    return resData;
+  }
 
   /**
    * 解析下载配置文件
@@ -122,7 +108,48 @@ export class CoreSelector {
    *
    * @memberOf CoreSelector
    */
-  // public parseConfigSourceVue2(downloadConfigSource: string): string {
-  //   // TODO:
-  // }
+  public parseConfigSourceVue2(downloadConfigSource: string): any {
+    const parsedResultData = new CoreOptionsFilterForVue2().generateSourceModulesData({}, {}, downloadConfigSource);
+
+    // 解析这种内容数据
+    const parsedConfigDataTemp = [];
+    for (let index = 0; index < parsedResultData.length; index++) {
+      const elementResultData: any = parsedResultData[index];
+      parsedConfigDataTemp.push({
+        path: elementResultData.path,
+        name: elementResultData.name,
+        meta: elementResultData.meta,
+      });
+    }
+
+    // parsedConfigData = [
+    //   // config flag
+    //   {
+    //     path: '/list',
+    //     name: 'list',
+    //     meta: { title: '列表页' },
+    //   },
+    //   // split flag
+    //   {
+    //     path: '/form',
+    //     name: 'form',
+    //     meta: { title: '表单页' },
+    //   },
+    //   // split flag
+    //   {
+    //     path: '/detail',
+    //     name: 'detail',
+    //     meta: { title: '详情页' }
+    //   },
+    //   // split flag
+    //   {
+    //     path: '/result',
+    //     name: 'result',
+    //     meta: { title: '结果页' },
+    //   },
+    //   // config flag
+    // ];
+
+    return parsedConfigDataTemp;
+  }
 }

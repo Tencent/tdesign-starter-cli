@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
-export const configData: string =
+// eslint-disable-next-line prefer-const
+export let configData =
 `
 import Layout from '@/layouts';
 import ListIcon from '@/assets/assets-slide-list.svg';
