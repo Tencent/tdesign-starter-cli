@@ -28,39 +28,50 @@ export class CoreSelector {
       }
     ];
 
-    if (options.type === 'vue2') {
-      // VUE2模板选择
-      // console.log('download.==', routerData);
+    const result = await inquirer.prompt(questions);
 
-      // 下载模板config
-      const downloadConfigSource = await this.downloadConfigData(routerData);
-      // console.log('downloadConfigSource.==', downloadConfigSource);
+    // console.log('result.==', result);
+    if (result.selectSource !== 'all') {
+      // TODO: 待实现自定义选择
+      if (options.type === 'vue2') {
+        // VUE2模板选择
+        // console.log('download.==', routerData);
 
-      // 解析VUE2配置文件
-      const parsedConfigData = this.parseConfigSourceVue2(downloadConfigSource);
-      coreTemplateVue2Config.setParsedConfigData(parsedConfigData);
+        // 下载模板config
+        const downloadConfigSource = await this.downloadConfigData(routerData);
+        // console.log('downloadConfigSource.==', downloadConfigSource);
 
-      const choiceList: Array<string> = [];
-      parsedConfigData.filter((item: IParsedSourceData): any => {
-        choiceList.push(item.meta.title);
-      })
+        // 解析VUE2配置文件
+        const parsedConfigData = this.parseConfigSourceVue2(downloadConfigSource);
+        coreTemplateVue2Config.setParsedConfigData(parsedConfigData);
 
-      // 让用户选择
-      questions.push(
-        {
-          type: 'checkbox',
-          name: 'seletTypes',
-          message: '选择您需要生成的模块内容',
-          choices: choiceList,
-        }
-      );
+        const choiceList: Array<string> = [];
+        parsedConfigData.filter((item: IParsedSourceData): any => {
+          choiceList.push(item.meta.title);
+        })
 
+        // 让用户选择
+        const questionsChoice: Array<any> = [
+          {
+            type: 'checkbox',
+            name: 'seletTypes',
+            message: '选择您需要生成的模块内容',
+            choices: choiceList,
+          }
+        ];
+
+        const resultChoice = await inquirer.prompt(questionsChoice);
+
+        return resultChoice;
+
+      } else {
+        // TODO:
+        console.log('TODO:待实现VUE3');
+        return result;
+      }
     } else {
-      // TODO:
-      console.log('TODO:待实现VUE3');
+      return result;
     }
-    return inquirer.prompt(questions);
-
   }
 
   /**
