@@ -142,27 +142,55 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     // 找出不在列表中的目录，即为需要排除内容
     const selectTypeList: Array<IParsedSourceData> = [];
 
-    // 找出需要保留的
-    for (let index = 0; index < finalOptions.seletTypes.length; index++) {
-      const elementSelectTypeItem: string = finalOptions.seletTypes[index];
-      const addToExcludeItem: IParsedSourceData = this.checkNeedToExclude(elementSelectTypeItem);
+    // 找出需要排除的
+    const parsedConfigData = coreTemplateVue2Config.getParsedConfigData();
+    for (let index = 0; index < parsedConfigData.length; index++) {
+      const elementParsedData: IParsedSourceData = parsedConfigData[index];
 
-      selectTypeList.push(addToExcludeItem);
+      // 为空时代表要排除，返回值代表需要保留
+      if (!this.checkFileNeedtoKeep(elementParsedData.meta.title, finalOptions)) {
+        selectTypeList.push(elementParsedData);
+      }
+
     }
 
-    // 找出需要排除的
+    // 执行删除
     for (const iterator of selectTypeList) {
       const needToExcludeItem: IParsedSourceData = iterator;
       try {
         if (needToExcludeItem.name) {
           const delPath = path.join(`${process.env.PWD}/${options.name}`, `./src/pages/${needToExcludeItem.name}`);
           await del(delPath);
-          console.log('delPath==', delPath);
+          // console.log('delPath==', delPath);
         }
       } catch (error) {
         console.log('excludeModules error..', error);
       }
     }
+  }
+
+
+  /**
+   * 检测是否需要保留内容
+   *
+   * @private
+   * @param {*} finalOptions
+   * @param {*} checkStr
+   * @returns
+   *
+   * @memberOf CoreOptionsFilterForVue2
+   */
+  private checkFileNeedtoKeep(checkStr: any, finalOptions: any) {
+    let findStr = '';
+     for (let index = 0; index < finalOptions.seletTypes.length; index++) {
+      const elementSelectTypeItem: string = finalOptions.seletTypes[index];
+      if (checkStr === elementSelectTypeItem) {
+        findStr = elementSelectTypeItem;
+        break;
+      }
+    }
+
+    return findStr;
   }
 
   /**
