@@ -10,15 +10,15 @@ export class CoreGitDownloader {
    * 下载工程目录，依据配置选择是否需要筛选不需要目录
    * @returns 命令行数组
    */
-  public syncDownload(options: { type: SupportedTemplate, name: string, description: string }, finalOptions: any) {
-    console.log(finalOptions);
+  public async syncDownload(options: { type: SupportedTemplate, name: string, description: string }, finalOptions: any) {
+    // console.log(finalOptions);
     console.log();
-    console.log(chalk.green('👉  开始构建，请稍侯.'));
+    console.log(chalk.green('👉  开始构建，请稍侯...'));
     console.log();
     const spinner = ora('正在构建模板...').start();
     const { downloadUrl, url } = templates[`${options.type || 'vue2'}`];
 
-    download(downloadUrl, options.name, { clone: false }, (err: Error) => {
+    download(downloadUrl, options.name, { clone: false }, async (err: Error) => {
       if (err) {
         spinner.fail(chalk.red('❗错误：下载模板失败'));
         console.log(chalk.red('❗错误信息：'), chalk.red(err));
@@ -54,8 +54,10 @@ export class CoreGitDownloader {
          // 增加选择范围
           // 去除生成目录内容 .github  .husky .vscode
           // 添加原来的内容给下载目录选择
-          optionsFilter.clearUnusedDirectorys(options, finalOptions);
+          await optionsFilter.clearUnusedDirectorys(options, finalOptions);
+          // console.log('del started download ===');
       }
+      // console.log('started download ===');
 
       console.log();
       spinner.succeed(chalk.green('构建成功！'));
@@ -68,7 +70,7 @@ export class CoreGitDownloader {
       });
 
       console.log();
-      console.log(chalk.green('👏  初始化项目完成！👏'));
+      console.log(chalk.green('👏 初始化项目完成！👏'));
       console.log();
       console.log(chalk.blue('命令提示：'));
       console.log(chalk.blue(`  # 进入项目`));

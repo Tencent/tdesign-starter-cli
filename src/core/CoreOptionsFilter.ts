@@ -2,6 +2,7 @@ import path from "path";
 import fs from 'fs';
 import coreTemplateVue2Config from "./CoreTemplateVue2Config";
 import { IParsedSourceData } from "./CoreParsedConfig";
+import del from 'del';
 
 // ===================== 拆分内容 ==============================
 // 分离头部
@@ -119,9 +120,9 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     // console.log('options.name==', localPath);
 
     try {
-      fs.unlinkSync(path.join(localPath, '.github'));
-      fs.unlinkSync(path.join(localPath, '.husky'));
-      fs.unlinkSync(path.join(localPath, '.vscode'));
+      await del(path.join(localPath, '.github'));
+      await del(path.join(localPath, '.husky'));
+      await del(path.join(localPath, '.vscode'));
     } catch (error) {
       console.log('clearUnusedDirectorys..', error);
     }
