@@ -13,7 +13,7 @@ class Creator {
 		console.log(chalk.green(figlet.textSync('TDesign Starter', { horizontalLayout: 'full' })));
 		console.log('*****************************');
 		console.log();
-		console.log();
+		// console.log(process.argv);
 		// console.log(chalk.blue('❗或者可以通过以下其它途径下载本脚手架工程：'));
 		// console.log(chalk.blue('❗1.直接前往：https://github.com/tencent/tdesign-vue-starter 在线下载。'));
 		// console.log(chalk.blue('❗2.使用 git clone git@github.com:Tencent/tdesign-vue-starter.git'));
@@ -23,7 +23,13 @@ class Creator {
 		const spinner = ora('👉 检查构建环境...').start();
 
 		// 判断是否存在.git文件
-		if (directoryExists('.git')) {
+    let isSkip = false;
+    if (process.argv.length === 4) {
+      if (process.argv[3] === 's') {
+        isSkip = true;
+      }
+    }
+		if (!isSkip && directoryExists('.git')) {
 			console.log(chalk.red('❗错误：当前目录已经存在有本地仓库，请重新选择其它空目录!'));
 			// log.error('已经存在一个本地仓库!');
 			process.exit();
@@ -33,6 +39,12 @@ class Creator {
 		console.log();
 	}
 
+  /**
+   * 前置条件满足，进入子程序
+   *
+   *
+   * @memberOf Creator
+   */
 	async init() {
     // 基本配置数据获取
 		const answer = await new CoreInquier().interactionsHandler();
