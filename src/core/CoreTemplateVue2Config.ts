@@ -1,6 +1,11 @@
+import { IParsedSourceData } from "./CoreParsedConfig";
+
 class CoreTemplateVue2Config {
 
   private configData!: any;
+
+  /** 解析的原始数据结构配置 */
+  private parsedConfigData: Array<IParsedSourceData> = [];
 
   /**
 	 * 配置服务单例
@@ -14,6 +19,28 @@ class CoreTemplateVue2Config {
 
 		return CoreTemplateVue2Config.instance;
 	}
+
+  /**
+   * 获取解析的原始数据结构配置
+   *
+   * @returns {Array<IParsedSourceData>}
+   *
+   * @memberOf CoreTemplateVue2Config
+   */
+  public getParsedConfigData(): Array<IParsedSourceData> {
+    return this.parsedConfigData;
+  }
+
+  /**
+   * 设置解析的原始数据结构配置
+   *
+   * @param {Array<IParsedSourceData>} v
+   *
+   * @memberOf CoreTemplateVue2Config
+   */
+  public setParsedConfigData(v: Array<IParsedSourceData>): void {
+    this.parsedConfigData = v;
+  }
 
   /**
    * 设置配置

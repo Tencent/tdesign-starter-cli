@@ -2,23 +2,8 @@ import inquirer from 'inquirer';
 import { SupportedTemplate, templates } from './CoreTemplate';
 import axios from 'axios';
 import { CoreOptionsFilterForVue2 } from './CoreOptionsFilter';
-
-/**
- * 数据结构接口
- *
- * @export
- * @interface IParsedSourceData
- */
-export interface IParsedSourceData {
-  name?: string;
-  path?: string;
-  meta?: any;
-  /** 是否需要在要排除的目录中 */
-  isInExcludeList?: boolean;
-}
-
-/** 解析的原始数据结构配置 */
-export let parsedConfigData: Array<IParsedSourceData> = [];
+import { IParsedSourceData } from './CoreParsedConfig';
+import coreTemplateVue2Config from './CoreTemplateVue2Config';
 
 /**
  * 分段内容选择
@@ -51,7 +36,8 @@ export class CoreSelector {
       const downloadConfigSource = await this.downloadConfigData(routerData);
 
       // 解析VUE2配置文件
-      parsedConfigData = this.parseConfigSourceVue2(downloadConfigSource);
+      const parsedConfigData = this.parseConfigSourceVue2(downloadConfigSource);
+      coreTemplateVue2Config.setParsedConfigData(parsedConfigData);
 
       const choiceList: Array<string> = [];
       parsedConfigData.filter((item: IParsedSourceData): any => {
@@ -120,34 +106,6 @@ export class CoreSelector {
         meta: elementResultData.meta,
       });
     }
-
-    // parsedConfigData = [
-    //   // config flag
-    //   {
-    //     path: '/list',
-    //     name: 'list',
-    //     meta: { title: '列表页' },
-    //   },
-    //   // split flag
-    //   {
-    //     path: '/form',
-    //     name: 'form',
-    //     meta: { title: '表单页' },
-    //   },
-    //   // split flag
-    //   {
-    //     path: '/detail',
-    //     name: 'detail',
-    //     meta: { title: '详情页' }
-    //   },
-    //   // split flag
-    //   {
-    //     path: '/result',
-    //     name: 'result',
-    //     meta: { title: '结果页' },
-    //   },
-    //   // config flag
-    // ];
 
     return parsedConfigDataTemp;
   }

@@ -1,8 +1,7 @@
 import path from "path";
-import { SupportedTemplate } from "./CoreTemplate";
 import fs from 'fs';
-import { IParsedSourceData, parsedConfigData } from "./CoreSelector";
 import coreTemplateVue2Config from "./CoreTemplateVue2Config";
+import { IParsedSourceData } from "./CoreParsedConfig";
 
 // ===================== 拆分内容 ==============================
 // 分离头部
@@ -171,6 +170,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
   public checkNeedToExclude(elementSelectTypeItem: string): IParsedSourceData {
     let parsedSourceData: IParsedSourceData = {isInExcludeList: false};
 
+    const parsedConfigData = coreTemplateVue2Config.getParsedConfigData();
     for (let index = 0; index < parsedConfigData.length; index++) {
       const elementParsedData: IParsedSourceData = parsedConfigData[index];
 
