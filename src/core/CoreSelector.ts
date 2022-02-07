@@ -30,10 +30,11 @@ export class CoreSelector {
 
     if (options.type === 'vue2') {
       // VUE2模板选择 TODO:
-      console.log(routerData);
+      console.log('download.==', routerData);
 
       // 下载模板config
       const downloadConfigSource = await this.downloadConfigData(routerData);
+      console.log('downloadConfigSource.==', downloadConfigSource);
 
       // 解析VUE2配置文件
       const parsedConfigData = this.parseConfigSourceVue2(downloadConfigSource);
@@ -71,7 +72,7 @@ export class CoreSelector {
    * @memberOf CoreSelector
    */
   public async downloadConfigData(routerData: string): Promise<any> {
-    let resData = {};
+    let resData!: any;
     try {
       resData = await axios.get(routerData);
     } catch (error) {
@@ -82,7 +83,7 @@ export class CoreSelector {
       }
     }
 
-    return resData;
+    return resData.data ? resData.data : resData;
   }
 
   /**

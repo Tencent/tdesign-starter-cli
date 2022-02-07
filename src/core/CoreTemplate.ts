@@ -11,7 +11,7 @@ export interface ITemplateContent { url: string, description: string, downloadUr
     url: 'https://github.com/Tencent/tdesign-vue-starter.git',
     description: 'TDesign Vue2 Starter',
     downloadUrl: 'github.com.cnpmjs.org:Tencent/tdesign-vue-starter#main',
-    routerData: 'https://github.com/Tencent/tdesign-vue-starter/blob/develop/src/router/modules/components.ts'
+    routerData: 'https://raw.githubusercontent.com/Tencent/tdesign-vue-starter/develop/src/router/modules/components.ts'
   },
   vue3: {
     url: 'https://github.com/Tencent/tdesign-vue-next-starter.git',
