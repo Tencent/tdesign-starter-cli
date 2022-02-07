@@ -200,6 +200,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    * @memberOf CoreOptionsFilter
    */
   public async generateModulesRoute(options: any, finalOptions: any) {
+    // console.log('generateModulesRoute==');
     // 生成原始配置
     const sourceModulesData = this.generateSourceModulesData(options, finalOptions);
 
@@ -218,11 +219,6 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
 
   /** 生成原始配置 */
   public generateSourceModulesData(options: any, finalOptions: any, downloadConfigSource: any = '') {
-    // 存,存时空值判断
-    if (downloadConfigSource) {
-      coreTemplateVue2Config.setConfig(downloadConfigSource);
-    }
-
     // 取
     let configDataVue = coreTemplateVue2Config.getConfig();
 
@@ -231,6 +227,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     }
 
     // 转换正确JSON
+    // console.log('generateModulesRoute==', configDataVue);
     const configDataVueList = configDataVue.split(headerFlag);
     let configDataContent = '';
     if (configDataVueList && configDataVueList.length) {

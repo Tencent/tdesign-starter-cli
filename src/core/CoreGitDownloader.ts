@@ -6,6 +6,8 @@ import path from 'path';
 import { SupportedTemplate, templates } from './CoreTemplate';
 import { CoreOptionsFilterForVue2, IOptionsFilter } from './CoreOptionsFilter';
 import del from 'del';
+import rimraf from 'rimraf';
+
 export class CoreGitDownloader {
   /**
    * 下载工程目录，依据配置选择是否需要筛选不需要目录
@@ -18,12 +20,15 @@ export class CoreGitDownloader {
     console.log();
     const spinner = ora('正在构建模板...').start();
     const { downloadUrl, url } = templates[`${options.type || 'vue2'}`];
+    // console.log('finalOptions.start building==', finalOptions.seletTypes);
 
     // 清除测试目录
     await this.clearTestFolder();
+    // console.log('finalOptions.clearTestFolder==', finalOptions.seletTypes);
 
     // 执行下载
     await this.executeDownload(spinner, downloadUrl, url, options, finalOptions);
+    // console.log('finalOptions.executeDownload==', finalOptions.seletTypes);
 
     // 写入后依据用户选择内容，清除部份内容
     let optionsFilter!: IOptionsFilter;
@@ -35,10 +40,13 @@ export class CoreGitDownloader {
         if (finalOptions.selectSource !== 'all') {
           // finalOptions.seletTypes;
           // 选择包括模块：排除不用内容
+          // console.log('finalOptions.seletTypes==', finalOptions.seletTypes);
           await optionsFilter.excludeModules(options, finalOptions);
+          // console.log('finalOptions.excludeModules==', finalOptions.seletTypes);
 
           // 生成特定路由配置
           await optionsFilter.generateModulesRoute(options, finalOptions);
+          // console.log('finalOptions.generateModulesRoute==', finalOptions.seletTypes);
         }
 
         break;
@@ -67,9 +75,14 @@ export class CoreGitDownloader {
    * @memberOf CoreGitDownloader
    */
   public async clearTestFolder() {
-    const dir = path.join(`${process.env.PWD}`, 'test');
-    await del(dir);
-    console.log(`${dir} is deleted!`);
+    try {
+      const dir = path.join(`${process.env.PWD}`, 'test');
+      // console.log(`start deleted!`, dir);
+      await rimraf.sync(dir);
+      // console.log(`${dir} is deleted!`);
+    } catch (error) {
+      console.log(`deleted! error`, error);
+    }
   }
 
   /**

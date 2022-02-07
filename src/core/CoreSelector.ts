@@ -106,6 +106,11 @@ export class CoreSelector {
    * @memberOf CoreSelector
    */
   public parseConfigSourceVue2(downloadConfigSource: string): any {
+    // 存,存时空值判断
+    if (downloadConfigSource) {
+      // console.log('generateSourceModulesData==', downloadConfigSource);
+      coreTemplateVue2Config.setConfig(downloadConfigSource);
+    }
     const parsedResultData = new CoreOptionsFilterForVue2().generateSourceModulesData({}, {}, downloadConfigSource);
 
     // console.log('生成的内容==', parsedResultData);

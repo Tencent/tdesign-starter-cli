@@ -214,6 +214,8 @@ class CoreTemplateVue2Config {
 
       return this.configData;
     }
+
+    return this.configData;
   }
 
 	private static instance: CoreTemplateVue2Config;
