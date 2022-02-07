@@ -115,10 +115,13 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public async clearUnusedDirectorys(options: any, finalOptions: any): Promise<any> {
+    const localPath = `${process.env.PWD}/${options.name}`;
+    // console.log('options.name==', localPath);
+
     try {
-      fs.unlinkSync(path.join(options.name, '.github'));
-      fs.unlinkSync(path.join(options.name, '.husky'));
-      fs.unlinkSync(path.join(options.name, '.vscode'));
+      fs.unlinkSync(path.join(localPath, '.github'));
+      fs.unlinkSync(path.join(localPath, '.husky'));
+      fs.unlinkSync(path.join(localPath, '.vscode'));
     } catch (error) {
       console.log('clearUnusedDirectorys..', error);
     }
