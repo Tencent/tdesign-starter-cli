@@ -415,9 +415,9 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
 
       try {
         configDataContent = JSON.parse(configDataContent);
-        console.log('generate parsed content..', configDataContent);
+        // console.log('Generate parsed content..', configDataContent);
       } catch (error) {
-        console.log('generate json parse error..', error);
+        console.log('Generate json parse error..', error);
       }
     }
 

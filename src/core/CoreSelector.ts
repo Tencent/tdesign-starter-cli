@@ -29,12 +29,12 @@ export class CoreSelector {
     ];
 
     if (options.type === 'vue2') {
-      // VUE2模板选择 TODO:
-      console.log('download.==', routerData);
+      // VUE2模板选择
+      // console.log('download.==', routerData);
 
       // 下载模板config
       const downloadConfigSource = await this.downloadConfigData(routerData);
-      console.log('downloadConfigSource.==', downloadConfigSource);
+      // console.log('downloadConfigSource.==', downloadConfigSource);
 
       // 解析VUE2配置文件
       const parsedConfigData = this.parseConfigSourceVue2(downloadConfigSource);
@@ -97,6 +97,8 @@ export class CoreSelector {
   public parseConfigSourceVue2(downloadConfigSource: string): any {
     const parsedResultData = new CoreOptionsFilterForVue2().generateSourceModulesData({}, {}, downloadConfigSource);
 
+    // console.log('生成的内容==', parsedResultData);
+
     // 解析这种内容数据
     const parsedConfigDataTemp = [];
     for (let index = 0; index < parsedResultData.length; index++) {
@@ -107,6 +109,8 @@ export class CoreSelector {
         meta: elementResultData.meta,
       });
     }
+
+    // console.log('解析后的的内容==', parsedConfigDataTemp);
 
     return parsedConfigDataTemp;
   }
