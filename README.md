@@ -48,10 +48,10 @@ http://localhost:3001/
 
 ```sh
 # 临听，自动刷新代码改动
-npm run dev
+npm run watch
 
-# 测试
-npm run test
+# 本地调试
+npm run dev
 ```
 
 ## 开源协议

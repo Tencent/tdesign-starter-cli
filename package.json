@@ -9,8 +9,9 @@
   },
   "typings": "./src/types/index.d.ts",
   "scripts": {
-    "dev": "rollup -w -c",
-    "test": "node ./bin/index.js",
+    "watch": "rollup -w -c",
+    "test": "npm run dev",
+    "dev": "node ./bin/index.js",
     "build": "rollup -c ",
     "lint": "eslint 'src/**/*.{js,ts}'"
   },
