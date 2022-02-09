@@ -233,13 +233,13 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     const sourceModulesData = this.generateSourceModulesData(options, finalOptions);
 
     // 生成排除目录后的路由配置
-    const keepedTypeList = this.restoreSourceModulesRouterData(sourceModulesData, options, finalOptions);
+    const deletedTypeList = this.restoreSourceModulesRouterData(sourceModulesData, options, finalOptions);
 
     // 依据原始配置移除需要排除的目录
-    await this.excludeSouceDeleteFolder(keepedTypeList, options, finalOptions);
+    await this.excludeSouceDeleteFolder(deletedTypeList, options, finalOptions);
 
     // 生成排除后的路由配置
-    const saveedList = await this.generateExcludeRouter(keepedTypeList, sourceModulesData, options, finalOptions);
+    const saveedList = await this.generateExcludeRouter(deletedTypeList, sourceModulesData, options, finalOptions);
 
     // 保存路由配置文件
     this.saveRouterFilter(saveedList, coreTemplateVue2Config.getConfig(), options, finalOptions);
@@ -366,14 +366,14 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilter
    */
-  private async generateExcludeRouter(keepedTypeList: Array<IParsedSourceData>, sourceModulesData: any, options: any, finalOptions: any) {
+  private async generateExcludeRouter(deletedTypeList: Array<IParsedSourceData>, sourceModulesData: any, options: any, finalOptions: any) {
     const saveedList = [];
-    for (let indexKeepedTypeItem = 0; indexKeepedTypeItem < keepedTypeList.length; indexKeepedTypeItem++) {
-      const elementKeepedTypeItem = keepedTypeList[indexKeepedTypeItem];
+    for (let index = 0; index < sourceModulesData.length; index++) {
+      const elementSourceItem = sourceModulesData[index];
+      for (let indexKeepedTypeItem = 0; indexKeepedTypeItem < deletedTypeList.length; indexKeepedTypeItem++) {
+        const elementKeepedTypeItem = deletedTypeList[indexKeepedTypeItem];
 
-      for (let index = 0; index < sourceModulesData.length; index++) {
-        const elementSourceItem = sourceModulesData[index];
-        if (elementSourceItem.meta.title === elementKeepedTypeItem.meta.title) {
+        if (elementSourceItem.meta.title !== elementKeepedTypeItem.meta.title) {
           saveedList.push(elementSourceItem);
           break;
         }
