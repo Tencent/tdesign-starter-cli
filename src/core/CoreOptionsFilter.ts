@@ -234,6 +234,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
 
     // 生成排除目录后的路由配置
     const deletedTypeList = this.restoreSourceModulesRouterData(sourceModulesData, options, finalOptions);
+    // console.log('保留的目录==', deletedTypeList);
 
     // 依据原始配置移除需要排除的目录
     await this.excludeSouceDeleteFolder(deletedTypeList, options, finalOptions);
@@ -247,7 +248,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
 
   /** 生成原始配置 */
   public generateSourceModulesData(options: any, finalOptions: any, downloadConfigSource: any = '') {
-    // 取
+    // 取单例配置
     let configDataVue = coreTemplateVue2Config.getConfig();
 
     if (downloadConfigSource) {
@@ -367,11 +368,27 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    * @memberOf CoreOptionsFilter
    */
   private async generateExcludeRouter(deletedTypeList: Array<IParsedSourceData>, sourceModulesData: any, options: any, finalOptions: any) {
+    // 找出不在列表中的目录，即为需要排除内容
     const saveedList = [];
+    const selectTypeList: Array<IParsedSourceData> = [];
+
+    // 找出需要排除的
+    const parsedConfigData = coreTemplateVue2Config.getParsedConfigData();
+    for (let index = 0; index < parsedConfigData.length; index++) {
+      const elementParsedData: IParsedSourceData = parsedConfigData[index];
+
+      // 为空时代表要排除，返回值代表需要保留
+      if (!this.checkFileNeedtoKeep(elementParsedData.meta.title, finalOptions)) {
+        selectTypeList.push(elementParsedData);
+      }
+
+    }
+
+    // 添加需要添加的
     for (let index = 0; index < sourceModulesData.length; index++) {
       const elementSourceItem = sourceModulesData[index];
-      for (let indexKeepedTypeItem = 0; indexKeepedTypeItem < deletedTypeList.length; indexKeepedTypeItem++) {
-        const elementKeepedTypeItem = deletedTypeList[indexKeepedTypeItem];
+      for (let indexKeepedTypeItem = 0; indexKeepedTypeItem < selectTypeList.length; indexKeepedTypeItem++) {
+        const elementKeepedTypeItem: IParsedSourceData = selectTypeList[indexKeepedTypeItem];
 
         if (elementSourceItem.meta.title !== elementKeepedTypeItem.meta.title) {
           saveedList.push(elementSourceItem);
