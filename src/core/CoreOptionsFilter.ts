@@ -384,13 +384,15 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
 
     }
 
+    // console.log('selectTypeList..==', selectTypeList);
+
     // 添加需要添加的
     for (let index = 0; index < sourceModulesData.length; index++) {
       const elementSourceItem = sourceModulesData[index];
       for (let indexKeepedTypeItem = 0; indexKeepedTypeItem < selectTypeList.length; indexKeepedTypeItem++) {
         const elementKeepedTypeItem: IParsedSourceData = selectTypeList[indexKeepedTypeItem];
 
-        if (elementSourceItem.meta.title !== elementKeepedTypeItem.meta.title) {
+        if (elementSourceItem.meta.title === elementKeepedTypeItem.meta.title) {
           saveedList.push(elementSourceItem);
           break;
         }
