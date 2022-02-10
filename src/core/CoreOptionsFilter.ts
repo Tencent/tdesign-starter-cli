@@ -413,6 +413,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    */
   private saveRouterFilter(saveedList: any[], configData: string, options: any, finalOptions: any) {
     let configDataContent = JSON.stringify(saveedList);
+    configDataContent = this.formatJson(configDataContent);
 
     // 还原标识
     configDataContent = configDataContent.replace(listIconFlagBack, listIconFlagRestoreBack);
@@ -440,4 +441,66 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
       console.log('saveRouterFilter..', error);
     }
   }
+
+
+  /**
+   * 格式化JSON
+   *
+   * @private
+   * @param {string} jsonStr
+   * @returns {string}
+   *
+   * @memberOf CoreOptionsFilterForVue2
+   */
+  private formatJson(jsonStr: string): string {
+    jsonStr = this.trimJson(jsonStr);
+
+    const re = new RegExp('\\{|\\}|,|:', 'g'); // 匹配格式化后的json中的{},:
+    let exec = null;
+    let InvalidFs = 0;
+    let InvalidBs = 0;
+    // eslint-disable-next-line no-cond-assign
+    while(exec = re.exec(jsonStr)) { // 找{},:
+      const frontToCurrent = exec.input.substr(0, exec.index + 1); // 匹配开头到当前匹配字符之间的字符串
+      if (frontToCurrent.replace(/\\"/g, "").replace(/[^"]/g, "").length%2 != 0) { // 测试当前字符到开头"的数量，为双数则被判定为目标对象
+        if(exec[0] === '{') InvalidFs++;
+        else if(exec[0] === '}') InvalidBs++;
+        continue; // 不是目标对象，手动跳过
+      }
+      // eslint-disable-next-line no-useless-escape
+      const keyTimesF = frontToCurrent.replace(/[^\{]/g, '').length - InvalidFs; // 找出当前匹配字符之前所有{的个数
+      // eslint-disable-next-line no-useless-escape
+      const keyTimesB = frontToCurrent.replace(/[^\}]/g, '').length - InvalidBs; // 找出当前匹配字符之前所有}的个数
+      const indentationTimes = keyTimesF - keyTimesB; // 根据{个数计算缩进
+
+      if (exec[0] === '{') {
+        jsonStr = jsonStr.slice(0,exec.index + 1) + '\n' + '\t'.repeat(indentationTimes) + jsonStr.slice(exec.index + 1); // 将缩进加入字符串
+      } else if(exec[0] === '}') {
+        jsonStr = jsonStr.slice(0,exec.index) + '\n' + '\t'.repeat(indentationTimes) + jsonStr.slice(exec.index) // 将缩进加入字符串
+        re.exec(jsonStr); // 在查找目标前面插入字符串会回退本次查找，所以手动跳过本次查找
+      } else  if(exec[0] === ',') {
+        jsonStr = jsonStr.slice(0,exec.index + 1) + '\n' + '\t'.repeat(indentationTimes) + jsonStr.slice(exec.index + 1)
+      } else if (exec[0] === ':') {
+        jsonStr = jsonStr.slice(0,exec.index + 1) + ' ' + jsonStr.slice(exec.index + 1)
+      } else {
+        console.log(`匹配到了非法${exec[0]}`)
+      }
+    }
+    return jsonStr === null ? 'Invalid value' : jsonStr;
+  }
+
+  /*
+    param1 JSONstr 未格式化的JSON字符串
+    return 去【类空格字符】后的JSON字符串
+*/
+private trimJson(jsonStr: string): string {
+  try {
+      jsonStr = jsonStr.replace(/'/g, '"');
+      jsonStr = JSON.stringify(JSON.parse(jsonStr));
+  } catch (error) {
+      // 转换失败错误提示
+      console.error('json format error...', error);
+  }
+  return jsonStr;
+}
 }
