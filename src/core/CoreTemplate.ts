@@ -10,13 +10,13 @@ export interface ITemplateContent { url: string, description: string, downloadUr
   vue2: {
     url: 'https://github.com/Tencent/tdesign-vue-starter.git',
     description: 'TDesign Vue2 Starter',
-    downloadUrl: 'github.com.cnpmjs.org:Tencent/tdesign-vue-starter#main',
+    downloadUrl: 'github.com:Tencent/tdesign-vue-starter#main',
     routerData: 'https://raw.githubusercontent.com/Tencent/tdesign-vue-starter/develop/src/router/modules/components.ts'
   },
   vue3: {
     url: 'https://github.com/Tencent/tdesign-vue-next-starter.git',
     description: 'TDesign Vue3 Starter',
-    downloadUrl: 'github.com.cnpmjs.org:Tencent/tdesign-vue-next-starter#main',
+    downloadUrl: 'github.com:Tencent/tdesign-vue-next-starter#main',
     routerData: ''  // TODO: add vue3 router config
   }
 };
