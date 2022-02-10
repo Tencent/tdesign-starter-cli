@@ -48,8 +48,8 @@ const layoutFlagBack = new RegExp(/component: "Layout"/ig);
 const layoutFlagRestoreBack = 'component: Layout';
 
 // import flag
-const importFlagBack = new RegExp(/"\(\) => import\(/ig);
-const importFlagRestoreBack = '() => import(';
+const importFlagBack = new RegExp(/"\(\)/ig);
+const importFlagRestoreBack = '()';
 
 // import flag
 const extFlagBack = new RegExp(/\.vue'\)"/ig);
@@ -419,6 +419,13 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     configDataContent = configDataContent.replace(layoutFlagBack, layoutFlagRestoreBack);
     configDataContent = configDataContent.replace(importFlagBack, importFlagRestoreBack);
     configDataContent = configDataContent.replace(extFlagBack, extFlagRestoreBack);
+    configDataContent = configDataContent.replace(/"component":"\(/ig, '"component":(');
+    configDataContent = configDataContent.replace(/"Layout"/ig, 'Layout');
+    configDataContent = configDataContent.replace(/"ListIcon"/ig, 'ListIcon');
+    configDataContent = configDataContent.replace(/"FormIcon"/ig, 'FormIcon');
+    configDataContent = configDataContent.replace(/"DetailIcon"/ig, 'DetailIcon');
+
+    // console.log('replace content..', configDataContent);
 
     // 保留内容 {..export default...}
     const saveFileContent = `${this.headerFlagFirst}${headerFlag}${configDataContent}`;
