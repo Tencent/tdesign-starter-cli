@@ -427,6 +427,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     configDataContent = configDataContent.replace(/"ListIcon"/ig, 'ListIcon');
     configDataContent = configDataContent.replace(/"FormIcon"/ig, 'FormIcon');
     configDataContent = configDataContent.replace(/"DetailIcon"/ig, 'DetailIcon');
+    configDataContent = configDataContent.replace(/.vue"\)"/gi, '.vue")');
 
     // console.log('replace content..', configDataContent);
 
@@ -489,10 +490,15 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     return jsonStr === null ? 'Invalid value' : jsonStr;
   }
 
-  /*
-    param1 JSONstr 未格式化的JSON字符串
-    return 去【类空格字符】后的JSON字符串
-*/
+  /**
+   * 初步格式化
+   *
+   * @private
+   * @param {string} jsonStr
+   * @returns {string}
+   *
+   * @memberOf CoreOptionsFilterForVue2
+   */
 private trimJson(jsonStr: string): string {
   try {
       jsonStr = jsonStr.replace(/'/g, '"');
