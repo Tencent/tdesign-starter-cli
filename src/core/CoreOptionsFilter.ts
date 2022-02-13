@@ -385,21 +385,34 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     }
 
     // console.log('selectTypeList..==', selectTypeList);
+    // console.log('sourceModulesData..==', sourceModulesData);
 
     // 添加需要添加的
     for (let index = 0; index < sourceModulesData.length; index++) {
       const elementSourceItem = sourceModulesData[index];
-      for (let indexKeepedTypeItem = 0; indexKeepedTypeItem < selectTypeList.length; indexKeepedTypeItem++) {
-        const elementKeepedTypeItem: IParsedSourceData = selectTypeList[indexKeepedTypeItem];
+     if (this.needToKepItem(elementSourceItem, selectTypeList)) {
+      saveedList.push(elementSourceItem);
+     }
+    }
+    // console.log('saveedList..==', saveedList);
 
-        if (elementSourceItem.meta.title === elementKeepedTypeItem.meta.title) {
-          saveedList.push(elementSourceItem);
-          break;
-        }
+    return saveedList;
+  }
+
+  /** 检测是否需要保留 */
+  private needToKepItem(elementSourceItem: any, selectTypeList: any): boolean {
+    let isKeep = true;
+
+    for (let indexKeepedTypeItem = 0; indexKeepedTypeItem < selectTypeList.length; indexKeepedTypeItem++) {
+      const elementKeepedTypeItem: IParsedSourceData = selectTypeList[indexKeepedTypeItem];
+
+      if (elementSourceItem.meta.title === elementKeepedTypeItem.meta.title) {
+        isKeep = false
+        break;
       }
     }
 
-    return saveedList;
+    return isKeep;
   }
 
   /**
@@ -442,7 +455,6 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
       console.log('saveRouterFilter..', error);
     }
   }
-
 
   /**
    * 格式化JSON
@@ -505,7 +517,7 @@ private trimJson(jsonStr: string): string {
       jsonStr = JSON.stringify(JSON.parse(jsonStr));
   } catch (error) {
       // 转换失败错误提示
-      console.error('json format error...', error);
+      // console.error('json format error...', error);
   }
   return jsonStr;
 }
