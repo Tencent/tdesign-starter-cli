@@ -4,21 +4,20 @@ import ora from 'ora';
 import chalk from 'chalk';
 import path from 'path';
 
-
-type SupportedTemplate = 'vue2' | 'vue3'
+type SupportedTemplate = 'vue2' | 'vue3';
 /**
  * 模板地址
  */
-const templates: Record<SupportedTemplate, { url: string, description: string, downloadUrl: string }> = {
+const templates: Record<SupportedTemplate, { url: string; description: string; downloadUrl: string }> = {
   vue2: {
     url: 'https://github.com/Tencent/tdesign-vue-starter.git',
     description: 'TDesign Vue2 Starter',
-    downloadUrl: 'github.com.cnpmjs.org:Tencent/tdesign-vue-starter#main'
+    downloadUrl: 'direct:https://tencent-tdesign.coding.net/p/starter/d/tdesign-vue-starter/git/archive/develop/?download=true'
   },
   vue3: {
     url: 'https://github.com/Tencent/tdesign-vue-next-starter.git',
     description: 'TDesign Vue3 Starter',
-    downloadUrl: 'github.com.cnpmjs.org:Tencent/tdesign-vue-next-starter#main'
+    downloadUrl: 'direct:https://tencent-tdesign.coding.net/p/starter/d/tdesign-vue-next-starter/git/archive/develop/?download=true'
   }
 };
 
@@ -26,7 +25,7 @@ const templates: Record<SupportedTemplate, { url: string, description: string, d
  * 拉取代码
  * @returns 命令行数组
  */
-export function getTemplate(options: { type: SupportedTemplate, name: string, description: string }) {
+export function getTemplate(options: { type: SupportedTemplate; name: string; description: string }) {
   console.log();
   const spinner = ora('正在构建模板...').start();
   const { downloadUrl, url } = templates[`${options.type || 'vue2'}`];

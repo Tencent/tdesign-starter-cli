@@ -33,7 +33,8 @@ export function interactionsHandler() {
 				{ name: '【Vue3】模板', value: 'vue3' }
 			],
 			default: 'vue2' // 默认值为列表项编号，起始为 0
-		}
+		},
+		
 	];
 	return inquirer.prompt(questions);
 }
