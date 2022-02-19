@@ -61,7 +61,7 @@ export class CoreSelector {
         const downloadConfigSource = await this.downloadConfigData(routerData);
         // console.log('downloadConfigSource vue3.==', downloadConfigSource);
 
-        // 解析VUE2配置文件
+        // 解析VUE3配置文件
         const parsedConfigData = this.parseConfigSourceVue3(downloadConfigSource);
         coreTemplateVue3Config.setParsedConfigData(parsedConfigData);
 
@@ -216,11 +216,11 @@ export class CoreSelector {
     // 存,存时空值判断
     if (downloadConfigSource) {
       // console.log('generateSourceModulesData==vue3', downloadConfigSource);
-      coreTemplateVue2Config.setConfig(downloadConfigSource);
+      coreTemplateVue3Config.setConfig(downloadConfigSource);
     }
     const parsedResultData = new CoreOptionsFilterForVue3().generateSourceModulesData({}, {}, downloadConfigSource);
 
-    // console.log('生成的内容==vue3', parsedResultData);
+    console.log('生成的内容==vue3', parsedResultData);
 
     // 解析这种内容数据
     const parsedConfigDataTemp = [];
@@ -233,7 +233,7 @@ export class CoreSelector {
       });
     }
 
-    // console.log('解析后的的内容==', parsedConfigDataTemp);
+    console.log('解析后的的内容== vue3', parsedConfigDataTemp);
 
     return parsedConfigDataTemp;
   }

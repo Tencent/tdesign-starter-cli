@@ -1,4 +1,6 @@
 import { CoreOptionsFilterForVue2 } from "./CoreOptionsFilterForVue2";
+import { ICoreTemplate } from "./CoreTemplateVue2Config";
+import coreTemplateVue3Config from "./CoreTemplateVue3Config";
 
 /**
  * 过滤器 VUE3
@@ -7,5 +9,15 @@ import { CoreOptionsFilterForVue2 } from "./CoreOptionsFilterForVue2";
  * @class CoreOptionsFilter
  */
 export class CoreOptionsFilterForVue3 extends CoreOptionsFilterForVue2 {
-  // hole
+
+  /**
+   * override 获取当前解析器配置
+   *
+   * @returns {ICoreTemplate}
+   *
+   * @memberOf CoreOptionsFilterForVue2
+   */
+   public getConfigTemplateInstanceData(): ICoreTemplate {
+    return coreTemplateVue3Config;
+  }
 }

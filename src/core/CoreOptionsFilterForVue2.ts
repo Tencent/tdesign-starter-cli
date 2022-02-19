@@ -3,6 +3,7 @@ import fs from 'fs';
 import coreTemplateVue2Config from "./CoreTemplateVue2Config";
 import { IParsedSourceData } from "./CoreParsedConfig";
 import del from 'del';
+import { ICoreTemplate } from "./CoreTemplateVue2Config";
 
 // ===================== 拆分内容 ==============================
 // 分离头部
@@ -128,6 +129,16 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     }
   }
 
+  /**
+   * 获取当前解析器配置
+   *
+   * @returns {ICoreTemplate}
+   *
+   * @memberOf CoreOptionsFilterForVue2
+   */
+  public getConfigTemplateInstanceData(): ICoreTemplate {
+    return coreTemplateVue2Config;
+  }
 
   /**
    * 排除不用内容
@@ -143,7 +154,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     const selectTypeList: Array<IParsedSourceData> = [];
 
     // 找出需要排除的
-    const parsedConfigData = coreTemplateVue2Config.getParsedConfigData();
+    const parsedConfigData = this.getConfigTemplateInstanceData().getParsedConfigData();
     for (let index = 0; index < parsedConfigData.length; index++) {
       const elementParsedData: IParsedSourceData = parsedConfigData[index];
 
@@ -205,7 +216,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
   public checkNeedToExclude(elementSelectTypeItem: string): IParsedSourceData {
     let parsedSourceData: IParsedSourceData = {isInExcludeList: false};
 
-    const parsedConfigData = coreTemplateVue2Config.getParsedConfigData();
+    const parsedConfigData = this.getConfigTemplateInstanceData().getParsedConfigData();
     for (let index = 0; index < parsedConfigData.length; index++) {
       const elementParsedData: IParsedSourceData = parsedConfigData[index];
 
@@ -243,13 +254,13 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     const saveedList = await this.generateExcludeRouter(deletedTypeList, sourceModulesData, options, finalOptions);
 
     // 保存路由配置文件
-    this.saveRouterFilter(saveedList, coreTemplateVue2Config.getConfig(), options, finalOptions);
+    this.saveRouterFilter(saveedList, this.getConfigTemplateInstanceData().getConfig(), options, finalOptions);
   }
 
   /** 生成原始配置 */
   public generateSourceModulesData(options: any, finalOptions: any, downloadConfigSource: any = '') {
     // 取单例配置
-    let configDataVue = coreTemplateVue2Config.getConfig();
+    let configDataVue = this.getConfigTemplateInstanceData().getConfig();
 
     if (downloadConfigSource) {
       configDataVue = downloadConfigSource;
@@ -373,7 +384,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     const selectTypeList: Array<IParsedSourceData> = [];
 
     // 找出需要排除的
-    const parsedConfigData = coreTemplateVue2Config.getParsedConfigData();
+    const parsedConfigData = this.getConfigTemplateInstanceData().getParsedConfigData();
     for (let index = 0; index < parsedConfigData.length; index++) {
       const elementParsedData: IParsedSourceData = parsedConfigData[index];
 

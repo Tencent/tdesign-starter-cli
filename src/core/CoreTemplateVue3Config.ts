@@ -1,11 +1,12 @@
 import { IParsedSourceData } from "./CoreParsedConfig";
+import { ICoreTemplate } from "./CoreTemplateVue2Config";
 
 /**
  * vue3 config
  *
  * @class CoreTemplateVue3Config
  */
-class CoreTemplateVue3Config {
+class CoreTemplateVue3Config implements ICoreTemplate {
 
   private configData!: any;
 

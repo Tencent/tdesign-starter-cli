@@ -1,6 +1,50 @@
 import { IParsedSourceData } from "./CoreParsedConfig";
 
-class CoreTemplateVue2Config {
+/**
+ * 模板单例接口
+ *
+ * @export
+ * @interface ICoreTemplate
+ */
+export interface ICoreTemplate {
+  /**
+   * 获取解析的原始数据结构配置
+   *
+   * @returns {Array<IParsedSourceData>}
+   *
+   * @memberOf ICoreTemplate
+   */
+  getParsedConfigData(): Array<IParsedSourceData>;
+
+  /**
+   * 设置解析的原始数据结构配置
+   *
+   * @param {Array<IParsedSourceData>} v
+   *
+   * @memberOf CoreTemplateVue2Config
+   */
+   setParsedConfigData(v: Array<IParsedSourceData>): void;
+
+   /**
+   * 设置配置
+   *
+   * @param {any} configData
+   *
+   * @memberOf CoreTemplateVue2Config
+   */
+  setConfig(configData: any): void;
+
+  /**
+   * 获取配置
+   *
+   * @returns {*}
+   *
+   * @memberOf CoreTemplateVue2Config
+   */
+   getConfig(): any;
+}
+
+class CoreTemplateVue2Config implements ICoreTemplate {
 
   private configData!: any;
 
@@ -49,7 +93,7 @@ class CoreTemplateVue2Config {
    *
    * @memberOf CoreTemplateVue2Config
    */
-  public setConfig(configData: any) {
+  public setConfig(configData: any): void {
     this.configData = configData;
   }
 
