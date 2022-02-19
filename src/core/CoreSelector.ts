@@ -220,7 +220,7 @@ export class CoreSelector {
     }
     const parsedResultData = new CoreOptionsFilterForVue3().generateSourceModulesData({}, {}, downloadConfigSource);
 
-    console.log('生成的内容==vue3', parsedResultData);
+    // console.log('生成的内容==vue3', parsedResultData);
 
     // 解析这种内容数据
     const parsedConfigDataTemp = [];
@@ -233,7 +233,7 @@ export class CoreSelector {
       });
     }
 
-    console.log('解析后的的内容== vue3', parsedConfigDataTemp);
+    // console.log('解析后的的内容== vue3', parsedConfigDataTemp);
 
     return parsedConfigDataTemp;
   }
