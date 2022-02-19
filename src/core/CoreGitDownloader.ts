@@ -4,7 +4,7 @@ import ora from 'ora';
 import chalk from 'chalk';
 import path from 'path';
 import { SupportedTemplate, templates } from './CoreTemplate';
-import { CoreOptionsFilterForVue2, IOptionsFilter } from './CoreOptionsFilter';
+import { CoreOptionsFilterForVue2, IOptionsFilter } from './CoreOptionsFilterForVue2';
 import del from 'del';
 import rimraf from 'rimraf';
 

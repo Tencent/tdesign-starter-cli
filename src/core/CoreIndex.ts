@@ -55,13 +55,13 @@ class Creator {
    * @memberOf Creator
    */
 	public async init() {
-    // 基本配置数据获取
+    // 1.基本配置数据获取
 		const answer = await new CoreInquier().interactionsHandler();
 
-    // 依据基本配置载下配置文件路由模板
+    // 2.依据基本配置载下配置文件路由模板
     const finalAnswer = await new CoreSelector().interactonsSelect(answer);
 
-    // 构建配置
+    // 3.构建配置保存
 		await new CoreGitDownloader().syncDownload(answer, finalAnswer);
 	}
 

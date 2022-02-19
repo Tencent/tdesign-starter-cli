@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
 import { SupportedTemplate, templates } from './CoreTemplate';
 import axios from 'axios';
-import { CoreOptionsFilterForVue2 } from './CoreOptionsFilter';
+import { CoreOptionsFilterForVue2 } from './CoreOptionsFilterForVue2';
 import { IParsedSourceData } from './CoreParsedConfig';
 import coreTemplateVue2Config from './CoreTemplateVue2Config';
 
