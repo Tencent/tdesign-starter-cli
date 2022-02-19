@@ -121,6 +121,20 @@ export class CoreGitDownloader {
       const packageContent = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
       packageContent.name = options.name;
       packageContent.description = options.description;
+
+      // 去掉预装husky,因为不存在.git
+      // 解决错误:
+      // .git can't be found (see https://git.io/Jc3F9)
+      // npm ERR! code ELIFECYCLE
+      // npm ERR! errno 1
+      // npm ERR! test@0.1.0 prepare: `husky install`
+      // npm ERR! Exit status 1
+      // npm ERR!
+      // npm ERR! Failed at the test@0.1.0 prepare script.
+      // npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+      packageContent.scripts.prepare = "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || is-ci || husky install";
+
+      // 写入配置
       fs.writeFileSync(packagePath, JSON.stringify(packageContent, null, 2), {
         encoding: 'utf8'
       });
