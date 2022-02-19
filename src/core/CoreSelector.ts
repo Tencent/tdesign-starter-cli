@@ -1,11 +1,11 @@
 import inquirer from 'inquirer';
 import { SupportedTemplate, templates } from './CoreTemplate';
 import axios from 'axios';
-import { CoreOptionsFilterForVue2 } from './CoreOptionsFilterForVue2';
-import { CoreOptionsFilterForVue3 } from './CoreOptionsFilterForVue3';
+import { CoreOptionsFilterForVue2 } from './core-options/CoreOptionsFilterForVue2';
+import { CoreOptionsFilterForVue3 } from './core-options/CoreOptionsFilterForVue3';
 import { IParsedSourceData } from './CoreParsedConfig';
-import coreTemplateVue2Config from './CoreTemplateVue2Config';
-import coreTemplateVue3Config from './CoreTemplateVue3Config';
+import coreTemplateVue2Config from './core-template/CoreTemplateVue2Config';
+import coreTemplateVue3Config from './core-template/CoreTemplateVue3Config';
 
 /**
  * 分段内容选择

@@ -1,9 +1,9 @@
 import path from "path";
 import fs from 'fs';
-import coreTemplateVue2Config from "./CoreTemplateVue2Config";
-import { IParsedSourceData } from "./CoreParsedConfig";
+import coreTemplateVue2Config from "../core-template/CoreTemplateVue2Config";
+import { IParsedSourceData } from "../CoreParsedConfig";
 import del from 'del';
-import { ICoreTemplate } from "./CoreTemplateVue2Config";
+import { ICoreTemplate } from "../core-template/CoreTemplateVue2Config";
 
 // ===================== 拆分内容 ==============================
 // 分离头部

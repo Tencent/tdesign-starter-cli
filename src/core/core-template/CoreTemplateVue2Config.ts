@@ -1,12 +1,50 @@
-import { IParsedSourceData } from "./CoreParsedConfig";
-import { ICoreTemplate } from "./CoreTemplateVue2Config";
+import { IParsedSourceData } from "../CoreParsedConfig";
 
 /**
- * vue3 config
+ * 模板单例接口
  *
- * @class CoreTemplateVue3Config
+ * @export
+ * @interface ICoreTemplate
  */
-class CoreTemplateVue3Config implements ICoreTemplate {
+export interface ICoreTemplate {
+  /**
+   * 获取解析的原始数据结构配置
+   *
+   * @returns {Array<IParsedSourceData>}
+   *
+   * @memberOf ICoreTemplate
+   */
+  getParsedConfigData(): Array<IParsedSourceData>;
+
+  /**
+   * 设置解析的原始数据结构配置
+   *
+   * @param {Array<IParsedSourceData>} v
+   *
+   * @memberOf CoreTemplateVue2Config
+   */
+   setParsedConfigData(v: Array<IParsedSourceData>): void;
+
+   /**
+   * 设置配置
+   *
+   * @param {any} configData
+   *
+   * @memberOf CoreTemplateVue2Config
+   */
+  setConfig(configData: any): void;
+
+  /**
+   * 获取配置
+   *
+   * @returns {*}
+   *
+   * @memberOf CoreTemplateVue2Config
+   */
+   getConfig(): any;
+}
+
+class CoreTemplateVue2Config implements ICoreTemplate {
 
   private configData!: any;
 
@@ -18,12 +56,12 @@ class CoreTemplateVue3Config implements ICoreTemplate {
 	 *
 	 * @static
 	 */
-	public static getInstance(): CoreTemplateVue3Config {
-		if (!CoreTemplateVue3Config.instance) {
-			CoreTemplateVue3Config.instance = new CoreTemplateVue3Config();
+	public static getInstance(): CoreTemplateVue2Config {
+		if (!CoreTemplateVue2Config.instance) {
+			CoreTemplateVue2Config.instance = new CoreTemplateVue2Config();
 		}
 
-		return CoreTemplateVue3Config.instance;
+		return CoreTemplateVue2Config.instance;
 	}
 
   /**
@@ -31,7 +69,7 @@ class CoreTemplateVue3Config implements ICoreTemplate {
    *
    * @returns {Array<IParsedSourceData>}
    *
-   * @memberOf CoreTemplateVue3Config
+   * @memberOf CoreTemplateVue2Config
    */
   public getParsedConfigData(): Array<IParsedSourceData> {
     return this.parsedConfigData;
@@ -42,7 +80,7 @@ class CoreTemplateVue3Config implements ICoreTemplate {
    *
    * @param {Array<IParsedSourceData>} v
    *
-   * @memberOf CoreTemplateVue3Config
+   * @memberOf CoreTemplateVue2Config
    */
   public setParsedConfigData(v: Array<IParsedSourceData>): void {
     this.parsedConfigData = v;
@@ -53,9 +91,9 @@ class CoreTemplateVue3Config implements ICoreTemplate {
    *
    * @param {any} configData
    *
-   * @memberOf CoreTemplateVue3Config
+   * @memberOf CoreTemplateVue2Config
    */
-  public setConfig(configData: any) {
+  public setConfig(configData: any): void {
     this.configData = configData;
   }
 
@@ -64,7 +102,7 @@ class CoreTemplateVue3Config implements ICoreTemplate {
    *
    * @returns {*}
    *
-   * @memberOf CoreTemplateVue3Config
+   * @memberOf CoreTemplateVue2Config
    */
   public getConfig(): any {
     if (!this.configData) {
@@ -74,6 +112,7 @@ class CoreTemplateVue3Config implements ICoreTemplate {
       import ListIcon from '@/assets/assets-slide-list.svg';
       import FormIcon from '@/assets/assets-slide-form.svg';
       import DetailIcon from '@/assets/assets-slide-detail.svg';
+
 
       export default [
         {
@@ -223,7 +262,7 @@ class CoreTemplateVue3Config implements ICoreTemplate {
     return this.configData;
   }
 
-	private static instance: CoreTemplateVue3Config;
+	private static instance: CoreTemplateVue2Config;
 }
 
-export default CoreTemplateVue3Config.getInstance();
+export default CoreTemplateVue2Config.getInstance();

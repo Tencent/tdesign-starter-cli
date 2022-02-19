@@ -1,6 +1,6 @@
 import { CoreOptionsFilterForVue2 } from "./CoreOptionsFilterForVue2";
-import { ICoreTemplate } from "./CoreTemplateVue2Config";
-import coreTemplateVue3Config from "./CoreTemplateVue3Config";
+import { ICoreTemplate } from "../core-template/CoreTemplateVue2Config";
+import coreTemplateVue3Config from "../core-template/CoreTemplateVue3Config";
 
 /**
  * 过滤器 VUE3
