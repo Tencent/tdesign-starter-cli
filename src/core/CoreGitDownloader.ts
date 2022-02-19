@@ -5,6 +5,7 @@ import chalk from 'chalk';
 import path from 'path';
 import { SupportedTemplate, templates } from './CoreTemplate';
 import { CoreOptionsFilterForVue2, IOptionsFilter } from './CoreOptionsFilterForVue2';
+import { CoreOptionsFilterForVue3 } from './CoreOptionsFilterForVue3';
 import del from 'del';
 import rimraf from 'rimraf';
 
@@ -34,9 +35,27 @@ export class CoreGitDownloader {
     let optionsFilter!: IOptionsFilter;
     switch (options.type) {
       case 'vue2':
-          // 选择包括模块：
+        // 选择包括模块 VUE2：
         // eslint-disable-next-line no-case-declarations
         optionsFilter = new CoreOptionsFilterForVue2();
+        if (finalOptions.selectSource !== 'all') {
+          // finalOptions.seletTypes;
+          // 选择包括模块：排除不用内容
+          // console.log('finalOptions.seletTypes==', finalOptions.seletTypes);
+          await optionsFilter.excludeModules(options, finalOptions);
+          // console.log('finalOptions.excludeModules==', finalOptions.seletTypes);
+
+          // 生成特定路由配置
+          await optionsFilter.generateModulesRoute(options, finalOptions);
+          // console.log('finalOptions.generateModulesRoute==', finalOptions.seletTypes);
+        }
+
+        break;
+
+      case 'vue3':
+        // 选择包括模块 VUE3：
+        // eslint-disable-next-line no-case-declarations
+        optionsFilter = new CoreOptionsFilterForVue3();
         if (finalOptions.selectSource !== 'all') {
           // finalOptions.seletTypes;
           // 选择包括模块：排除不用内容
