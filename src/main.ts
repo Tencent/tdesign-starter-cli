@@ -28,29 +28,30 @@ program.parse(process.argv);
  */
 async function onProgramCallBack(template: any, options: any, command: any) {
   // console.log("template==", template);
-  const creator: any = new TdesignStarterCLI();
-  const initResult = await creator.init();
-  console.log('initResult==', initResult);
+  const starterCLI: TdesignStarterCLI = new TdesignStarterCLI();
+  await starterCLI.init();
+  // console.log('initResult==', initResult);
 
   switch(template) {
     case 'vue':
     case 'vue2':
       // 生成VUE默认模板
       // eslint-disable-next-line no-case-declarations
-      await creator.initBySelect(template);
+      await starterCLI.initBySelect(template);
       break;
       // 生成VUE3默认模板
     case 'vue3':
+    case 'vue-next':
        // eslint-disable-next-line no-case-declarations
-       await creator.initBySelect(template);
+       await starterCLI.initBySelect(template);
       break;
       // 生成REACT模板
-    // case 'react':
-    //   await initResult.initBySelect(template);
-    //   break;
+      // case 'react':
+      //   await initResult.initBySelect(template);
+      //   break;
     default:
       // 选择分叉逻辑
-      await creator.initByDefatul();
+      await starterCLI.initByDefault();
       break;
   }
 }
