@@ -29,7 +29,8 @@ export class CoreGitDownloader {
 
     // 执行下载
     await this.executeDownload(spinner, downloadUrl, url, options, finalOptions);
-    // console.log('finalOptions.executeDownload==', finalOptions.seletTypes);
+    // console.log('finalOptions.executeDownload==', options);
+    // console.log('finalOptions.executeDownload==', finalOptions);
 
     // 写入后依据用户选择内容，清除部份内容
     let optionsFilter!: IOptionsFilter;
@@ -95,9 +96,18 @@ export class CoreGitDownloader {
    */
   public async clearTestFolder() {
     try {
-      const dir = path.join(`${process.env.PWD}`, 'test');
-      // console.log(`start deleted!`, dir);
+      let dir = path.join(`${process.env.PWD}`, 'test');
       await rimraf.sync(dir);
+
+      dir = path.join(`${process.env.PWD}`, 'TDesign Vue2 Starter');
+      await rimraf.sync(dir);
+
+       dir = path.join(`${process.env.PWD}`, 'TDesign Vue3 Starter');
+      await rimraf.sync(dir);
+
+      dir = path.join(`${process.env.PWD}`, 'TDesign React Starter');
+      await rimraf.sync(dir);
+
       // console.log(`${dir} is deleted!`);
     } catch (error) {
       console.log(`deleted! error`, error);
@@ -113,9 +123,10 @@ export class CoreGitDownloader {
    *
    * @memberOf CoreGitDownloader
    */
-  private executeBuildSuccess(spinner: any, options: any) {
+  private executeBuildSuccess(spinner: any, options: { type: SupportedTemplate, name: string, description: string }) {
     console.log();
-    spinner.succeed(chalk.green('构建成功！'));
+    spinner.succeed(chalk.green('✌️ 构建成功！'));
+    // console.log('options.name====', options.name);
     const packagePath = path.join(options.name, 'package.json');
     try {
       const packageContent = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
@@ -142,15 +153,18 @@ export class CoreGitDownloader {
       console.log('write file error==', error);
     }
 
+    const { description } = templates[`${options.type || 'vue2'}`];
     console.log();
-    console.log(chalk.green('👏 初始化项目完成！👏'));
+    console.log(chalk.green(`😊✌️ 初始化 ${description} 项目完成！`));
     console.log();
-    console.log(chalk.blue('命令提示：'));
-    console.log(chalk.blue(`  # 进入项目`));
+    console.log(chalk.blue('请运行以下命令启动工程：'));
+    console.log(chalk.blue(`  # 1.进入项目`));
     console.log(chalk.blue(`  $ cd ./${options.name}`));
-    console.log(chalk.blue(`  # 安装依赖`));
+    console.log(chalk.blue(' '));
+    console.log(chalk.blue(`  # 2.安装依赖`));
     console.log(chalk.blue(`  $ npm install`));
-    console.log(chalk.blue(`  # 运行`));
+    console.log(chalk.blue(' '));
+    console.log(chalk.blue(`  # 3.运行`));
     console.log(chalk.blue(`  $ npm run dev`));
     console.log();
   }

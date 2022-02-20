@@ -33,3 +33,6 @@ package-lock.json
 src/config/ConfigDev.ts
 /test
 /bin/*
+TDesign Vue2 Starter
+TDesign Vue3 Starter
+TDesign React Starter

@@ -58,10 +58,12 @@ export class TdesignStarterCLI {
    */
 	public async initBySelect(selectValue: string) {
     const templateSource: any = templates;
-    const { routerData }: any = templateSource[`${selectValue || 'vue2'}`];
+    const { description }: any = templateSource[`${selectValue || 'vue2'}`];
+
+    // console.log('routerData..', description);
 
     // 1.基本配置数据获取
-		const answer: any = { type: selectValue, name: routerData.description, description: `A ${routerData.description} project.` };
+		const answer: any = { type: selectValue, name: description, description: `A ${description} project.` };
 
     // 2.依据基本配置载下配置文件路由模板
     const finalAnswer = {selectSource: 'all'};
