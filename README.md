@@ -16,8 +16,9 @@
 ```shell
 npm install tdesign-starter-cli -g
 ```
+<br/>
 
-## 使用
+## 使用示例
 
 `tdesign-starter-cli`命令符为`td-starter`
 
@@ -42,17 +43,35 @@ npm run dev
 http://localhost:3001/
 ```
 
+<br/>
+
+## 支持命令行对照表
+| 命令 | 作用说明 |
+| ----------- | ----------- |
+| td-starter init | 初始化工程生成，可选择全部或部份 |
+| td-starter i | 初始化工程生成，可选择全部或部份，简化调用形式 |
+| td-starter i vue -y | 生成VUE2模板工程 |
+| td-starter i vue2 -y | 生成VUE2模板工程 |
+| td-starter i vue3 -y | 生成VUE3模板工程 |
+| td-starter i vue-next -y | 生成VUE3模板工程 |
+
+<br/>
+
 ## 本地开发
 
 `tdesign-starter-cli`命令符为`td-starter`
 
 ```sh
-# 临听，自动刷新代码改动
+# 监听，自动刷新代码改动
 npm run watch
 
 # 本地调试
 npm run dev
+
+# 注意Tips:
+后面紧接其它参数，例如: npm run dev i 代表初始化工程生成。详见 # 支持命令对照表
 ```
+<br/>
 
 ## 开源协议
 
