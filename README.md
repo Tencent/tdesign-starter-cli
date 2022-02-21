@@ -42,6 +42,18 @@ npm run dev
 http://localhost:3001/
 ```
 
+## 本地开发
+
+`tdesign-starter-cli`命令符为`td-starter`
+
+```sh
+# 临听，自动刷新代码改动
+npm run watch
+
+# 本地调试
+npm run dev
+```
+
 ## 开源协议
 
 TDesign 遵循 [MIT 协议](https://github.com/Tencent/tdesign-starter-cli/LICENSE)。

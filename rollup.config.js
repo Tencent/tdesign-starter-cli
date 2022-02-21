@@ -39,7 +39,8 @@ const defaultConfig = {
 			// 查找和打包node_modules中的第三方模块
 			customResolveOptions: {
 				moduleDirectory: 'src'
-			}
+			},
+			preferBuiltins: true,
 		}),
 		nodeResolve({
 			extensions,
