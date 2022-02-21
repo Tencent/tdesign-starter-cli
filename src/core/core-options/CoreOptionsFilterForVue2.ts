@@ -1,59 +1,58 @@
-import path from "path";
+import path from 'path';
 import fs from 'fs';
-import coreTemplateVue2Config from "../core-template/CoreTemplateVue2Config";
-import { IParsedSourceData } from "../CoreParsedConfig";
+import coreTemplateVue2Config from '../core-template/CoreTemplateVue2Config';
+import { IParsedSourceData } from '../CoreParsedConfig';
 import del from 'del';
-import { ICoreTemplate } from "../core-template/CoreTemplateVue2Config";
+import { ICoreTemplate } from '../core-template/CoreTemplateVue2Config';
 
 // ===================== 拆分内容 ==============================
 // 分离头部
 const headerFlag = 'export default ';
 
 // 特殊图标
-const listIconFlag = new RegExp(/icon: ListIcon/ig);
+const listIconFlag = new RegExp(/icon: ListIcon/gi);
 const listIconFlagRestore = 'icon: "ListIcon"';
 
-const formIconFlag = new RegExp(/icon: FormIcon/ig);
+const formIconFlag = new RegExp(/icon: FormIcon/gi);
 const formIconFlagRestore = 'icon: "FormIcon"';
 
-const detailIconFlag = new RegExp(/icon: DetailIcon/ig);
+const detailIconFlag = new RegExp(/icon: DetailIcon/gi);
 const detailIconFlagRestore = 'icon: "DetailIcon"';
 
 // layout falg
-const layoutFlag = new RegExp(/component: Layout/ig);
+const layoutFlag = new RegExp(/component: Layout/gi);
 const layoutFlagRestore = 'component: "Layout"';
 
 // import flag
-const importFlag = new RegExp(/\(\) => import\(/ig);
+const importFlag = new RegExp(/\(\) => import\(/gi);
 const importFlagRestore = '"() => import(';
 
 // import flag
-const extFlag = new RegExp(/\.vue'\)/ig);
+const extFlag = new RegExp(/\.vue'\)/gi);
 const extFlagRestore = `.vue')"`;
 // ===================== 拆分内容 ==============================
 
-
 // ===================== 还原内容 ==============================
 // 特殊图标
-const listIconFlagBack = new RegExp(/icon: "ListIcon"/ig);
+const listIconFlagBack = new RegExp(/icon: "ListIcon"/gi);
 const listIconFlagRestoreBack = 'icon: ListIcon';
 
-const formIconFlagBack = new RegExp(/icon: "FormIcon"/ig);
+const formIconFlagBack = new RegExp(/icon: "FormIcon"/gi);
 const formIconFlagRestoreBack = 'icon: FormIcon';
 
-const detailIconFlagBack = new RegExp(/icon: "DetailIcon"/ig);
+const detailIconFlagBack = new RegExp(/icon: "DetailIcon"/gi);
 const detailIconFlagRestoreBack = 'icon: DetailIcon';
 
 // layout falg
-const layoutFlagBack = new RegExp(/component: "Layout"/ig);
+const layoutFlagBack = new RegExp(/component: "Layout"/gi);
 const layoutFlagRestoreBack = 'component: Layout';
 
 // import flag
-const importFlagBack = new RegExp(/"\(\)/ig);
+const importFlagBack = new RegExp(/"\(\)/gi);
 const importFlagRestoreBack = '()';
 
 // import flag
-const extFlagBack = new RegExp(/\.vue'\)"/ig);
+const extFlagBack = new RegExp(/\.vue'\)"/gi);
 const extFlagRestoreBack = `.vue')`;
 // ===================== 还原内容 ==============================
 
@@ -65,7 +64,7 @@ export interface IOptionsFilter {
    *
    * @memberOf IOptionsFilter
    */
-  clearUnusedDirectorys(options: any, finalOptions: any): Promise<any>;
+  clearUnusedDirectories(options: any, finalOptions: any): Promise<any>;
 
   /**
    * 排除模块
@@ -87,7 +86,7 @@ export interface IOptionsFilter {
    *
    * @memberOf IOptionsFilter
    */
-   generateModulesRoute(options: any, finalOptions: any): any;
+  generateModulesRoute(options: any, finalOptions: any): any;
 }
 
 /**
@@ -97,7 +96,6 @@ export interface IOptionsFilter {
  * @class CoreOptionsFilter
  */
 export class CoreOptionsFilterForVue2 implements IOptionsFilter {
-
   /**
    * 前部内容
    *
@@ -116,7 +114,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    * @memberOf CoreOptionsFilter
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public async clearUnusedDirectorys(options: any, finalOptions: any): Promise<any> {
+  public async clearUnusedDirectories(options: any, finalOptions: any): Promise<any> {
     const localPath = `${process.env.PWD}/${options.name}`;
     // console.log('options.name==', localPath);
 
@@ -125,7 +123,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
       await del(path.join(localPath, '.husky'));
       await del(path.join(localPath, '.vscode'));
     } catch (error) {
-      console.log('clearUnusedDirectorys..', error);
+      console.log('clearUnusedDirectories..', error);
     }
   }
 
@@ -148,8 +146,8 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilter
    */
-   public async excludeModules(options: any, finalOptions: any) {
-    // hole finalOptions.seletTypes
+  public async excludeModules(options: any, finalOptions: any) {
+    // hole finalOptions.selectTypes
     // 找出不在列表中的目录，即为需要排除内容
     const selectTypeList: Array<IParsedSourceData> = [];
 
@@ -162,7 +160,6 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
       if (!this.checkFileNeedtoKeep(elementParsedData.meta.title, finalOptions)) {
         selectTypeList.push(elementParsedData);
       }
-
     }
 
     // 执行删除
@@ -180,7 +177,6 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     }
   }
 
-
   /**
    * 检测是否需要保留内容
    *
@@ -193,8 +189,8 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    */
   private checkFileNeedtoKeep(checkStr: any, finalOptions: any) {
     let findStr = '';
-     for (let index = 0; index < finalOptions.seletTypes.length; index++) {
-      const elementSelectTypeItem: string = finalOptions.seletTypes[index];
+    for (let index = 0; index < finalOptions.selectTypes.length; index++) {
+      const elementSelectTypeItem: string = finalOptions.selectTypes[index];
       if (checkStr === elementSelectTypeItem) {
         findStr = elementSelectTypeItem;
         break;
@@ -214,7 +210,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    * @memberOf CoreOptionsFilter
    */
   public checkNeedToExclude(elementSelectTypeItem: string): IParsedSourceData {
-    let parsedSourceData: IParsedSourceData = {isInExcludeList: false};
+    let parsedSourceData: IParsedSourceData = { isInExcludeList: false };
 
     const parsedConfigData = this.getConfigTemplateInstanceData().getParsedConfigData();
     for (let index = 0; index < parsedConfigData.length; index++) {
@@ -225,7 +221,6 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
         parsedSourceData.isInExcludeList = true;
         break;
       }
-
     }
 
     return parsedSourceData;
@@ -283,33 +278,33 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
       configDataContent = configDataContent.replace(extFlag, extFlagRestore);
 
       // 所有句柄加上"
-      configDataContent = configDataContent.replace(/path:/ig, '"path":');
-      configDataContent = configDataContent.replace(/name:/ig, '"name":');
-      configDataContent = configDataContent.replace(/component:/ig, '"component":');
-      configDataContent = configDataContent.replace(/redirect:/ig, '"redirect":');
-      configDataContent = configDataContent.replace(/meta:/ig, '"meta":');
-      configDataContent = configDataContent.replace(/title:/ig, '"title":');
-      configDataContent = configDataContent.replace(/icon:/ig, '"icon":');
-      configDataContent = configDataContent.replace(/children:/ig, '"children":');
+      configDataContent = configDataContent.replace(/path:/gi, '"path":');
+      configDataContent = configDataContent.replace(/name:/gi, '"name":');
+      configDataContent = configDataContent.replace(/component:/gi, '"component":');
+      configDataContent = configDataContent.replace(/redirect:/gi, '"redirect":');
+      configDataContent = configDataContent.replace(/meta:/gi, '"meta":');
+      configDataContent = configDataContent.replace(/title:/gi, '"title":');
+      configDataContent = configDataContent.replace(/icon:/gi, '"icon":');
+      configDataContent = configDataContent.replace(/children:/gi, '"children":');
 
       // 去除引号
-      configDataContent = configDataContent.replace(/'/ig, '"');
+      configDataContent = configDataContent.replace(/'/gi, '"');
 
       // 还原特殊引号
-      configDataContent = configDataContent.replace(/"@\/pages/ig, "'@/pages");
-      configDataContent = configDataContent.replace(/index.vue"/ig, "index.vue'");
+      configDataContent = configDataContent.replace(/"@\/pages/gi, "'@/pages");
+      configDataContent = configDataContent.replace(/index.vue"/gi, "index.vue'");
 
-      configDataContent = configDataContent.replace(/ +/ig, '');
-      configDataContent = configDataContent.replace(/[\r\n]/ig, '');
+      configDataContent = configDataContent.replace(/ +/gi, '');
+      configDataContent = configDataContent.replace(/[\r\n]/gi, '');
 
       // 清除临时内容
-      configDataContent = configDataContent.replace(/],/ig, "]");
-      configDataContent = configDataContent.replace(/];/ig, "]");
-      configDataContent = configDataContent.replace(/},},{/ig, "}},{");
-      configDataContent = configDataContent.replace(/},]},{/ig, "}]},{");
-      configDataContent = configDataContent.replace(/]},]/ig, "]}]");
-      configDataContent = configDataContent.replace(/},}]},{/ig, "}}]},{");
-      configDataContent = configDataContent.replace(/},},]}]/ig, "}}]}]");
+      configDataContent = configDataContent.replace(/],/gi, ']');
+      configDataContent = configDataContent.replace(/];/gi, ']');
+      configDataContent = configDataContent.replace(/},},{/gi, '}},{');
+      configDataContent = configDataContent.replace(/},]},{/gi, '}]},{');
+      configDataContent = configDataContent.replace(/]},]/gi, ']}]');
+      configDataContent = configDataContent.replace(/},}]},{/gi, '}}]},{');
+      configDataContent = configDataContent.replace(/},},]}]/gi, '}}]}]');
 
       try {
         configDataContent = JSON.parse(configDataContent);
@@ -333,19 +328,19 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    * @memberOf CoreOptionsFilter
    */
   private restoreSourceModulesRouterData(sourceModulesData: string, options: any, finalOptions: any) {
-     // 找出不在列表中的目录，即为需要排除内容
-     const keepedTypeList: Array<IParsedSourceData> = [];
-     // 找出需要保留的
-     for (let index = 0; index < finalOptions.seletTypes.length; index++) {
-       const elementSelectTypeItem: string = finalOptions.seletTypes[index];
-       const addToExcludeItem: IParsedSourceData = this.checkNeedToExclude(elementSelectTypeItem);
+    // 找出不在列表中的目录，即为需要排除内容
+    const keepedTypeList: Array<IParsedSourceData> = [];
+    // 找出需要保留的
+    for (let index = 0; index < finalOptions.selectTypes.length; index++) {
+      const elementSelectTypeItem: string = finalOptions.selectTypes[index];
+      const addToExcludeItem: IParsedSourceData = this.checkNeedToExclude(elementSelectTypeItem);
 
-       if (!addToExcludeItem.isInExcludeList) {
-         keepedTypeList.push(addToExcludeItem);
-       }
-     }
+      if (!addToExcludeItem.isInExcludeList) {
+        keepedTypeList.push(addToExcludeItem);
+      }
+    }
 
-     return keepedTypeList;
+    return keepedTypeList;
   }
 
   /**
@@ -392,7 +387,6 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
       if (!this.checkFileNeedtoKeep(elementParsedData.meta.title, finalOptions)) {
         selectTypeList.push(elementParsedData);
       }
-
     }
 
     // console.log('selectTypeList..==', selectTypeList);
@@ -401,9 +395,9 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     // 添加需要添加的
     for (let index = 0; index < sourceModulesData.length; index++) {
       const elementSourceItem = sourceModulesData[index];
-     if (this.needToKepItem(elementSourceItem, selectTypeList)) {
-      saveedList.push(elementSourceItem);
-     }
+      if (this.needToKepItem(elementSourceItem, selectTypeList)) {
+        saveedList.push(elementSourceItem);
+      }
     }
     // console.log('saveedList..==', saveedList);
 
@@ -418,7 +412,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
       const elementKeepedTypeItem: IParsedSourceData = selectTypeList[indexKeepedTypeItem];
 
       if (elementSourceItem.meta.title === elementKeepedTypeItem.meta.title) {
-        isKeep = false
+        isKeep = false;
         break;
       }
     }
@@ -446,11 +440,11 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     configDataContent = configDataContent.replace(layoutFlagBack, layoutFlagRestoreBack);
     configDataContent = configDataContent.replace(importFlagBack, importFlagRestoreBack);
     configDataContent = configDataContent.replace(extFlagBack, extFlagRestoreBack);
-    configDataContent = configDataContent.replace(/"component":"\(/ig, '"component":(');
-    configDataContent = configDataContent.replace(/"Layout"/ig, 'Layout');
-    configDataContent = configDataContent.replace(/"ListIcon"/ig, 'ListIcon');
-    configDataContent = configDataContent.replace(/"FormIcon"/ig, 'FormIcon');
-    configDataContent = configDataContent.replace(/"DetailIcon"/ig, 'DetailIcon');
+    configDataContent = configDataContent.replace(/"component":"\(/gi, '"component":(');
+    configDataContent = configDataContent.replace(/"Layout"/gi, 'Layout');
+    configDataContent = configDataContent.replace(/"ListIcon"/gi, 'ListIcon');
+    configDataContent = configDataContent.replace(/"FormIcon"/gi, 'FormIcon');
+    configDataContent = configDataContent.replace(/"DetailIcon"/gi, 'DetailIcon');
     configDataContent = configDataContent.replace(/.vue"\)"/gi, '.vue")');
 
     // console.log('replace content..', configDataContent);
@@ -461,7 +455,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     // 生成文件
     const elementPath = `${options.name}/src/`;
     try {
-      fs.writeFileSync(path.join(elementPath,'router/modules/components.ts'), saveFileContent);
+      fs.writeFileSync(path.join(elementPath, 'router/modules/components.ts'), saveFileContent);
     } catch (error) {
       console.log('saveRouterFilter..', error);
     }
@@ -484,11 +478,13 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     let InvalidFs = 0;
     let InvalidBs = 0;
     // eslint-disable-next-line no-cond-assign
-    while(exec = re.exec(jsonStr)) { // 找{},:
+    while ((exec = re.exec(jsonStr))) {
+      // 找{},:
       const frontToCurrent = exec.input.substr(0, exec.index + 1); // 匹配开头到当前匹配字符之间的字符串
-      if (frontToCurrent.replace(/\\"/g, "").replace(/[^"]/g, "").length%2 != 0) { // 测试当前字符到开头"的数量，为双数则被判定为目标对象
-        if(exec[0] === '{') InvalidFs++;
-        else if(exec[0] === '}') InvalidBs++;
+      if (frontToCurrent.replace(/\\"/g, '').replace(/[^"]/g, '').length % 2 != 0) {
+        // 测试当前字符到开头"的数量，为双数则被判定为目标对象
+        if (exec[0] === '{') InvalidFs++;
+        else if (exec[0] === '}') InvalidBs++;
         continue; // 不是目标对象，手动跳过
       }
       // eslint-disable-next-line no-useless-escape
@@ -498,16 +494,16 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
       const indentationTimes = keyTimesF - keyTimesB; // 根据{个数计算缩进
 
       if (exec[0] === '{') {
-        jsonStr = jsonStr.slice(0,exec.index + 1) + '\n' + '\t'.repeat(indentationTimes) + jsonStr.slice(exec.index + 1); // 将缩进加入字符串
-      } else if(exec[0] === '}') {
-        jsonStr = jsonStr.slice(0,exec.index) + '\n' + '\t'.repeat(indentationTimes) + jsonStr.slice(exec.index) // 将缩进加入字符串
+        jsonStr = jsonStr.slice(0, exec.index + 1) + '\n' + '\t'.repeat(indentationTimes) + jsonStr.slice(exec.index + 1); // 将缩进加入字符串
+      } else if (exec[0] === '}') {
+        jsonStr = jsonStr.slice(0, exec.index) + '\n' + '\t'.repeat(indentationTimes) + jsonStr.slice(exec.index); // 将缩进加入字符串
         re.exec(jsonStr); // 在查找目标前面插入字符串会回退本次查找，所以手动跳过本次查找
-      } else  if(exec[0] === ',') {
-        jsonStr = jsonStr.slice(0,exec.index + 1) + '\n' + '\t'.repeat(indentationTimes) + jsonStr.slice(exec.index + 1)
+      } else if (exec[0] === ',') {
+        jsonStr = jsonStr.slice(0, exec.index + 1) + '\n' + '\t'.repeat(indentationTimes) + jsonStr.slice(exec.index + 1);
       } else if (exec[0] === ':') {
-        jsonStr = jsonStr.slice(0,exec.index + 1) + ' ' + jsonStr.slice(exec.index + 1)
+        jsonStr = jsonStr.slice(0, exec.index + 1) + ' ' + jsonStr.slice(exec.index + 1);
       } else {
-        console.log(`匹配到了非法${exec[0]}`)
+        console.log(`匹配到了非法${exec[0]}`);
       }
     }
     return jsonStr === null ? 'Invalid value' : jsonStr;
@@ -522,14 +518,14 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilterForVue2
    */
-private trimJson(jsonStr: string): string {
-  try {
+  private trimJson(jsonStr: string): string {
+    try {
       jsonStr = jsonStr.replace(/'/g, '"');
       jsonStr = JSON.stringify(JSON.parse(jsonStr));
-  } catch (error) {
+    } catch (error) {
       // 转换失败错误提示
       // console.error('json format error...', error);
+    }
+    return jsonStr;
   }
-  return jsonStr;
-}
 }

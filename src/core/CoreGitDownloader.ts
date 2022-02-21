@@ -14,22 +14,18 @@ export class CoreGitDownloader {
    * 下载工程目录，依据配置选择是否需要筛选不需要目录
    * @returns 命令行数组
    */
-  public async syncDownload(options: { type: SupportedTemplate, name: string, description: string }, finalOptions: any) {
-    // console.log(finalOptions);
+  public async syncDownload(options: { type: SupportedTemplate; name: string; description: string }, finalOptions: any) {
     console.log();
     console.log(chalk.green('👉  开始构建，请稍侯...'));
     console.log();
     const spinner = ora('正在构建模板...').start();
     const { downloadUrl, url } = templates[`${options.type || 'vue2'}`];
-    // console.log('finalOptions.start building==', finalOptions.seletTypes);
 
     // 清除测试目录
     await this.clearTestFolder();
-    // console.log('finalOptions.clearTestFolder==', finalOptions.seletTypes);
 
     // 执行下载
-    await this.executeDownload(spinner, downloadUrl, url, options, finalOptions);
-    // console.log('finalOptions.executeDownload==', finalOptions.seletTypes);
+    await this.executeDownload(spinner, downloadUrl, url, options);
 
     // 写入后依据用户选择内容，清除部份内容
     let optionsFilter!: IOptionsFilter;
@@ -39,15 +35,11 @@ export class CoreGitDownloader {
         // eslint-disable-next-line no-case-declarations
         optionsFilter = new CoreOptionsFilterForVue2();
         if (finalOptions.selectSource !== 'all') {
-          // finalOptions.seletTypes;
           // 选择包括模块：排除不用内容
-          // console.log('finalOptions.seletTypes==', finalOptions.seletTypes);
           await optionsFilter.excludeModules(options, finalOptions);
-          // console.log('finalOptions.excludeModules==', finalOptions.seletTypes);
 
           // 生成特定路由配置
           await optionsFilter.generateModulesRoute(options, finalOptions);
-          // console.log('finalOptions.generateModulesRoute==', finalOptions.seletTypes);
         }
 
         break;
@@ -57,31 +49,26 @@ export class CoreGitDownloader {
         // eslint-disable-next-line no-case-declarations
         optionsFilter = new CoreOptionsFilterForVue3();
         if (finalOptions.selectSource !== 'all') {
-          // finalOptions.seletTypes;
+          // finalOptions.selectTypes;
           // 选择包括模块：排除不用内容
-          // console.log('finalOptions.seletTypes==', finalOptions.seletTypes);
           await optionsFilter.excludeModules(options, finalOptions);
-          // console.log('finalOptions.excludeModules==', finalOptions.seletTypes);
 
           // 生成特定路由配置
           await optionsFilter.generateModulesRoute(options, finalOptions);
-          // console.log('finalOptions.generateModulesRoute==', finalOptions.seletTypes);
         }
 
         break;
       // case other...
-        default:
-          break;
+      default:
+        break;
     }
 
     if (optionsFilter) {
-        // 增加选择范围
-        // 去除生成目录内容 .github  .husky .vscode
-        // 添加原来的内容给下载目录选择
-        await optionsFilter.clearUnusedDirectorys(options, finalOptions);
-        // console.log('del started download ===');
+      // 增加选择范围
+      // 去除生成目录内容 .github  .husky .vscode
+      // 添加原来的内容给下载目录选择
+      await optionsFilter.clearUnusedDirectories(options, finalOptions);
     }
-    // console.log('started download ===');
 
     // 执行成功相关操作
     this.executeBuildSuccess(spinner, options);
@@ -96,9 +83,7 @@ export class CoreGitDownloader {
   public async clearTestFolder() {
     try {
       const dir = path.join(`${process.env.PWD}`, 'test');
-      // console.log(`start deleted!`, dir);
       await rimraf.sync(dir);
-      // console.log(`${dir} is deleted!`);
     } catch (error) {
       console.log(`deleted! error`, error);
     }
@@ -123,15 +108,6 @@ export class CoreGitDownloader {
       packageContent.description = options.description;
 
       // 去掉预装husky,因为不存在.git
-      // 解决错误:
-      // .git can't be found (see https://git.io/Jc3F9)
-      // npm ERR! code ELIFECYCLE
-      // npm ERR! errno 1
-      // npm ERR! test@0.1.0 prepare: `husky install`
-      // npm ERR! Exit status 1
-      // npm ERR!
-      // npm ERR! Failed at the test@0.1.0 prepare script.
-      // npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
       packageContent.scripts.prepare = "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || is-ci || husky install";
 
       // 写入配置
@@ -164,8 +140,8 @@ export class CoreGitDownloader {
    *
    * @memberOf CoreGitDownloader
    */
-  private executeDownload(spinner: any, downloadUrl: string, url: string, options: { type: SupportedTemplate, name: string, description: string }, finalOptions: any) {
-    return new Promise((resolve, reject) => {
+  private executeDownload(spinner: any, downloadUrl: string, url: string, options: { type: SupportedTemplate; name: string; description: string }) {
+    return new Promise((resolve) => {
       download(downloadUrl, options.name, { clone: false }, async (err: Error) => {
         if (err) {
           spinner.fail(chalk.red('❗错误：下载模板失败'));

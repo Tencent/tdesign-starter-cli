@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 
-export class CoreInquier {
+export class CoreInquirer {
   /**
    * 交互命令
    * @returns 命令行数组

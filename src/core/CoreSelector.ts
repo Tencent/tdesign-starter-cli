@@ -22,21 +22,18 @@ export class CoreSelector {
    *
    * @memberOf CoreSelector
    */
-  public async interactonsSelect(options: { type: SupportedTemplate, name: string, description: string }) {
+  public async interactonsSelect(options: { type: SupportedTemplate; name: string; description: string }) {
     const { routerData } = templates[`${options.type || 'vue2'}`];
     const questions: Array<any> = this.generateStartQuestions();
     const result = await inquirer.prompt(questions);
 
-    // console.log('result.==', result);
     if (result.selectSource !== 'all') {
       // 现自定义选择下载
       if (options.type === 'vue2') {
         // ==================== VUE2模板选择
-        // console.log('download.==', routerData);
 
         // 下载模板config
         const downloadConfigSource = await this.downloadConfigData(routerData);
-        // console.log('downloadConfigSource.==', downloadConfigSource);
 
         // 解析VUE2配置文件
         const parsedConfigData = this.parseConfigSourceVue2(downloadConfigSource);
@@ -52,14 +49,11 @@ export class CoreSelector {
         const resultChoice = await inquirer.prompt(questionsChoice);
 
         return resultChoice;
-
-      } else if(options.type === 'vue3') {
+      } else if (options.type === 'vue3') {
         // ======================== VUE3模板选择
-        // console.log('download. vue3==', routerData);
 
         // 下载模板config
         const downloadConfigSource = await this.downloadConfigData(routerData);
-        // console.log('downloadConfigSource vue3.==', downloadConfigSource);
 
         // 解析VUE3配置文件
         const parsedConfigData = this.parseConfigSourceVue3(downloadConfigSource);
@@ -140,11 +134,11 @@ export class CoreSelector {
     return [
       {
         type: 'checkbox',
-        name: 'seletTypes',
+        name: 'selectTypes',
         message: '选择您需要生成的模块内容',
-        choices: choiceList,
+        choices: choiceList
       }
-    ]
+    ];
   }
 
   /**
@@ -181,12 +175,9 @@ export class CoreSelector {
   public parseConfigSourceVue2(downloadConfigSource: string): any {
     // 存,存时空值判断
     if (downloadConfigSource) {
-      // console.log('generateSourceModulesData==', downloadConfigSource);
       coreTemplateVue2Config.setConfig(downloadConfigSource);
     }
     const parsedResultData = new CoreOptionsFilterForVue2().generateSourceModulesData({}, {}, downloadConfigSource);
-
-    // console.log('生成的内容==', parsedResultData);
 
     // 解析这种内容数据
     const parsedConfigDataTemp = [];
@@ -195,7 +186,7 @@ export class CoreSelector {
       parsedConfigDataTemp.push({
         path: elementResultData.path,
         name: elementResultData.name,
-        meta: elementResultData.meta,
+        meta: elementResultData.meta
       });
     }
 
@@ -215,12 +206,9 @@ export class CoreSelector {
   public parseConfigSourceVue3(downloadConfigSource: string): any {
     // 存,存时空值判断
     if (downloadConfigSource) {
-      // console.log('generateSourceModulesData==vue3', downloadConfigSource);
       coreTemplateVue3Config.setConfig(downloadConfigSource);
     }
     const parsedResultData = new CoreOptionsFilterForVue3().generateSourceModulesData({}, {}, downloadConfigSource);
-
-    // console.log('生成的内容==vue3', parsedResultData);
 
     // 解析这种内容数据
     const parsedConfigDataTemp = [];
@@ -229,11 +217,9 @@ export class CoreSelector {
       parsedConfigDataTemp.push({
         path: elementResultData.path,
         name: elementResultData.name,
-        meta: elementResultData.meta,
+        meta: elementResultData.meta
       });
     }
-
-    // console.log('解析后的的内容== vue3', parsedConfigDataTemp);
 
     return parsedConfigDataTemp;
   }
