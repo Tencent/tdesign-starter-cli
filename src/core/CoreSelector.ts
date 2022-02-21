@@ -22,7 +22,7 @@ export class CoreSelector {
    *
    * @memberOf CoreSelector
    */
-  public async interactonsSelect(options: { type: SupportedTemplate; name: string; description: string }) {
+  public async interactionsSelect(options: { type: SupportedTemplate; name: string; description: string }) {
     const { routerData } = templates[`${options.type || 'vue2'}`];
     const questions: Array<any> = this.generateStartQuestions();
     const result = await inquirer.prompt(questions);

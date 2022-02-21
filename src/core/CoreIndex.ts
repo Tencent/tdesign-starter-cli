@@ -2,7 +2,6 @@ import chalk from 'chalk';
 import clear from 'clear';
 import ora from 'ora';
 import figlet from 'figlet';
-import { directoryExists } from '../utils/UtilsIndex';
 import { CoreSelector } from './CoreSelector';
 import { CoreInquirer } from './CoreInquirer';
 import { CoreGitDownloader } from './CoreGitDownloader';
@@ -18,28 +17,19 @@ class Creator {
 
     const spinner = ora('👉 检查构建环境...').start();
 
-    // 判断是否存在.git文件
-    // let isSkip = false;
-    // if (process.argv.length === 4) {
-    //   if (process.argv[3] === 's') {
-    //     isSkip = true;
+    spinner.succeed(chalk.green('构建环境正常！'));
+    console.log();
+    this.init();
+    // this.checkReadAndWriteRights(process.env.PWD || '').then((canBeWrite) => {
+    //   if (!canBeWrite) {
+    //     console.log(chalk.red('❗错误：请检测当前用户是否有充足的目录读写权限!'));
+    //     process.exit();
+    //   } else {
+    //     spinner.succeed(chalk.green('构建环境正常！'));
+    //     console.log();
+    //     this.init();
     //   }
-    // }
-    // if (!isSkip && directoryExists('.git')) {
-    // 	console.log(chalk.red('❗错误：当前目录已经存在有本地仓库，请重新选择其它空目录!'));
-    // 	// log.error('已经存在一个本地仓库!');
-    // 	process.exit();
-    // }
-    this.checkReadAndWriteRights(process.env.PWD || '').then((canBeWrite) => {
-      if (!canBeWrite) {
-        console.log(chalk.red('❗错误：请检测当前用户是否有充足的目录读写权限!'));
-        process.exit();
-      } else {
-        spinner.succeed(chalk.green('构建环境正常！'));
-        console.log();
-        this.init();
-      }
-    });
+    // });
   }
 
   /**
@@ -53,7 +43,7 @@ class Creator {
     const answer = await new CoreInquirer().interactionsHandler();
 
     // 2.依据基本配置载下配置文件路由模板
-    const finalAnswer = await new CoreSelector().interactonsSelect(answer);
+    const finalAnswer = await new CoreSelector().interactionsSelect(answer);
 
     // 3.构建配置保存
     await new CoreGitDownloader().syncDownload(answer, finalAnswer);
