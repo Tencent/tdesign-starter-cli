@@ -31,7 +31,8 @@ export class CoreInquirer {
         message: '选择模板类型：',
         choices: [
           { name: '【Vue2】模板', value: 'vue2' },
-          { name: '【Vue3】模板', value: 'vue3' }
+          { name: '【Vue3】模板', value: 'vue3' },
+          { name: '【React】模板', value: 'react' }
         ],
         default: 'vue2' // 默认值为列表项编号，起始为 0
       }

@@ -6,7 +6,6 @@ import path from 'path';
 import { SupportedTemplate, templates } from './CoreTemplate';
 import { CoreOptionsFilterForVue2, IOptionsFilter } from './core-options/CoreOptionsFilterForVue2';
 import { CoreOptionsFilterForVue3 } from './core-options/CoreOptionsFilterForVue3';
-import del from 'del';
 import rimraf from 'rimraf';
 
 export class CoreGitDownloader {
@@ -58,6 +57,7 @@ export class CoreGitDownloader {
         }
 
         break;
+      // TODO: react
       // case other...
       default:
         break;

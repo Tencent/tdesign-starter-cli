@@ -25,7 +25,14 @@ export class CoreSelector {
   public async interactionsSelect(options: { type: SupportedTemplate; name: string; description: string }) {
     const { routerData } = templates[`${options.type || 'vue2'}`];
     const questions: Array<any> = this.generateStartQuestions();
-    const result = await inquirer.prompt(questions);
+    let result;
+
+    // TODO: react支持选模块下载
+    if (options.type !== 'react') {
+      result = await inquirer.prompt(questions);
+    } else {
+      result = { selectSource: 'all' };
+    }
 
     if (result.selectSource !== 'all') {
       // 现自定义选择下载

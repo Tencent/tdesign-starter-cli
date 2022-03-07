@@ -1,4 +1,4 @@
-export type SupportedTemplate = 'vue2' | 'vue3';
+export type SupportedTemplate = 'vue2' | 'vue3' | 'react';
 export interface ITemplateContent {
   url: string;
   description: string;
@@ -22,5 +22,11 @@ export const templates: Record<SupportedTemplate, ITemplateContent> = {
     downloadUrl: 'direct:https://tencent-tdesign.coding.net/p/starter/d/tdesign-vue-next-starter/git/archive/develop/?download=true',
     routerData:
       'https://tencent-tdesign.coding.net/p/starter/d/tdesign-vue-next-starter/git/raw/develop/src/router/modules/components.ts?download=true'
+  },
+  react: {
+    url: 'https://github.com/Tencent/tdesign-react-starter.git',
+    description: 'TDesign Vue3 Starter',
+    downloadUrl: 'direct:https://tencent-tdesign.coding.net/p/starter/d/tdesign-react-starter/git/archive/develop/?download=true',
+    routerData: 'https://tencent-tdesign.coding.net/p/starter/d/tdesign-react-starter/git/raw/develop/src/router/modules/components.ts?download=true'
   }
 };
