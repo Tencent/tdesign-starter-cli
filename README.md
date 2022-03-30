@@ -36,7 +36,11 @@ cd [项目名称]
 npm install
 
 # 运行
-npm run dev
+# Mac OS or Windows
+npm run dev 
+
+# Linux
+npm run dev:linux
 
 # 启动访问
 http://localhost:3001/
