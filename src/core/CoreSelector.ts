@@ -3,9 +3,11 @@ import { SupportedTemplate, templates } from './CoreTemplate';
 import axios from 'axios';
 import { CoreOptionsFilterForVue2 } from './core-options/CoreOptionsFilterForVue2';
 import { CoreOptionsFilterForVue3 } from './core-options/CoreOptionsFilterForVue3';
+import { CoreOptionsFilterForReact } from './core-options/CoreOptionsFilterForReact';
 import { IParsedSourceData } from './CoreParsedConfig';
 import coreTemplateVue2Config from './core-template/CoreTemplateVue2Config';
 import coreTemplateVue3Config from './core-template/CoreTemplateVue3Config';
+import coreTemplateReactConfig from './core-template/CoreTemplateReactConfig';
 
 /**
  * 分段内容选择
@@ -25,14 +27,7 @@ export class CoreSelector {
   public async interactionsSelect(options: { type: SupportedTemplate; name: string; description: string }) {
     const { routerData } = templates[`${options.type || 'vue2'}`];
     const questions: Array<any> = this.generateStartQuestions();
-    let result;
-
-    // TODO: react支持选模块下载
-    if (options.type !== 'react') {
-      result = await inquirer.prompt(questions);
-    } else {
-      result = { selectSource: 'all' };
-    }
+    const result = await inquirer.prompt(questions);
 
     if (result.selectSource !== 'all') {
       // 现自定义选择下载
@@ -76,9 +71,28 @@ export class CoreSelector {
         const resultChoice = await inquirer.prompt(questionsChoice);
 
         return resultChoice;
+      } else if (options.type === 'react') {
+        // ======================== REACT模板选择
+
+        // 下载模板config
+        const downloadConfigSource = await this.downloadConfigData(routerData);
+
+        // 解析REACT配置文件
+        const parsedConfigData = this.parseConfigSourceReact(downloadConfigSource);
+        coreTemplateReactConfig.setParsedConfigData(parsedConfigData);
+
+        // 生成用户默认选中数据
+        const choiceList: Array<string> = this.generateDefaultChoiceData(parsedConfigData);
+
+        // 让用户选择
+        const questionsChoice: Array<any> = this.generateChoiceList(choiceList);
+
+        // 弹提示
+        const resultChoice = await inquirer.prompt(questionsChoice);
+
+        return resultChoice;
       } else {
-        // TODO:
-        console.log('TODO:待实现其它');
+        // 默认
         return result;
       }
     } else {
@@ -88,26 +102,32 @@ export class CoreSelector {
   }
 
   /**
-   * 开始语句
+   * 解析下载配置文件REACT
    *
-   * @returns {any[]}
+   * @param {string} routerData
+   * @returns {string}
    *
    * @memberOf CoreSelector
    */
-  private generateStartQuestions(): any[] {
-    return [
-      {
-        // 是否选择全部
-        type: 'list',
-        name: 'selectSource',
-        message: '选择包含模块：',
-        choices: [
-          { name: '全部', value: 'all' },
-          { name: '自定义选择', value: 'custom' }
-        ],
-        default: 'all'
-      }
-    ];
+   public parseConfigSourceReact(downloadConfigSource: string): any {
+    // 存,存时空值判断
+    if (downloadConfigSource) {
+      coreTemplateReactConfig.setConfig(downloadConfigSource);
+    }
+    const parsedResultData = new CoreOptionsFilterForReact().generateSourceModulesData({}, {}, downloadConfigSource);
+
+    // 解析这种内容数据
+    const parsedConfigDataTemp = [];
+    for (let index = 0; index < parsedResultData.length; index++) {
+      const elementResultData: any = parsedResultData[index];
+      parsedConfigDataTemp.push({
+        path: elementResultData.path,
+        name: elementResultData.name,
+        meta: elementResultData.meta
+      });
+    }
+
+    return parsedConfigDataTemp;
   }
 
   /**
@@ -144,6 +164,29 @@ export class CoreSelector {
         name: 'selectTypes',
         message: '选择您需要生成的模块内容',
         choices: choiceList
+      }
+    ];
+  }
+
+  /**
+   * 开始语句
+   *
+   * @returns {any[]}
+   *
+   * @memberOf CoreSelector
+   */
+  private generateStartQuestions(): any[] {
+    return [
+      {
+        // 是否选择全部
+        type: 'list',
+        name: 'selectSource',
+        message: '选择包含模块：',
+        choices: [
+          { name: '全部', value: 'all' },
+          { name: '自定义选择', value: 'custom' }
+        ],
+        default: 'all'
       }
     ];
   }

@@ -103,7 +103,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    * @type {string}
    * @memberOf CoreOptionsFilter
    */
-  private headerFlagFirst = '';
+  protected headerFlagFirst = '';
 
   /**
    * 去除生成目录内容 .github  .husky .vscode
@@ -187,7 +187,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilterForVue2
    */
-  private checkFileNeedtoKeep(checkStr: any, finalOptions: any) {
+   protected checkFileNeedtoKeep(checkStr: any, finalOptions: any) {
     let findStr = '';
     for (let index = 0; index < finalOptions.selectTypes.length; index++) {
       const elementSelectTypeItem: string = finalOptions.selectTypes[index];
@@ -327,7 +327,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilter
    */
-  private restoreSourceModulesRouterData(sourceModulesData: string, options: any, finalOptions: any) {
+   protected restoreSourceModulesRouterData(sourceModulesData: string, options: any, finalOptions: any) {
     // 找出不在列表中的目录，即为需要排除内容
     const keepedTypeList: Array<IParsedSourceData> = [];
     // 找出需要保留的
@@ -353,7 +353,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilter
    */
-  private async excludeSouceDeleteFolder(keepedTypeList: Array<IParsedSourceData>, options: any, finalOptions: any) {
+   protected async excludeSouceDeleteFolder(keepedTypeList: Array<IParsedSourceData>, options: any, finalOptions: any) {
     for (const iterator of keepedTypeList) {
       const element: IParsedSourceData = iterator;
       const elementPath = `${process.env.PWD}/${options.name}/src/pages`;
@@ -373,7 +373,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilter
    */
-  private async generateExcludeRouter(deletedTypeList: Array<IParsedSourceData>, sourceModulesData: any, options: any, finalOptions: any) {
+   protected async generateExcludeRouter(deletedTypeList: Array<IParsedSourceData>, sourceModulesData: any, options: any, finalOptions: any) {
     // 找出不在列表中的目录，即为需要排除内容
     const saveedList = [];
     const selectTypeList: Array<IParsedSourceData> = [];
@@ -405,7 +405,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
   }
 
   /** 检测是否需要保留 */
-  private needToKepItem(elementSourceItem: any, selectTypeList: any): boolean {
+  protected needToKepItem(elementSourceItem: any, selectTypeList: any): boolean {
     let isKeep = true;
 
     for (let indexKeepedTypeItem = 0; indexKeepedTypeItem < selectTypeList.length; indexKeepedTypeItem++) {
@@ -429,7 +429,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilter
    */
-  private saveRouterFilter(saveedList: any[], configData: string, options: any, finalOptions: any) {
+   protected saveRouterFilter(saveedList: any[], configData: string, options: any, finalOptions: any) {
     let configDataContent = JSON.stringify(saveedList);
     configDataContent = this.formatJson(configDataContent);
 
@@ -470,7 +470,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilterForVue2
    */
-  private formatJson(jsonStr: string): string {
+   protected formatJson(jsonStr: string): string {
     jsonStr = this.trimJson(jsonStr);
 
     const re = new RegExp('\\{|\\}|,|:', 'g'); // 匹配格式化后的json中的{},:
@@ -518,7 +518,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilterForVue2
    */
-  private trimJson(jsonStr: string): string {
+   protected trimJson(jsonStr: string): string {
     try {
       jsonStr = jsonStr.replace(/'/g, '"');
       jsonStr = JSON.stringify(JSON.parse(jsonStr));

@@ -27,6 +27,6 @@ export const templates: Record<SupportedTemplate, ITemplateContent> = {
     url: 'https://github.com/Tencent/tdesign-react-starter.git',
     description: 'TDesign Vue3 Starter',
     downloadUrl: 'direct:https://tencent-tdesign.coding.net/p/starter/d/tdesign-react-starter/git/archive/develop/?download=true',
-    routerData: 'https://tencent-tdesign.coding.net/p/starter/d/tdesign-react-starter/git/raw/develop/src/router/modules/components.ts?download=true'
+    routerData: 'https://tencent-tdesign.coding.net/p/starter/d/tdesign-react-starter/git/raw/develop/src/router/index.ts?download=true'
   }
 };
