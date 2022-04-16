@@ -1,6 +1,9 @@
 import { CoreOptionsFilterForVue2 } from "./CoreOptionsFilterForVue2";
 import { ICoreTemplate } from "../core-template/CoreTemplateVue2Config";
 import coreTemplateReactConfig from "../core-template/CoreTemplateReactConfig";
+import { IParsedSourceData } from "../CoreParsedConfig";
+import path from "path";
+import del from "del";
 
 /**
  * 过滤器 React
@@ -12,69 +15,37 @@ export class CoreOptionsFilterForReact extends CoreOptionsFilterForVue2 {
 
   /** override 生成原始配置 */
   public generateSourceModulesData(options: any, finalOptions: any, downloadConfigSource: any = '') {
-    // 取单例配置
-    let configDataVue = this.getConfigTemplateInstanceData().getConfig();
-
-    if (downloadConfigSource) {
-      configDataVue = downloadConfigSource;
-    }
-
-    // 转换正确JSON
-    console.log('generateModulesRoute==', configDataVue);
-    console.log('options==', options);
-    console.log('finalOptions==', finalOptions);
-    console.log('downloadConfigSource==', downloadConfigSource);
-
-    // const configDataVueList = configDataVue.split(headerFlag);
-    const configDataContent = '';
-    // if (configDataVueList && configDataVueList.length) {
-    //   configDataContent = configDataVueList[1];
-    //   this.headerFlagFirst = configDataVueList[0];
-
-    //   // 特殊标识
-    //   configDataContent = configDataContent.replace(listIconFlag, listIconFlagRestore);
-    //   configDataContent = configDataContent.replace(formIconFlag, formIconFlagRestore);
-    //   configDataContent = configDataContent.replace(detailIconFlag, detailIconFlagRestore);
-    //   configDataContent = configDataContent.replace(layoutFlag, layoutFlagRestore);
-    //   configDataContent = configDataContent.replace(importFlag, importFlagRestore);
-    //   configDataContent = configDataContent.replace(extFlag, extFlagRestore);
-
-    //   // 所有句柄加上"
-    //   configDataContent = configDataContent.replace(/path:/gi, '"path":');
-    //   configDataContent = configDataContent.replace(/name:/gi, '"name":');
-    //   configDataContent = configDataContent.replace(/component:/gi, '"component":');
-    //   configDataContent = configDataContent.replace(/redirect:/gi, '"redirect":');
-    //   configDataContent = configDataContent.replace(/meta:/gi, '"meta":');
-    //   configDataContent = configDataContent.replace(/title:/gi, '"title":');
-    //   configDataContent = configDataContent.replace(/icon:/gi, '"icon":');
-    //   configDataContent = configDataContent.replace(/children:/gi, '"children":');
-
-    //   // 去除引号
-    //   configDataContent = configDataContent.replace(/'/gi, '"');
-
-    //   // 还原特殊引号
-    //   configDataContent = configDataContent.replace(/"@\/pages/gi, "'@/pages");
-    //   configDataContent = configDataContent.replace(/index.vue"/gi, "index.vue'");
-
-    //   configDataContent = configDataContent.replace(/ +/gi, '');
-    //   configDataContent = configDataContent.replace(/[\r\n]/gi, '');
-
-    //   // 清除临时内容
-    //   configDataContent = configDataContent.replace(/],/gi, ']');
-    //   configDataContent = configDataContent.replace(/];/gi, ']');
-    //   configDataContent = configDataContent.replace(/},},{/gi, '}},{');
-    //   configDataContent = configDataContent.replace(/},]},{/gi, '}]},{');
-    //   configDataContent = configDataContent.replace(/]},]/gi, ']}]');
-    //   configDataContent = configDataContent.replace(/},}]},{/gi, '}}]},{');
-    //   configDataContent = configDataContent.replace(/},},]}]/gi, '}}]}]');
-
-    //   try {
-    //     configDataContent = JSON.parse(configDataContent);
-    //     // console.log('Generate parsed content..', configDataContent);
-    //   } catch (error) {
-    //     console.log('Generate json parse error..', error);
-    //   }
-    // }
+    // REACT比较特殊，使用配置驱动
+    const configDataContent: any = [
+      {
+        path: '/detail',
+        name: 'detail',
+        meta: {
+          title: '详情页'
+        }
+      },
+      {
+        path: '/form',
+        name: 'form',
+        meta: {
+          title: '表单类'
+        }
+      },
+      {
+        path: '/list',
+        name: 'list',
+        meta: {
+          title: '列表页'
+        }
+      },
+      {
+        path: '/result',
+        name: 'result',
+        meta: {
+          title: '结果页'
+        }
+      }
+    ];
 
     return configDataContent;
   }
@@ -104,6 +75,45 @@ export class CoreOptionsFilterForReact extends CoreOptionsFilterForVue2 {
     // // 保存路由配置文件
     // this.saveRouterFilter(saveedList, this.getConfigTemplateInstanceData().getConfig(), options, finalOptions);
   }
+
+   /**
+   * 排除不用内容
+   *
+   * @param {{ type: SupportedTemplate, name: string, description: string }} options
+   * @param {*} finalOptions
+   *
+   * @memberOf CoreOptionsFilter
+   */
+    public async excludeModules(options: any, finalOptions: any) {
+      // hole finalOptions.selectTypes
+      // 找出不在列表中的目录，即为需要排除内容
+      const selectTypeList: Array<IParsedSourceData> = [];
+
+      // 找出需要排除的
+      const parsedConfigData = this.getConfigTemplateInstanceData().getParsedConfigData();
+      for (let index = 0; index < parsedConfigData.length; index++) {
+        const elementParsedData: IParsedSourceData = parsedConfigData[index];
+
+        // 为空时代表要排除，返回值代表需要保留
+        if (!this.checkFileNeedtoKeep(elementParsedData.meta.title, finalOptions)) {
+          selectTypeList.push(elementParsedData);
+        }
+      }
+
+      // 执行删除
+      for (const iterator of selectTypeList) {
+        const needToExcludeItem: IParsedSourceData = iterator;
+        try {
+          if (needToExcludeItem.name) {
+            const delPath = path.join(`${process.env.PWD}/${options.name}`, `./src/pages/${needToExcludeItem.name}`);
+            await del(delPath);
+            // console.log('delPath==', delPath);
+          }
+        } catch (error) {
+          console.log('excludeModules error..', error);
+        }
+      }
+    }
 
   /**
    * override 获取当前解析器配置
