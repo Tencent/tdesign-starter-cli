@@ -34,6 +34,16 @@ cd [项目名称]
 
 # 安装依赖
 npm install
+
+# 运行
+# Mac OS or Windows
+npm run dev 
+
+# Linux
+npm run dev:linux
+
+# 启动访问
+http://localhost:3001/
 ```
 
 ## 本地开发
