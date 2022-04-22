@@ -6,6 +6,7 @@ import path from 'path';
 import { SupportedTemplate, templates } from './CoreTemplate';
 import { CoreOptionsFilterForVue2, IOptionsFilter } from './core-options/CoreOptionsFilterForVue2';
 import { CoreOptionsFilterForVue3 } from './core-options/CoreOptionsFilterForVue3';
+import { CoreOptionsFilterForReact } from './core-options/CoreOptionsFilterForReact';
 import rimraf from 'rimraf';
 
 export class CoreGitDownloader {
@@ -57,8 +58,20 @@ export class CoreGitDownloader {
         }
 
         break;
-      // TODO: react
-      // case other...
+      case 'react':
+        // 选择包括模块 React：
+        // eslint-disable-next-line no-case-declarations
+        optionsFilter = new CoreOptionsFilterForReact();
+        if (finalOptions.selectSource !== 'all') {
+          // finalOptions.selectTypes;
+          // 选择包括模块：排除不用内容
+          await optionsFilter.excludeModules(options, finalOptions);
+
+          // 生成特定路由配置
+          await optionsFilter.generateModulesRoute(options, finalOptions);
+        }
+
+        break;
       default:
         break;
     }

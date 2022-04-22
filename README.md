@@ -54,8 +54,8 @@ http://localhost:3001/
 # 临听，自动刷新代码改动
 npm run watch
 
-# 本地调试
-npm run dev
+# 本地调试 init为模拟CLI初始化参数 
+npm run dev init
 ```
 
 ## 开源协议
