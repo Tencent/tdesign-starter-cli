@@ -10,6 +10,15 @@ import { ICoreTemplate } from '../core-template/CoreTemplateVue2Config';
 const headerFlag = 'export default ';
 
 // 特殊图标
+const layersIconFlag = new RegExp(/icon: LayersIcon/gi);
+const layersIconFlagRestore = 'icon: "LayersIcon"';
+
+const edit1IconFlag = new RegExp(/icon: Edit1Icon/gi);
+const edit1IconFlagRestore = 'icon: "Edit1Icon"';
+
+const viewModuleIconFlag = new RegExp(/icon: ViewModuleIcon/gi);
+const viewModuleIconFlagRestore = 'icon: "ViewModuleIcon"';
+
 const listIconFlag = new RegExp(/icon: ListIcon/gi);
 const listIconFlagRestore = 'icon: "ListIcon"';
 
@@ -34,6 +43,15 @@ const extFlagRestore = `.vue')"`;
 
 // ===================== 还原内容 ==============================
 // 特殊图标
+const layersIconFlagBack = new RegExp(/icon: "LayersIcon"/gi);
+const layersIconFlagRestoreBack = 'icon: LayersIcon';
+
+const edit1IconFlagBack = new RegExp(/icon: "Edit1Icon"/gi);
+const edit1IconFlagRestoreBack = 'icon: Edit1Icon';
+
+const viewModuleIconFlagBack = new RegExp(/icon: "ViewModuleIcon"/gi);
+const viewModuleIconFlagRestoreBack = 'icon: ViewModuleIcon';
+
 const listIconFlagBack = new RegExp(/icon: "ListIcon"/gi);
 const listIconFlagRestoreBack = 'icon: ListIcon';
 
@@ -252,71 +270,6 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     this.saveRouterFilter(saveedList, this.getConfigTemplateInstanceData().getConfig(), options, finalOptions);
   }
 
-  /** 生成原始配置 */
-  public generateSourceModulesData(options: any, finalOptions: any, downloadConfigSource: any = '') {
-    // 取单例配置
-    let configDataVue = this.getConfigTemplateInstanceData().getConfig();
-
-    if (downloadConfigSource) {
-      configDataVue = downloadConfigSource;
-    }
-
-    // 转换正确JSON
-    // console.log('generateModulesRoute==', configDataVue);
-    const configDataVueList = configDataVue.split(headerFlag);
-    let configDataContent = '';
-    if (configDataVueList && configDataVueList.length) {
-      configDataContent = configDataVueList[1];
-      this.headerFlagFirst = configDataVueList[0];
-
-      // 特殊标识
-      configDataContent = configDataContent.replace(listIconFlag, listIconFlagRestore);
-      configDataContent = configDataContent.replace(formIconFlag, formIconFlagRestore);
-      configDataContent = configDataContent.replace(detailIconFlag, detailIconFlagRestore);
-      configDataContent = configDataContent.replace(layoutFlag, layoutFlagRestore);
-      configDataContent = configDataContent.replace(importFlag, importFlagRestore);
-      configDataContent = configDataContent.replace(extFlag, extFlagRestore);
-
-      // 所有句柄加上"
-      configDataContent = configDataContent.replace(/path:/gi, '"path":');
-      configDataContent = configDataContent.replace(/name:/gi, '"name":');
-      configDataContent = configDataContent.replace(/component:/gi, '"component":');
-      configDataContent = configDataContent.replace(/redirect:/gi, '"redirect":');
-      configDataContent = configDataContent.replace(/meta:/gi, '"meta":');
-      configDataContent = configDataContent.replace(/title:/gi, '"title":');
-      configDataContent = configDataContent.replace(/icon:/gi, '"icon":');
-      configDataContent = configDataContent.replace(/children:/gi, '"children":');
-
-      // 去除引号
-      configDataContent = configDataContent.replace(/'/gi, '"');
-
-      // 还原特殊引号
-      configDataContent = configDataContent.replace(/"@\/pages/gi, "'@/pages");
-      configDataContent = configDataContent.replace(/index.vue"/gi, "index.vue'");
-
-      configDataContent = configDataContent.replace(/ +/gi, '');
-      configDataContent = configDataContent.replace(/[\r\n]/gi, '');
-
-      // 清除临时内容
-      configDataContent = configDataContent.replace(/],/gi, ']');
-      configDataContent = configDataContent.replace(/];/gi, ']');
-      configDataContent = configDataContent.replace(/},},{/gi, '}},{');
-      configDataContent = configDataContent.replace(/},]},{/gi, '}]},{');
-      configDataContent = configDataContent.replace(/]},]/gi, ']}]');
-      configDataContent = configDataContent.replace(/},}]},{/gi, '}}]},{');
-      configDataContent = configDataContent.replace(/},},]}]/gi, '}}]}]');
-
-      try {
-        configDataContent = JSON.parse(configDataContent);
-        // console.log('Generate parsed content..', configDataContent);
-      } catch (error) {
-        console.log('Generate json parse error..', error);
-      }
-    }
-
-    return configDataContent;
-  }
-
   /**
    * 还原排除目录后的路由配置
    *
@@ -420,8 +373,77 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     return isKeep;
   }
 
+  /** 生成原始配置-START */
+  public generateSourceModulesData(options: any, finalOptions: any, downloadConfigSource: any = '') {
+    // 取单例配置
+    let configDataVue = this.getConfigTemplateInstanceData().getConfig();
+
+    if (downloadConfigSource) {
+      configDataVue = downloadConfigSource;
+    }
+
+    // 转换正确JSON
+    // console.log('generateModulesRoute==', configDataVue);
+    const configDataVueList = configDataVue.split(headerFlag);
+    let configDataContent = '';
+    if (configDataVueList && configDataVueList.length) {
+      configDataContent = configDataVueList[1];
+      this.headerFlagFirst = configDataVueList[0];
+
+      // 特殊标识
+      configDataContent = configDataContent.replace(layersIconFlag, layersIconFlagRestore);
+      configDataContent = configDataContent.replace(edit1IconFlag, edit1IconFlagRestore);
+      configDataContent = configDataContent.replace(viewModuleIconFlag, viewModuleIconFlagRestore);
+
+      configDataContent = configDataContent.replace(listIconFlag, listIconFlagRestore);
+      configDataContent = configDataContent.replace(formIconFlag, formIconFlagRestore);
+      configDataContent = configDataContent.replace(detailIconFlag, detailIconFlagRestore);
+      configDataContent = configDataContent.replace(layoutFlag, layoutFlagRestore);
+      configDataContent = configDataContent.replace(importFlag, importFlagRestore);
+      configDataContent = configDataContent.replace(extFlag, extFlagRestore);
+
+      // 所有句柄加上"
+      configDataContent = configDataContent.replace(/path:/gi, '"path":');
+      configDataContent = configDataContent.replace(/name:/gi, '"name":');
+      configDataContent = configDataContent.replace(/component:/gi, '"component":');
+      configDataContent = configDataContent.replace(/redirect:/gi, '"redirect":');
+      configDataContent = configDataContent.replace(/meta:/gi, '"meta":');
+      configDataContent = configDataContent.replace(/title:/gi, '"title":');
+      configDataContent = configDataContent.replace(/icon:/gi, '"icon":');
+      configDataContent = configDataContent.replace(/children:/gi, '"children":');
+
+      // 去除引号
+      configDataContent = configDataContent.replace(/'/gi, '"');
+
+      // 还原特殊引号
+      configDataContent = configDataContent.replace(/"@\/pages/gi, "'@/pages");
+      configDataContent = configDataContent.replace(/index.vue"/gi, "index.vue'");
+
+      configDataContent = configDataContent.replace(/ +/gi, '');
+      configDataContent = configDataContent.replace(/[\r\n]/gi, '');
+
+      // 清除临时内容
+      configDataContent = configDataContent.replace(/],/gi, ']');
+      configDataContent = configDataContent.replace(/];/gi, ']');
+      configDataContent = configDataContent.replace(/},},{/gi, '}},{');
+      configDataContent = configDataContent.replace(/},]},{/gi, '}]},{');
+      configDataContent = configDataContent.replace(/]},]/gi, ']}]');
+      configDataContent = configDataContent.replace(/},}]},{/gi, '}}]},{');
+      configDataContent = configDataContent.replace(/},},]}]/gi, '}}]}]');
+
+      try {
+        // console.log('Generate parsed content..', configDataContent);
+        configDataContent = JSON.parse(configDataContent);
+      } catch (error) {
+        console.log('Generate json parse error..', error);
+      }
+    }
+
+    return configDataContent;
+  }
+
   /**
-   * 生成路由配置文件
+   * 生成路由配置文件-END
    *
    * @private
    * @param {any[]} saveedList
@@ -434,6 +456,10 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     configDataContent = this.formatJson(configDataContent);
 
     // 还原标识
+    configDataContent = configDataContent.replace(layersIconFlagBack, layersIconFlagRestoreBack);
+    configDataContent = configDataContent.replace(edit1IconFlagBack, edit1IconFlagRestoreBack);
+    configDataContent = configDataContent.replace(viewModuleIconFlagBack, viewModuleIconFlagRestoreBack);
+
     configDataContent = configDataContent.replace(listIconFlagBack, listIconFlagRestoreBack);
     configDataContent = configDataContent.replace(formIconFlagBack, formIconFlagRestoreBack);
     configDataContent = configDataContent.replace(detailIconFlagBack, detailIconFlagRestoreBack);
