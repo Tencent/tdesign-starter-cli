@@ -1,4 +1,4 @@
-export type SupportedTemplate = 'vue2' | 'vue3' | 'react';
+export type SupportedTemplate = 'vue2' | 'vue3' | 'react' | any;
 export interface ITemplateContent {
   url: string;
   description: string;
