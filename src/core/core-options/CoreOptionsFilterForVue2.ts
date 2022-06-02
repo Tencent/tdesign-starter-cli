@@ -473,6 +473,14 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     configDataContent = configDataContent.replace(/"DetailIcon"/gi, 'DetailIcon');
     configDataContent = configDataContent.replace(/.vue"\)"/gi, '.vue")');
 
+    // 移除引号
+    configDataContent = configDataContent.replace('"LayersIcon"', 'LayersIcon');
+    configDataContent = configDataContent.replace('"Edit1Icon"', 'Edit1Icon');
+    configDataContent = configDataContent.replace('"ViewModuleIcon"', 'ViewModuleIcon');
+    configDataContent = configDataContent.replace('"ListIcon"', 'ListIcon');
+    configDataContent = configDataContent.replace('"FormIcon"', 'FormIcon');
+    configDataContent = configDataContent.replace('"DetailIcon"', 'DetailIcon');
+
     // console.log('replace content..', configDataContent);
 
     // 保留内容 {..export default...}
