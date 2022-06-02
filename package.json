@@ -1,113 +1,113 @@
 {
-    "name": "tdesign-starter-cli",
-    "version": "0.2.2",
-    "description": "CLI tool for TDesign Starter project",
-    "main": "./src/main.ts",
-    "lib": "./bin/index.js",
-    "bin": {
-        "td-starter": "./bin/index.js"
-    },
-    "typings": "./src/types/index.d.ts",
-    "scripts": {
-        "watch": "rollup -w -c",
-        "test": "npm run dev",
-        "dev": "node ./bin/index.js",
-        "build": "rollup -c ",
-        "lint": "eslint 'src/**/*.{js,ts}'"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/tencent/tdesign-starter-cli.git"
-    },
-    "license": "MIT",
-    "devDependencies": {
-        "@babel/cli": "7.14.3",
-        "@babel/core": "7.14.3",
-        "@babel/plugin-proposal-class-properties": "7.13.0",
-        "@babel/plugin-proposal-export-default-from": "7.12.13",
-        "@babel/plugin-transform-runtime": "7.14.3",
-        "@babel/polyfill": "7.12.1",
-        "@babel/preset-env": "7.14.2",
-        "@babel/preset-typescript": "7.13.0",
-        "@rollup/plugin-json": "4.1.0",
-        "@rollup/plugin-node-resolve": "13.0.0",
-        "@typescript-eslint/eslint-plugin": "4.25.0",
-        "@typescript-eslint/parser": "4.25.0",
-        "babel-core": "6.26.3",
-        "babel-eslint": "10.1.0",
-        "babel-loader": "8.2.2",
-        "eslint": "7.27.0",
-        "npm-run-all": "4.1.5",
-        "prettier": "2.3.0",
-        "rollup": "2.49.0",
-        "rollup-plugin-babel": "4.4.0",
-        "rollup-plugin-commonjs": "10.1.0",
-        "rollup-plugin-node-resolve": "5.2.0",
-        "rollup-plugin-terser": "7.0.2",
-        "rollup-plugin-typescript": "1.0.1",
-        "rollup-plugin-typescript2": "0.30.0",
-        "rollup-plugin-uglify": "6.0.4"
-    },
-    "dependencies": {
-        "@babel/runtime": "7.14.0",
-        "@octokit/auth-basic": "1.4.8",
-        "@octokit/rest": "18.5.3",
-        "@types/chalk": "2.2.0",
-        "@types/commander": "2.12.2",
-        "@types/consola": "2.2.5",
-        "@types/fs-extra": "9.0.11",
-        "@types/inquirer": "7.3.1",
-        "@types/node": "15.6.1",
-        "@types/rimraf": "3.0.2",
-        "@types/shelljs": "0.8.8",
-        "@types/update-notifier": "5.0.0",
-        "axios": "0.25.0",
-        "chalk": "4.1.1",
-        "clear": "0.1.0",
-        "clui": "0.3.6",
-        "commander": "7.2.0",
-        "configstore": "6.0.0",
-        "consola": "2.15.3",
-        "del": "6.0.0",
-        "download-git-repo": "3.0.2",
-        "figlet": "1.5.0",
-        "git-clone": "0.1.0",
-        "handlebars": "4.7.7",
-        "husky": "6.0.0",
-        "inquirer": "8.1.0",
-        "is-ci": "3.0.0",
-        "lint-staged": "11.0.0",
-        "lodash": "4.17.21",
-        "lodash.merge": "4.6.2",
-        "minimist": "1.2.5",
-        "nodemon": "2.0.7",
-        "ora": "5.4.0",
-        "pinst": "2.1.6",
-        "rimraf": "3.0.2",
-        "shelljs": "0.8.4",
-        "simple-git": "2.39.0",
-        "touch": "3.1.0",
-        "tracer": "1.1.4",
-        "tslib": "2.2.0",
-        "typescript": "4.2.4",
-        "update-notifier": "5.1.0"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
-    "lint-staged": {
-        "*./src/**/*.{js,ts,json,css,less,md}": [
-            "prettier --write",
-            "npm run lint"
-        ]
-    },
-    "files": [
-        "bin/*",
-        "dist/*",
-        "types/*",
-        "package.json",
-        "docs/*"
+   "name": "tdesign-starter-cli",
+  "version": "0.2.2",
+  "description": "CLI tool for TDesign Starter project",
+  "main": "./src/main.ts",
+  "lib": "./bin/index.js",
+  "bin": {
+    "td-starter": "./bin/index.js"
+  },
+  "typings": "./src/types/index.d.ts",
+  "scripts": {
+    "watch": "rollup -w -c",
+    "test": "npm run dev",
+    "dev": "node ./bin/index.js",
+    "build": "rollup -c ",
+    "lint": "eslint 'src/**/*.{js,ts}'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tencent/tdesign-starter-cli.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "7.14.3",
+    "@babel/core": "7.14.3",
+    "@babel/plugin-proposal-class-properties": "7.13.0",
+    "@babel/plugin-proposal-export-default-from": "7.12.13",
+    "@babel/plugin-transform-runtime": "7.14.3",
+    "@babel/polyfill": "7.12.1",
+    "@babel/preset-env": "7.14.2",
+    "@babel/preset-typescript": "7.13.0",
+    "@rollup/plugin-json": "4.1.0",
+    "@rollup/plugin-node-resolve": "13.0.0",
+    "@typescript-eslint/eslint-plugin": "4.25.0",
+    "@typescript-eslint/parser": "4.25.0",
+    "babel-core": "6.26.3",
+    "babel-eslint": "10.1.0",
+    "babel-loader": "8.2.2",
+    "eslint": "7.27.0",
+    "npm-run-all": "4.1.5",
+    "prettier": "2.3.0",
+    "rollup": "2.49.0",
+    "rollup-plugin-babel": "4.4.0",
+    "rollup-plugin-commonjs": "10.1.0",
+    "rollup-plugin-node-resolve": "5.2.0",
+    "rollup-plugin-terser": "7.0.2",
+    "rollup-plugin-typescript": "1.0.1",
+    "rollup-plugin-typescript2": "0.30.0",
+    "rollup-plugin-uglify": "6.0.4"
+  },
+  "dependencies": {
+    "@babel/runtime": "7.14.0",
+    "@octokit/auth-basic": "1.4.8",
+    "@octokit/rest": "18.5.3",
+    "@types/chalk": "2.2.0",
+    "@types/commander": "2.12.2",
+    "@types/consola": "2.2.5",
+    "@types/fs-extra": "9.0.11",
+    "@types/inquirer": "7.3.1",
+    "@types/node": "15.6.1",
+    "@types/rimraf": "3.0.2",
+    "@types/shelljs": "0.8.8",
+    "@types/update-notifier": "5.0.0",
+    "axios": "0.25.0",
+    "chalk": "4.1.1",
+    "clear": "0.1.0",
+    "clui": "0.3.6",
+    "commander": "7.2.0",
+    "configstore": "6.0.0",
+    "consola": "2.15.3",
+    "del": "6.0.0",
+    "download-git-repo": "3.0.2",
+    "figlet": "1.5.0",
+    "git-clone": "0.1.0",
+    "handlebars": "4.7.7",
+    "husky": "6.0.0",
+    "inquirer": "8.1.0",
+    "is-ci": "3.0.0",
+    "lint-staged": "11.0.0",
+    "lodash": "4.17.21",
+    "lodash.merge": "4.6.2",
+    "minimist": "1.2.5",
+    "nodemon": "2.0.7",
+    "ora": "5.4.0",
+    "pinst": "2.1.6",
+    "rimraf": "3.0.2",
+    "shelljs": "0.8.4",
+    "simple-git": "2.39.0",
+    "touch": "3.1.0",
+    "tracer": "1.1.4",
+    "tslib": "2.2.0",
+    "typescript": "4.2.4",
+    "update-notifier": "5.1.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,json}": [
+      "prettier --write",
+      "npm run lint"
     ]
+  },
+  "files": [
+    "bin/*",
+    "dist/*",
+    "types/*",
+    "package.json",
+    "docs/*"
+  ]
 }
