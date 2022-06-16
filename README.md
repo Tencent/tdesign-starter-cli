@@ -9,6 +9,9 @@
   <a href="https://www.npmjs.com/package/tdesign-starter-cli">
     <img src="https://img.shields.io/npm/v/tdesign-starter-cli.svg?sanitize=true" alt="Version">
   </a>
+  <a href="https://www.npmjs.com/package/tdesign-starter-cli">
+    <img src="https://img.shields.io/npm/dm/tdesign-starter-cli" alt="Downloads">
+  </a>
 </p>
 
 ## 安装
