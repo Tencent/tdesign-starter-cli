@@ -483,8 +483,13 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
 
     // console.log('replace content..', configDataContent);
 
+    // 预处理前部信息
+    const headerFlagFirstList = this.headerFlagFirst.split(";");
+    const headerFlags = headerFlagFirstList.filter((headerFlag) => configDataContent.includes(headerFlag.split(" ")[1]));
+    headerFlags.push(headerFlagFirstList.slice(-1).toString());
+
     // 保留内容 {..export default...}
-    const saveFileContent = `${this.headerFlagFirst}${headerFlag}${configDataContent}`;
+    const saveFileContent = `${headerFlags.join(";")}${headerFlag}${configDataContent}`;
 
     // 生成文件
     const elementPath = `${options.name}/src/`;
