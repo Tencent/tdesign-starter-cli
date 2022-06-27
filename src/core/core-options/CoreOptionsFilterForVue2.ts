@@ -205,7 +205,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilterForVue2
    */
-   protected checkFileNeedtoKeep(checkStr: any, finalOptions: any) {
+  protected checkFileNeedtoKeep(checkStr: any, finalOptions: any) {
     let findStr = '';
     for (let index = 0; index < finalOptions.selectTypes.length; index++) {
       const elementSelectTypeItem: string = finalOptions.selectTypes[index];
@@ -280,7 +280,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilter
    */
-   protected restoreSourceModulesRouterData(sourceModulesData: string, options: any, finalOptions: any) {
+  protected restoreSourceModulesRouterData(sourceModulesData: string, options: any, finalOptions: any) {
     // 找出不在列表中的目录，即为需要排除内容
     const keepedTypeList: Array<IParsedSourceData> = [];
     // 找出需要保留的
@@ -306,7 +306,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilter
    */
-   protected async excludeSouceDeleteFolder(keepedTypeList: Array<IParsedSourceData>, options: any, finalOptions: any) {
+  protected async excludeSouceDeleteFolder(keepedTypeList: Array<IParsedSourceData>, options: any, finalOptions: any) {
     for (const iterator of keepedTypeList) {
       const element: IParsedSourceData = iterator;
       const elementPath = `${process.env.PWD}/${options.name}/src/pages`;
@@ -326,7 +326,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilter
    */
-   protected async generateExcludeRouter(deletedTypeList: Array<IParsedSourceData>, sourceModulesData: any, options: any, finalOptions: any) {
+  protected async generateExcludeRouter(deletedTypeList: Array<IParsedSourceData>, sourceModulesData: any, options: any, finalOptions: any) {
     // 找出不在列表中的目录，即为需要排除内容
     const saveedList = [];
     const selectTypeList: Array<IParsedSourceData> = [];
@@ -342,9 +342,6 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
       }
     }
 
-    // console.log('selectTypeList..==', selectTypeList);
-    // console.log('sourceModulesData..==', sourceModulesData);
-
     // 添加需要添加的
     for (let index = 0; index < sourceModulesData.length; index++) {
       const elementSourceItem = sourceModulesData[index];
@@ -352,7 +349,6 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
         saveedList.push(elementSourceItem);
       }
     }
-    // console.log('saveedList..==', saveedList);
 
     return saveedList;
   }
@@ -383,7 +379,6 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     }
 
     // 转换正确JSON
-    // console.log('generateModulesRoute==', configDataVue);
     const configDataVueList = configDataVue.split(headerFlag);
     let configDataContent = '';
     if (configDataVueList && configDataVueList.length) {
@@ -451,7 +446,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilter
    */
-   protected saveRouterFilter(saveedList: any[], configData: string, options: any, finalOptions: any) {
+  protected saveRouterFilter(saveedList: any[], configData: string, options: any, finalOptions: any) {
     let configDataContent = JSON.stringify(saveedList);
     configDataContent = this.formatJson(configDataContent);
 
@@ -481,15 +476,13 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     configDataContent = configDataContent.replace('"FormIcon"', 'FormIcon');
     configDataContent = configDataContent.replace('"DetailIcon"', 'DetailIcon');
 
-    // console.log('replace content..', configDataContent);
-
     // 预处理前部信息
-    const headerFlagFirstList = this.headerFlagFirst.split(";");
-    const headerFlags = headerFlagFirstList.filter((headerFlag) => configDataContent.includes(headerFlag.split(" ")[1]));
+    const headerFlagFirstList = this.headerFlagFirst.split(';');
+    const headerFlags = headerFlagFirstList.filter((headerFlag) => configDataContent.includes(headerFlag.split(' ')[1]));
     headerFlags.push(headerFlagFirstList.slice(-1).toString());
 
     // 保留内容 {..export default...}
-    const saveFileContent = `${headerFlags.join(";")}${headerFlag}${configDataContent}`;
+    const saveFileContent = `${headerFlags.join(';')}${headerFlag}${configDataContent}`;
 
     // 生成文件
     const elementPath = `${options.name}/src/`;
@@ -509,7 +502,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilterForVue2
    */
-   protected formatJson(jsonStr: string): string {
+  protected formatJson(jsonStr: string): string {
     jsonStr = this.trimJson(jsonStr);
 
     const re = new RegExp('\\{|\\}|,|:', 'g'); // 匹配格式化后的json中的{},:
@@ -557,7 +550,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilterForVue2
    */
-   protected trimJson(jsonStr: string): string {
+  protected trimJson(jsonStr: string): string {
     try {
       jsonStr = jsonStr.replace(/'/g, '"');
       jsonStr = JSON.stringify(JSON.parse(jsonStr));
