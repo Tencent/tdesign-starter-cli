@@ -1,6 +1,6 @@
 {
   "name": "tdesign-starter-cli",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "CLI tool for TDesign Starter project",
   "main": "./src/main.ts",
   "lib": "./bin/index.js",
