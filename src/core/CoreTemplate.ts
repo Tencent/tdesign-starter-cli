@@ -13,20 +13,19 @@ export const templates: Record<SupportedTemplate, ITemplateContent> = {
   vue2: {
     url: 'https://github.com/Tencent/tdesign-vue-starter.git',
     description: 'TDesign Vue2 Starter',
-    downloadUrl: 'direct:https://tencent-tdesign.coding.net/p/starter/d/tdesign-vue-starter/git/archive/develop/?download=true',
-    routerData: 'https://tencent-tdesign.coding.net/p/starter/d/tdesign-vue-starter/git/raw/develop/src/router/modules/components.ts?download=true'
+    downloadUrl: 'direct:https://service-5ds77c8c-1257786608.hk.apigw.tencentcs.com/release/tdesign-vue-starter?download=true',
+    routerData: 'https://service-5ds77c8c-1257786608.hk.apigw.tencentcs.com/release/vue-starter-router?download=true'
   },
   vue3: {
     url: 'https://github.com/Tencent/tdesign-vue-next-starter.git',
     description: 'TDesign Vue3 Starter',
-    downloadUrl: 'direct:https://tencent-tdesign.coding.net/p/starter/d/tdesign-vue-next-starter/git/archive/develop/?download=true',
-    routerData:
-      'https://tencent-tdesign.coding.net/p/starter/d/tdesign-vue-next-starter/git/raw/develop/src/router/modules/components.ts?download=true'
+    downloadUrl: 'direct:https://service-5ds77c8c-1257786608.hk.apigw.tencentcs.com/release/tdesign-vue-next-starter?download=true',
+    routerData: 'https://service-5ds77c8c-1257786608.hk.apigw.tencentcs.com/release/vue-next-starter-router?download=true'
   },
   react: {
     url: 'https://github.com/Tencent/tdesign-react-starter.git',
-    description: 'TDesign Vue3 Starter',
-    downloadUrl: 'direct:https://tencent-tdesign.coding.net/p/starter/d/tdesign-react-starter/git/archive/develop/?download=true',
-    routerData: 'https://tencent-tdesign.coding.net/p/starter/d/tdesign-react-starter/git/raw/develop/src/router/index.ts?download=true'
+    description: 'TDesign React Starter',
+    downloadUrl: 'direct:https://service-5ds77c8c-1257786608.hk.apigw.tencentcs.com/release/tdesign-react-starter?download=true',
+    routerData: 'https://service-5ds77c8c-1257786608.hk.apigw.tencentcs.com/release/react-starter-router?download=true'
   }
 };
