@@ -14,7 +14,7 @@ export class CoreGitDownloader {
    * 下载工程目录，依据配置选择是否需要筛选不需要目录
    * @returns 命令行数组
    */
-  public async syncDownload(options: { type: SupportedTemplate; name: string; description: string }, finalOptions: any) {
+  public async syncDownload(options: { type: SupportedTemplate; name: string; description: string }, finalOptions: any = {}) {
     console.log();
     console.log(chalk.green('👉  开始构建，请稍侯...'));
     console.log();
@@ -111,7 +111,7 @@ export class CoreGitDownloader {
    *
    * @memberOf CoreGitDownloader
    */
-  private executeBuildSuccess(spinner: any, options: any) {
+  protected executeBuildSuccess(spinner: any, options: any) {
     console.log();
     spinner.succeed(chalk.green('构建成功！'));
     const packagePath = path.join(options.name, 'package.json');
