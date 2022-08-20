@@ -52,8 +52,27 @@ const defaultConfig = {
             extensions
         }),
         copy({
-            targets: [
-                { src: 'template/**/*', dest: 'bin/template' }
+            targets: [{
+                    src: [
+                        'template/vue-starter/*',
+                        '!template/vue-starter/node_modules'
+                    ],
+                    dest: 'bin/template/vue-starter'
+                },
+                {
+                    src: [
+                        'template/vue-next-starter/*',
+                        '!template/vue-next-starter/node_modules'
+                    ],
+                    dest: 'bin/template/vue-next-starter'
+                },
+                {
+                    src: [
+                        'template/react-starter/*',
+                        '!template/react-starter/node_modules'
+                    ],
+                    dest: 'bin/template/react-starter'
+                }
             ],
             verbose: true
         })
