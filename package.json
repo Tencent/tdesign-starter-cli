@@ -85,6 +85,7 @@
         "ora": "5.4.0",
         "pinst": "2.1.6",
         "rimraf": "3.0.2",
+        "rollup-plugin-copy": "^3.4.0",
         "shelljs": "0.8.4",
         "simple-git": "2.39.0",
         "touch": "3.1.0",
