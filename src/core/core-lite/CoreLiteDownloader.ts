@@ -1,5 +1,10 @@
+import chalk from "chalk";
+import ora from "ora";
+import path from "path";
 import { CoreGitDownloader } from "../CoreGitDownloader";
 import { SupportedTemplate } from "../CoreTemplate";
+import fs from 'fs';
+import fse from'fs-extra';
 
 /**
  * 极简板本生成器
@@ -13,76 +18,59 @@ export class CoreLiteDownloader extends CoreGitDownloader {
    * 下载工程目录，依据配置选择是否需要筛选不需要目录
    * @returns 命令行数组
    */
-   public async syncDownload(options: { type: SupportedTemplate; name: string; description: string }, finalOptions: any = {}) {
+  public async syncDownload(options: { type: SupportedTemplate; name: string; description: string }, finalOptions: any = {}) {
+    // console.log('options==>', options);
     console.log();
     console.log(chalk.green('👉  开始构建，请稍侯...'));
     console.log();
     const spinner = ora('正在构建模板...').start();
-    const { downloadUrl, url } = templates[`${options.type || 'vue2'}`];
 
     // 清除测试目录
     await this.clearTestFolder();
 
-    // 执行下载
-    await this.executeDownload(spinner, downloadUrl, url, options);
-
-    // 写入后依据用户选择内容，清除部份内容
-    let optionsFilter!: IOptionsFilter;
-    switch (options.type) {
-      case 'vue2':
-        // 选择包括模块 VUE2：
-        // eslint-disable-next-line no-case-declarations
-        optionsFilter = new CoreOptionsFilterForVue2();
-        if (finalOptions.selectSource !== 'all') {
-          // 选择包括模块：排除不用内容
-          await optionsFilter.excludeModules(options, finalOptions);
-
-          // 生成特定路由配置
-          await optionsFilter.generateModulesRoute(options, finalOptions);
-        }
-
-        break;
-
-      case 'vue3':
-        // 选择包括模块 VUE3：
-        // eslint-disable-next-line no-case-declarations
-        optionsFilter = new CoreOptionsFilterForVue3();
-        if (finalOptions.selectSource !== 'all') {
-          // finalOptions.selectTypes;
-          // 选择包括模块：排除不用内容
-          await optionsFilter.excludeModules(options, finalOptions);
-
-          // 生成特定路由配置
-          await optionsFilter.generateModulesRoute(options, finalOptions);
-        }
-
-        break;
-      case 'react':
-        // 选择包括模块 React：
-        // eslint-disable-next-line no-case-declarations
-        optionsFilter = new CoreOptionsFilterForReact();
-        if (finalOptions.selectSource !== 'all') {
-          // finalOptions.selectTypes;
-          // 选择包括模块：排除不用内容
-          await optionsFilter.excludeModules(options, finalOptions);
-
-          // 生成特定路由配置
-          await optionsFilter.generateModulesRoute(options, finalOptions);
-        }
-
-        break;
-      default:
-        break;
-    }
-
-    if (optionsFilter) {
-      // 增加选择范围
-      // 去除生成目录内容 .github  .husky .vscode
-      // 添加原来的内容给下载目录选择
-      await optionsFilter.clearUnusedDirectories(options, finalOptions);
-    }
+    // console.log(options.type, options);
+    await this.copyTemplate(options);
 
     // 执行成功相关操作
     this.executeBuildSuccess(spinner, options);
   }
+
+  /**
+   * 复制模板
+   *
+   * @protected
+   * @param {{ type: SupportedTemplate; name: string; description: string; }} options
+   *
+   * @memberOf CoreLiteDownloader
+   */
+  protected async copyTemplate(options: { type: SupportedTemplate; name: string; description: string; }): Promise<any> {
+    return new Promise((resolve: any, reject: any): any => {
+      const srcDir = path.join(options.name, 'template');
+      // const destDir = `path/to/destination/directory`;
+      console.log(srcDir);
+      // // switch (options.type) {
+      //     //   case 'vue2':
+
+      //     //     break;
+      //     //   case 'vue3':
+
+      //     //     break;
+
+      //     //   default:
+      //     //     // react
+      //     //     break;
+      //     // }
+
+      // fse.copySync(srcDir, destDir, {
+      //   overwrite: true
+      // }, (err: any) => {
+      //   if (err) {
+      //     console.error(err);
+      //   } else {
+      //     console.log(chalk.green('👉  生成代码完毕...'));
+      //   }
+      // });
+    });
+  }
 }
+
