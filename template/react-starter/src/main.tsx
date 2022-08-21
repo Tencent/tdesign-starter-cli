@@ -14,7 +14,7 @@ const renderApp = () => {
       type="button"
       variant="base"
     >
-      确定
+      Welcome
     </Button>,
     document.getElementById('app'),
   );
