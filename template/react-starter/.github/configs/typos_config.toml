@@ -1,4 +1,0 @@
-files.extend-exclude = [
-  "package-lock.json",
-  "src/configs/color.ts"
-]
