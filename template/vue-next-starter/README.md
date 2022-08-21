@@ -17,7 +17,7 @@
 
 ### 项目简介
 
-TDesign Vue Next Starter 是一个基于 TDesign，使用 `Vue3`、`Vite2`、`Pinia`、`TypeScript` 开发，可进行个性化主题配置，旨在提供项目开箱即用的、配置式的中后台项目。
+TDesign Vue Next Starter 是一个基于 TDesign，使用 `Vue3`、`Vite2`、`Pinia`、`TypeScript` 开发，可进行个性化主题配置，旨在提供项目开箱即用的、配置式的初始项目。
 
 <p>
   ·
@@ -26,15 +26,6 @@ TDesign Vue Next Starter 是一个基于 TDesign，使用 `Vue3`、`Vite2`、`Pi
 </p>
 
 
-### 特性
-
-- 内置多种常用的中后台页面
-- 完善的目录结构
-- 完善的代码规范配置
-- 支持暗黑模式
-- 自定义主题颜色
-- 多种空间布局
-- 内置 Mock 数据方案
 
 ### 使用
 
