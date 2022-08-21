@@ -44,33 +44,27 @@ export class CoreLiteDownloader extends CoreGitDownloader {
    * @memberOf CoreLiteDownloader
    */
   protected async copyTemplate(options: { type: SupportedTemplate; name: string; description: string; }): Promise<any> {
-    return new Promise((resolve: any, reject: any): any => {
-      const srcDir = path.join(options.name, 'template');
-      // const destDir = `path/to/destination/directory`;
-      console.log(srcDir);
-      // // switch (options.type) {
-      //     //   case 'vue2':
+      let copyFolderName: string = 'vue-starter';
+      const destDir = path.join(`${process.env.PWD}`, options.name);
+      switch (options.type) {
+        case 'vue2':
+          copyFolderName = 'vue-starter';
+          break;
+        case 'vue3':
+          copyFolderName = 'vue-next-starter';
+          break;
+        case 'react':
+          copyFolderName = 'react-next-starter';
+          break;
+      }
+      const srcDir = path.join(__dirname, `template/${copyFolderName}`);
 
-      //     //     break;
-      //     //   case 'vue3':
-
-      //     //     break;
-
-      //     //   default:
-      //     //     // react
-      //     //     break;
-      //     // }
-
-      // fse.copySync(srcDir, destDir, {
-      //   overwrite: true
-      // }, (err: any) => {
-      //   if (err) {
-      //     console.error(err);
-      //   } else {
-      //     console.log(chalk.green('👉  生成代码完毕...'));
-      //   }
-      // });
-    });
+      try {
+        await fse.copy(srcDir, destDir);
+        console.log(chalk.green('👉  生成代码完毕...'));
+      } catch (err) {
+        console.error(err)
+      }
   }
 }
 
