@@ -1,10 +1,10 @@
-import chalk from "chalk";
-import ora from "ora";
-import path from "path";
-import { CoreGitDownloader } from "../CoreGitDownloader";
-import { SupportedTemplate } from "../CoreTemplate";
+import chalk from 'chalk';
+import ora from 'ora';
+import path from 'path';
+import { CoreGitDownloader } from '../CoreGitDownloader';
+import { SupportedTemplate } from '../CoreTemplate';
 import fs from 'fs';
-import fse from'fs-extra';
+import fse from 'fs-extra';
 
 /**
  * 极简板本生成器
@@ -43,29 +43,28 @@ export class CoreLiteDownloader extends CoreGitDownloader {
    *
    * @memberOf CoreLiteDownloader
    */
-  protected async copyTemplate(options: { type: SupportedTemplate; name: string; description: string; }): Promise<any> {
-      let copyFolderName: string = 'vue-starter';
-      const destDir = path.join(`${process.env.PWD}`, options.name);
-      // console.log('options.type==>', options.type);
-      switch (options.type) {
-        case 'vue2':
-          copyFolderName = 'vue-starter';
-          break;
-        case 'vue3':
-          copyFolderName = 'vue-next-starter';
-          break;
-        case 'react':
-          copyFolderName = 'react-starter';
-          break;
-      }
-      const srcDir = path.join(__dirname, `template/${copyFolderName}`);
+  protected async copyTemplate(options: { type: SupportedTemplate; name: string; description: string }): Promise<any> {
+    let copyFolderName = 'vue-lite';
+    const destDir = path.join(`${process.env.PWD}`, options.name);
+    // console.log('options.type==>', options.type);
+    switch (options.type) {
+      case 'vue2':
+        copyFolderName = 'vue-lite';
+        break;
+      case 'vue3':
+        copyFolderName = 'vue-next-lite';
+        break;
+      case 'react':
+        copyFolderName = 'react-lite';
+        break;
+    }
+    const srcDir = path.join(__dirname, `templates/${copyFolderName}`);
 
-      try {
-        await fse.copy(srcDir, destDir);
-        console.log(chalk.green('👉  生成代码完毕...'));
-      } catch (err) {
-        console.error(err)
-      }
+    try {
+      await fse.copy(srcDir, destDir);
+      console.log(chalk.green('👉  生成代码完毕...'));
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
-
