@@ -1,5 +1,5 @@
-import { IParsedSourceData } from "../CoreParsedConfig";
-import { ICoreTemplate } from "./CoreTemplateVue2Config";
+import { IParsedSourceData } from '../CoreParsedConfig';
+import { ICoreTemplate } from './CoreTemplateVue2Config';
 
 /**
  * React config
@@ -7,24 +7,23 @@ import { ICoreTemplate } from "./CoreTemplateVue2Config";
  * @class CoreTemplateReactConfig
  */
 class CoreTemplateReactConfig implements ICoreTemplate {
-
   private configData!: any;
 
   /** 解析的原始数据结构配置 */
   private parsedConfigData: Array<IParsedSourceData> = [];
 
   /**
-	 * 配置服务单例
-	 *
-	 * @static
-	 */
-	public static getInstance(): CoreTemplateReactConfig {
-		if (!CoreTemplateReactConfig.instance) {
-			CoreTemplateReactConfig.instance = new CoreTemplateReactConfig();
-		}
+   * 配置服务单例
+   *
+   * @static
+   */
+  public static getInstance(): CoreTemplateReactConfig {
+    if (!CoreTemplateReactConfig.instance) {
+      CoreTemplateReactConfig.instance = new CoreTemplateReactConfig();
+    }
 
-		return CoreTemplateReactConfig.instance;
-	}
+    return CoreTemplateReactConfig.instance;
+  }
 
   /**
    * 获取解析的原始数据结构配置
@@ -68,8 +67,7 @@ class CoreTemplateReactConfig implements ICoreTemplate {
    */
   public getConfig(): any {
     if (!this.configData) {
-      this.configData =
-      `import React, { lazy } from 'react';
+      this.configData = `import React, { lazy } from 'react';
       import { BrowserRouterProps } from 'react-router-dom';
       import dashboard from './modules/dashboard';
       import list from './modules/list';
@@ -135,7 +133,7 @@ class CoreTemplateReactConfig implements ICoreTemplate {
     return this.configData;
   }
 
-	private static instance: CoreTemplateReactConfig;
+  private static instance: CoreTemplateReactConfig;
 }
 
 export default CoreTemplateReactConfig.getInstance();

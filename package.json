@@ -1,6 +1,6 @@
 {
   "name": "tdesign-starter-cli",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "CLI tool for TDesign Starter project",
   "main": "./src/main.ts",
   "lib": "./bin/index.js",
@@ -12,6 +12,7 @@
     "watch": "rollup -w -c",
     "test": "npm run dev",
     "dev": "node ./bin/index.js",
+    "prebuild": "rimraf bin/*",
     "build": "rollup -c ",
     "lint": "eslint 'src/**/*.{js,ts}'"
   },
@@ -45,7 +46,8 @@
     "rollup-plugin-terser": "7.0.2",
     "rollup-plugin-typescript": "1.0.1",
     "rollup-plugin-typescript2": "0.30.0",
-    "rollup-plugin-uglify": "6.0.4"
+    "rollup-plugin-uglify": "6.0.4",
+    "rollup-plugin-copy": "3.4.0"
   },
   "dependencies": {
     "@babel/runtime": "7.14.0",
@@ -62,6 +64,7 @@
     "del": "6.0.0",
     "download-git-repo": "3.0.2",
     "figlet": "1.5.0",
+    "fs-extra": "10.1.0",
     "husky": "6.0.0",
     "inquirer": "8.1.0",
     "is-ci": "3.0.0",
@@ -89,6 +92,7 @@
     "dist/*",
     "types/*",
     "package.json",
-    "docs/*"
+    "docs/*",
+    "template/*"
   ]
 }

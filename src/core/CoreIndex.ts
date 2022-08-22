@@ -6,6 +6,9 @@ import { CoreSelector } from './CoreSelector';
 import { CoreInquirer } from './CoreInquirer';
 import { CoreGitDownloader } from './CoreGitDownloader';
 import fs from 'fs';
+import { CoreLiteInquirer } from './core-lite/CoreLiteInquirer';
+import { SupportedTemplate } from './CoreTemplate';
+import { CoreLiteDownloader } from './core-lite/CoreLiteDownloader';
 
 class Creator {
   constructor() {
@@ -42,11 +45,25 @@ class Creator {
     // 1.基本配置数据获取
     const answer = await new CoreInquirer().interactionsHandler();
 
-    // 2.依据基本配置载下配置文件路由模板
-    const finalAnswer = await new CoreSelector().interactionsSelect(answer);
+    // 2.询问生成简化版还是自定义版本
+    const listOptions: { type: SupportedTemplate; name: string; description: string } = await new CoreLiteInquirer().interactionsHandler();
 
-    // 3.构建配置保存
-    await new CoreGitDownloader().syncDownload(answer, finalAnswer);
+    // 3.执行生成动作
+    switch (listOptions.type) {
+      case 'lite':
+        // 极简版本处理逻辑
+        await new CoreLiteDownloader().syncDownload(answer);
+        break;
+
+      default:
+        // 自定义版本处理逻辑
+        // 3-1.依据基本配置载下配置文件路由模板
+        const finalAnswer = await new CoreSelector().interactionsSelect(answer);
+
+        // 3-2.构建配置保存
+        await new CoreGitDownloader().syncDownload(answer, finalAnswer);
+        break;
+    }
   }
 
   /**
