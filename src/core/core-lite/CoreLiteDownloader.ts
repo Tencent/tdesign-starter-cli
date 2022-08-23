@@ -45,7 +45,7 @@ export class CoreLiteDownloader extends CoreGitDownloader {
    */
   protected async copyTemplate(options: { type: SupportedTemplate; name: string; description: string }): Promise<any> {
     let copyFolderName = 'vue-lite';
-    const destDir = path.join(`${process.env.PWD}`, options.name);
+    const destDir = path.resolve(process.cwd(), options.name);
     // console.log('options.type==>', options.type);
     switch (options.type) {
       case 'vue2':
@@ -58,7 +58,7 @@ export class CoreLiteDownloader extends CoreGitDownloader {
         copyFolderName = 'react-lite';
         break;
     }
-    const srcDir = path.join(__dirname, `templates/${copyFolderName}`);
+    const srcDir = path.resolve(__dirname, path.posix.join('templates', copyFolderName));
 
     try {
       await fse.copy(srcDir, destDir);
