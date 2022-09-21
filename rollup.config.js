@@ -54,16 +54,28 @@ const defaultConfig = {
     copy({
       targets: [
         {
-          src: ['templates/vue-lite/*', '!templates/vue-lite/node_modules'],
-          dest: 'bin/templates/vue-lite'
+          src: ['templates/vite/vue-lite/*', '!templates/vite/vue-lite/node_modules'],
+          dest: 'bin/templates/vite/vue-lite'
         },
         {
-          src: ['templates/vue-next-lite/*', '!templates/vue-next-lite/node_modules'],
-          dest: 'bin/templates/vue-next-lite'
+          src: ['templates/vite/vue-next-lite/*', '!templates/vite/vue-next-lite/node_modules'],
+          dest: 'bin/templates/vite/vue-next-lite'
         },
         {
-          src: ['templates/react-lite/*', '!templates/react-lite/node_modules'],
-          dest: 'bin/templates/react-lite'
+          src: ['templates/vite/react-lite/*', '!templates/vite/react-lite/node_modules'],
+          dest: 'bin/templates/vite/react-lite'
+        },
+        {
+          src: ['templates/webpack/vue-lite/*', '!templates/webpack/vue-lite/node_modules'],
+          dest: 'bin/templates/webpack/vue-lite'
+        },
+        {
+          src: ['templates/webpack/vue-next-lite/*', '!templates/webpack/vue-next-lite/node_modules'],
+          dest: 'bin/templates/webpack/vue-next-lite'
+        },
+        {
+          src: ['templates/webpack/react-lite/*', '!templates/webpack/react-lite/node_modules'],
+          dest: 'bin/templates/webpack/react-lite'
         }
       ],
       verbose: true

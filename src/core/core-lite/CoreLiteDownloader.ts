@@ -3,11 +3,10 @@ import ora from 'ora';
 import path from 'path';
 import { CoreGitDownloader } from '../CoreGitDownloader';
 import { SupportedTemplate } from '../CoreTemplate';
-import fs from 'fs';
 import fse from 'fs-extra';
 
 /**
- * 极简板本生成器
+ * 极简版本生成器
  *
  * @export
  * @class CoreLiteDownloader
@@ -18,8 +17,7 @@ export class CoreLiteDownloader extends CoreGitDownloader {
    * 下载工程目录，依据配置选择是否需要筛选不需要目录
    * @returns 命令行数组
    */
-  public async syncDownload(options: { type: SupportedTemplate; name: string; description: string }, finalOptions: any = {}) {
-    // console.log('options==>', options);
+  public async syncDownload(options: { type: SupportedTemplate; name: string; description: string; buildToolType: 'vite' | 'webpack' }) {
     console.log();
     console.log(chalk.green('👉  开始构建，请稍侯...'));
     console.log();
@@ -28,7 +26,6 @@ export class CoreLiteDownloader extends CoreGitDownloader {
     // 清除测试目录
     await this.clearTestFolder();
 
-    // console.log(options.type, options);
     await this.copyTemplate(options);
 
     // 执行成功相关操作
@@ -43,10 +40,14 @@ export class CoreLiteDownloader extends CoreGitDownloader {
    *
    * @memberOf CoreLiteDownloader
    */
-  protected async copyTemplate(options: { type: SupportedTemplate; name: string; description: string }): Promise<any> {
+  protected async copyTemplate(options: {
+    type: SupportedTemplate;
+    name: string;
+    description: string;
+    buildToolType: 'vite' | 'webpack';
+  }): Promise<any> {
     let copyFolderName = 'vue-lite';
     const destDir = path.resolve(process.cwd(), options.name);
-    // console.log('options.type==>', options.type);
     switch (options.type) {
       case 'vue2':
         copyFolderName = 'vue-lite';
@@ -58,8 +59,7 @@ export class CoreLiteDownloader extends CoreGitDownloader {
         copyFolderName = 'react-lite';
         break;
     }
-    const srcDir = path.resolve(__dirname, path.posix.join('templates', copyFolderName));
-
+    const srcDir = path.resolve(__dirname, path.posix.join('templates', options.buildToolType, copyFolderName));
     try {
       await fse.copy(srcDir, destDir);
       console.log(chalk.green('👉  生成代码完毕...'));

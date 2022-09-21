@@ -2,7 +2,7 @@ import inquirer from 'inquirer';
 import { CoreInquirer } from '../CoreInquirer';
 
 /**
- * 简化板询问器
+ * 简化版询问器
  *
  * @export
  * @class CoreLiteInquirer
