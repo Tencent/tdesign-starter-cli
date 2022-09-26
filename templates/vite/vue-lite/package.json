@@ -1,0 +1,22 @@
+{
+  "name": "vue-lite",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^3.1.0",
+    "vite-plugin-vue2": "^2.0.2",
+    "vue-template-compiler": "~2.6.14"
+  },
+  "dependencies": {
+    "tdesign-icons-vue": "latest",
+    "tdesign-vue": "latest",
+    "vite-plugin-vue2-svg": "^0.3.0",
+    "vue": "~2.6.14"
+  }
+}

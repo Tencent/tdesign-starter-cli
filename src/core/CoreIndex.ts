@@ -7,6 +7,7 @@ import { CoreInquirer } from './CoreInquirer';
 import { CoreGitDownloader } from './CoreGitDownloader';
 import fs from 'fs';
 import { CoreLiteInquirer } from './core-lite/CoreLiteInquirer';
+import { CoreBuildToolInquirer } from './core-lite/CoreBuildToolInquirer';
 import { SupportedTemplate } from './CoreTemplate';
 import { CoreLiteDownloader } from './core-lite/CoreLiteDownloader';
 
@@ -52,14 +53,14 @@ class Creator {
     switch (listOptions.type) {
       case 'lite':
         // 极简版本处理逻辑
+        const { type } = await new CoreBuildToolInquirer().interactionsHandler();
+        answer.buildToolType = type;
         await new CoreLiteDownloader().syncDownload(answer);
         break;
-
       default:
         // 自定义版本处理逻辑
         // 3-1.依据基本配置载下配置文件路由模板
         const finalAnswer = await new CoreSelector().interactionsSelect(answer);
-
         // 3-2.构建配置保存
         await new CoreGitDownloader().syncDownload(answer, finalAnswer);
         break;
