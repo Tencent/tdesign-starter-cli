@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import chalk from 'chalk';
 import clear from 'clear';
 import ora from 'ora';
@@ -8,6 +9,8 @@ import { CoreGitDownloader } from './CoreGitDownloader';
 import fs from 'fs';
 import { CoreLiteInquirer } from './core-lite/CoreLiteInquirer';
 import { CoreBuildToolInquirer } from './core-lite/CoreBuildToolInquirer';
+import { CoreJsTransformInquirer } from './core-js-transform/CoreJsTransformInquirer';
+
 import { SupportedTemplate } from './CoreTemplate';
 import { CoreLiteDownloader } from './core-lite/CoreLiteDownloader';
 
@@ -49,10 +52,11 @@ class Creator {
     // 2.询问生成简化版还是自定义版本
     const listOptions: { type: SupportedTemplate; name: string; description: string } = await new CoreLiteInquirer().interactionsHandler();
 
-    // 3.执行生成动作
+    // 3.执行下载生成动作
     switch (listOptions.type) {
       case 'lite':
         // 极简版本处理逻辑
+        // eslint-disable-next-line no-case-declarations
         const { type } = await new CoreBuildToolInquirer().interactionsHandler();
         answer.buildToolType = type;
         await new CoreLiteDownloader().syncDownload(answer);
@@ -60,7 +64,11 @@ class Creator {
       default:
         // 自定义版本处理逻辑
         // 3-1.依据基本配置载下配置文件路由模板
-        const finalAnswer = await new CoreSelector().interactionsSelect(answer);
+        const contentAnswer = await new CoreSelector().interactionsSelect(answer);
+        // 选择开发语言 js/ts
+        const languageAnswer = await new CoreJsTransformInquirer().interactionsHandler();
+
+        const finalAnswer = { ...contentAnswer, ...languageAnswer };
         // 3-2.构建配置保存
         await new CoreGitDownloader().syncDownload(answer, finalAnswer);
         break;
