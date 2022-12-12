@@ -7,6 +7,7 @@ import { SupportedTemplate, templates } from './CoreTemplate';
 import { CoreOptionsFilterForVue2, IOptionsFilter } from './core-options/CoreOptionsFilterForVue2';
 import { CoreOptionsFilterForVue3 } from './core-options/CoreOptionsFilterForVue3';
 import { CoreOptionsFilterForReact } from './core-options/CoreOptionsFilterForReact';
+import { CoreJsTransformer } from './core-js-transform/CoreJsTransformer';
 import rimraf from 'rimraf';
 
 export class CoreGitDownloader {
@@ -81,6 +82,16 @@ export class CoreGitDownloader {
       // 去除生成目录内容 .github  .husky .vscode
       // 添加原来的内容给下载目录选择
       await optionsFilter.clearUnusedDirectories(options, finalOptions);
+    }
+    // JS语言版本 执行将TS模板转换为JS的处理
+    if (finalOptions.lang === 'js') {
+      const jsTransformer = new CoreJsTransformer();
+
+      await jsTransformer.transformTsFiles(options);
+      await jsTransformer.transformSfcFiles(options);
+      await jsTransformer.codeReplace(options);
+      await jsTransformer.prettierFiles(options);
+      await jsTransformer.clearTsFiles(options);
     }
 
     // 执行成功相关操作
