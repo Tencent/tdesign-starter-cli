@@ -83,7 +83,6 @@ export class CoreGitDownloader {
       // 添加原来的内容给下载目录选择
       await optionsFilter.clearUnusedDirectories(options, finalOptions);
     }
-    console.log(finalOptions, 1);
     // JS语言版本 执行将TS模板转换为JS的处理
     if (finalOptions.lang === 'js') {
       const jsTransformer = new CoreJsTransformer();
@@ -91,8 +90,8 @@ export class CoreGitDownloader {
       await jsTransformer.transformTsFiles(options);
       await jsTransformer.transformSfcFiles(options);
       await jsTransformer.codeReplace(options);
-      await jsTransformer.clearTsFiles(options);
       await jsTransformer.prettierFiles(options);
+      await jsTransformer.clearTsFiles(options);
     }
 
     // 执行成功相关操作

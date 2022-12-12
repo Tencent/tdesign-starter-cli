@@ -1,6 +1,10 @@
+import CoreTsCompiler from './CoreTsCompiler';
 import CoreSfcCompiler from './CoreSfcCompiler';
+import CoreCodeReplace from './CoreCodeReplace';
 import path from 'path';
-
+import shell from 'shelljs';
+import glob from 'glob';
+import fs from 'fs';
 export interface IJsTransformer {
   /**
    * 转换ts文件
@@ -27,23 +31,30 @@ export interface IJsTransformer {
 export class CoreJsTransformer implements IJsTransformer {
   public async transformTsFiles(options: { name: string }) {
     const destDir = path.resolve(process.cwd(), options.name);
+    CoreTsCompiler(destDir);
   }
 
   public async transformSfcFiles(options: { name: string }) {
     const destDir = path.resolve(process.cwd(), options.name);
-
     CoreSfcCompiler(destDir);
   }
   public async codeReplace(options: { name: string }) {
     const destDir = path.resolve(process.cwd(), options.name);
-    console.log(destDir, 'destDir');
+    CoreCodeReplace(destDir);
   }
   public async prettierFiles(options: { name: string }) {
     const destDir = path.resolve(process.cwd(), options.name);
-    console.log(destDir, 'destDir');
+    shell.exec(`prettier --write ${destDir}`);
   }
   public async clearTsFiles(options: { name: string }) {
     const destDir = path.resolve(process.cwd(), options.name);
-    console.log(destDir, 'destDir');
+    const removeFiles = path.resolve(destDir, '**', '*');
+    glob.glob(removeFiles, function (er, files) {
+      files.forEach((file) => {
+        if (/\.(ts|d.js)$/.test(file))
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          fs.unlink(file, () => {});
+      });
+    });
   }
 }
