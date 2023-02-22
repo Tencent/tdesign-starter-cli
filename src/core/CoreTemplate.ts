@@ -3,6 +3,7 @@ export interface ITemplateContent {
   url: string;
   description: string;
   downloadUrl: string;
+  fePermissionDownloadUrl?: string; // 下载前端权限模型的 适用于部分模板下载场景
   routerData: string;
 }
 
@@ -20,6 +21,8 @@ export const templates: Record<SupportedTemplate, ITemplateContent> = {
     url: 'https://github.com/Tencent/tdesign-vue-next-starter.git',
     description: 'TDesign Vue3 Starter',
     downloadUrl: 'direct:https://service-5ds77c8c-1257786608.hk.apigw.tencentcs.com/release/tdesign-vue-next-starter?download=true',
+    fePermissionDownloadUrl:
+      'direct:https://service-5ds77c8c-1257786608.hk.apigw.tencentcs.com/release/tdesign-vue-next-starter/fe-permission?download=true',
     routerData: 'https://service-5ds77c8c-1257786608.hk.apigw.tencentcs.com/release/vue-next-starter-router?download=true'
   },
   react: {
