@@ -109,7 +109,7 @@ export class CoreSelector {
    *
    * @memberOf CoreSelector
    */
-   public parseConfigSourceReact(downloadConfigSource: string): any {
+  public parseConfigSourceReact(downloadConfigSource: string): any {
     // 存,存时空值判断
     if (downloadConfigSource) {
       coreTemplateReactConfig.setConfig(downloadConfigSource);

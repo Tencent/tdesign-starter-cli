@@ -20,13 +20,13 @@ export class CoreGitDownloader {
     console.log(chalk.green('👉  开始构建，请稍侯...'));
     console.log();
     const spinner = ora('正在构建模板...').start();
-    const { downloadUrl, url } = templates[`${options.type || 'vue2'}`];
-
+    const { downloadUrl, fePermissionDownloadUrl, url } = templates[`${options.type || 'vue2'}`];
+    const executeDownloadUrl = Array.isArray(finalOptions.selectTypes) && options.type === 'vue3' ? (fePermissionDownloadUrl as string) : downloadUrl;
     // 清除测试目录
     await this.clearTestFolder();
 
     // 执行下载
-    await this.executeDownload(spinner, downloadUrl, url, options);
+    await this.executeDownload(spinner, executeDownloadUrl, url, options);
 
     // 写入后依据用户选择内容，清除部份内容
     let optionsFilter!: IOptionsFilter;
