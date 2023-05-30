@@ -73,6 +73,7 @@ export class CoreGitDownloader {
         }
 
         break;
+
       default:
         break;
     }
