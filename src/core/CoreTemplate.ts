@@ -1,4 +1,7 @@
-export type SupportedTemplate = 'vue2' | 'vue3' | 'react' | any;
+export type SupportedTemplate = 'vue2' | 'vue3' | 'react' | 'miniProgram'| 'mobileVue' | string;
+
+export type SupportedTemplateSize = 'all' | 'lite' 
+
 export interface ITemplateContent {
   url: string;
   description: string;
@@ -30,5 +33,17 @@ export const templates: Record<SupportedTemplate, ITemplateContent> = {
     description: 'TDesign React Starter',
     downloadUrl: 'direct:https://service-5ds77c8c-1257786608.hk.apigw.tencentcs.com/release/tdesign-react-starter?download=true',
     routerData: 'https://service-5ds77c8c-1257786608.hk.apigw.tencentcs.com/release/react-starter-router?download=true'
+  },
+  miniProgram: {
+    url: 'https://github.com/Tencent/tdesign-miniprogram-starter-retail.git',
+    description: 'TDesign MiniProgram Starter Retail',
+    downloadUrl: 'direct:https://service-5ds77c8c-1257786608.hk.apigw.tencentcs.com/release/tdesign-miniprogram-starter-retail?download=true',
+    routerData: '' // don't need
+  },
+  mobileVue: {
+    url: 'https://github.com/TdesignOteam/tdesign-mobile-vue-starter-chat.git',
+    description: 'TDesign Mobile Starter Chat',
+    downloadUrl: 'direct:https://service-5ds77c8c-1257786608.hk.apigw.tencentcs.com/release/tdesign-mobile-starter-chat?download=true',
+    routerData: '' // don't need
   }
 };

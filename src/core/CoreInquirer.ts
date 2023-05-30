@@ -30,9 +30,11 @@ export class CoreInquirer {
         name: 'type',
         message: '选择模板类型：',
         choices: [
-          { name: '【Vue2】模板', value: 'vue2' },
-          { name: '【Vue3】模板', value: 'vue3' },
-          { name: '【React】模板', value: 'react' }
+          { name: 'PC【Vue2】模板', value: 'vue2' },
+          { name: 'PC【Vue3】模板', value: 'vue3' },
+          { name: 'PC【React】模板', value: 'react' },
+          { name: '移动端 【Vue3】即时通讯模板', value: 'mobileVue' },
+          { name: '小程序 零售电商模板', value: 'miniProgram' }
         ],
         default: 'vue2' // 默认值为列表项编号，起始为 0
       }

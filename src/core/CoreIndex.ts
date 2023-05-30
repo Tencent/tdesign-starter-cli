@@ -9,9 +9,10 @@ import { CoreGitDownloader } from './CoreGitDownloader';
 import fs from 'fs';
 import { CoreLiteInquirer } from './core-lite/CoreLiteInquirer';
 import { CoreBuildToolInquirer } from './core-lite/CoreBuildToolInquirer';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { CoreJsTransformInquirer } from './core-js-transform/CoreJsTransformInquirer';
 
-import { SupportedTemplate } from './CoreTemplate';
+import type { SupportedTemplateSize } from './CoreTemplate';
 import { CoreLiteDownloader } from './core-lite/CoreLiteDownloader';
 
 class Creator {
@@ -27,16 +28,7 @@ class Creator {
     spinner.succeed(chalk.green('构建环境正常！'));
     console.log();
     this.init();
-    // this.checkReadAndWriteRights(process.env.PWD || '').then((canBeWrite) => {
-    //   if (!canBeWrite) {
-    //     console.log(chalk.red('❗错误：请检测当前用户是否有充足的目录读写权限!'));
-    //     process.exit();
-    //   } else {
-    //     spinner.succeed(chalk.green('构建环境正常！'));
-    //     console.log();
-    //     this.init();
-    //   }
-    // });
+   
   }
 
   /**
@@ -49,8 +41,13 @@ class Creator {
     // 1.基本配置数据获取
     const answer = await new CoreInquirer().interactionsHandler();
 
+    if(['miniProgram', 'mobileVue'].includes(answer?.type)) {
+      await new CoreGitDownloader().syncDownload(answer);
+      return;
+    }
+   
     // 2.询问生成简化版还是自定义版本
-    const listOptions: { type: SupportedTemplate; name: string; description: string } = await new CoreLiteInquirer().interactionsHandler();
+    const listOptions: { type: SupportedTemplateSize; name: string; description: string } = await new CoreLiteInquirer().interactionsHandler();
 
     // 3.执行下载生成动作
     switch (listOptions.type) {
@@ -65,12 +62,13 @@ class Creator {
         // 自定义版本处理逻辑
         // 3-1.依据基本配置载下配置文件路由模板
         const contentAnswer = await new CoreSelector().interactionsSelect(answer);
-        // 选择开发语言 js/ts
-        const languageAnswer = await new CoreJsTransformInquirer().interactionsHandler();
+       
+        // 选择开发语言 javascript/typescript 【暂未发布】
+        // const languageAnswer = await new CoreJsTransformInquirer().interactionsHandler();
+        // const finalAnswer = { ...contentAnswer, ...languageAnswer };
 
-        const finalAnswer = { ...contentAnswer, ...languageAnswer };
         // 3-2.构建配置保存
-        await new CoreGitDownloader().syncDownload(answer, finalAnswer);
+        await new CoreGitDownloader().syncDownload(answer, contentAnswer);
         break;
     }
   }
