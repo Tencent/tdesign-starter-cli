@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "tdesign-icons-vue-next": "^0.1.5",
-    "tdesign-vue-next": "^0.21.1",
+    "tdesign-icons-vue-next": "latest",
+    "tdesign-vue-next": "latest",
     "vite-svg-loader": "^3.6.0",
     "vue": "^3.2.37"
   },
