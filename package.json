@@ -78,8 +78,7 @@
     "rimraf": "3.0.2",
     "shelljs": "^0.8.5",
     "tslib": "2.2.0",
-    "typescript": "4.2.4",
-    "vue-template-compiler": "^2.7.14"
+    "typescript": "4.2.4"
   },
   "husky": {
     "hooks": {
