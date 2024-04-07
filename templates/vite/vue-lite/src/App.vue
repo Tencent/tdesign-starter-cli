@@ -1,7 +1,20 @@
 <template>
   <t-space direction="vertical" style="width: 100%; text-align: center">
-    <logo />
-    <h3>Welcome to use TDesign！</h3>
+    <t-space>
+      <a href="https://tdesign.tencent.com/vue/overview" target="_blank">
+        <img src="./assets/svg/tdesign-logo.svg" class="logo tdesign" alt="TDesign" />
+      </a>
+      <a href="https://vitejs.dev/" target="_blank">
+        <img src="./assets/svg/vite-logo.svg" class="logo vite" alt="Vite" />
+      </a>
+    </t-space>
+    <h2>tdesign-vue + vite</h2>
+    <h3> Welcome to use
+      <t-link theme="success" href="https://tdesign.tencent.com/vue/overview" target="_blank">
+        <jump-icon slot="suffixIcon" />
+        TDesign-vue
+      </t-link>!
+    </h3>
     <t-space>
       <t-button theme="primary">
         <add-icon slot="icon" />
@@ -29,8 +42,8 @@ import {
   CloudUploadIcon,
   DiscountIcon,
   CloudDownloadIcon,
+  JumpIcon
 } from "tdesign-icons-vue";
-import Logo from "../assets/svg/assets-t-logo.svg?component";
 
 export default Vue.extend({
   components: {
@@ -38,7 +51,24 @@ export default Vue.extend({
     CloudUploadIcon,
     DiscountIcon,
     CloudDownloadIcon,
-    Logo,
+    JumpIcon
   },
 });
 </script>
+
+<style>
+.logo {
+  height: 6em;
+  padding: 3em 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em #194de9);
+}
+
+.logo.vite:hover {
+  filter: drop-shadow(0 0 2em #bd34fe);
+}
+</style>
