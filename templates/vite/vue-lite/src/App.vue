@@ -8,13 +8,27 @@
         <img src="./assets/svg/vite-logo.svg" class="logo vite" alt="Vite" />
       </a>
     </t-space>
-    <h2>tdesign-vue + vite</h2>
-    <h3> Welcome to use
-      <t-link theme="success" href="https://tdesign.tencent.com/vue/overview" target="_blank">
+    <h2> Welcome to use
+      <t-link size="large" theme="primary" href="https://tdesign.tencent.com/vue/overview" target="_blank">
         <jump-icon slot="suffixIcon" />
         TDesign-vue
-      </t-link>!
+      </t-link>
+      +
+      <t-link size="large" theme="primary" href="https://vitejs.dev/" target="_blank">
+        <jump-icon slot="suffixIcon" />
+        Vite
+      </t-link>
+      ！
+    </h2>
+    <h3>
+      Experience it quickly using the
+      <t-link theme="warning" href="https://tdesign.tencent.com/starter/docs/vue/get-started" target="_blank">
+        <jump-icon slot="suffixIcon" />
+        TDesign Starter
+      </t-link>
+      page template.
     </h3>
+
     <t-space>
       <t-button theme="primary">
         <add-icon slot="icon" />

@@ -17,12 +17,24 @@ const App: React.FC = () => {
             <img src={ViteLogo} className="logo vite" alt="Vite" />
           </a>
         </Space>
-        <h2>tdesign-react + vite</h2>
-        <h3> Welcome to use
-          <Link theme="success" href="https://tdesign.tencent.com/react/overview" suffixIcon={<JumpIcon />} target="_blank">
+        <h2> Welcome to use
+          <Link size="large" theme="primary" href="https://tdesign.tencent.com/react/overview" suffixIcon={<JumpIcon />} target="_blank">
             TDesign-react
-          </Link>!
+          </Link>
+          +
+          <Link size="large" theme="primary" href="https://vitejs.dev/" suffixIcon={<JumpIcon />} target="_blank">
+            TDesign-react
+          </Link>
+          !
+        </h2>
+        <h3>
+          Experience it quickly using the
+          <Link theme="warning" href="https://tdesign.tencent.com/starter/docs/vue/get-started" suffixIcon={<JumpIcon />} target="_blank">
+            TDesign Starter
+          </Link>
+          page template.
         </h3>
+
         <Space>
           <Button theme='primary' icon={<AddIcon />}>
             新建

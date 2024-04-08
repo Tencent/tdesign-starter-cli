@@ -9,29 +9,48 @@
           <img :src="ViteLogo" class="logo vite" alt="Vite" />
         </a>
       </t-space>
-      <h2>tdesign-vue-next + vite</h2>
-      <h3> Welcome to use
-        <t-link theme="success" href="https://tdesign.tencent.com/vue-next/overview" target="_blank">
+      <h2> Welcome to use
+        <t-link size="large" theme="primary" href="https://tdesign.tencent.com/vue-next/overview" target="_blank">
           <template #suffix-icon>
             <JumpIcon />
           </template>
           TDesign-vue-next
-        </t-link>!
+        </t-link>
+        +
+        <t-link size="large" theme="primary" href="https://vitejs.dev/" target="_blank">
+          <template #suffix-icon>
+            <JumpIcon />
+          </template>
+          TDesign-vue-next
+        </t-link>
+        !
+      </h2>
+
+      <h3>
+        Experience it quickly using the
+        <t-link theme="warning" href="https://tdesign.tencent.com/starter/docs/vue/get-started" target="_blank">
+          <template #suffix-icon>
+            <JumpIcon />
+          </template>
+          TDesign Starter
+        </t-link>
+        page template.
       </h3>
-      <t-space>
+
+      <t-space size="24px">
         <t-button theme="primary">
-          <add-icon />
+          <template #icon><add-icon /></template>
           新建
         </t-button>
         <t-button variant="outline">
-          <cloud-upload-icon />
+          <template #icon><cloud-upload-icon /></template>
           上传文件
         </t-button>
         <t-button shape="circle" theme="primary">
-          <discount-icon />
+          <template #icon><discount-icon /></template>
         </t-button>
         <t-button shape="circle" theme="primary">
-          <cloud-download-icon />
+          <template #icon> <cloud-download-icon /></template>
         </t-button>
         <t-button variant="outline"> 搜索 </t-button>
       </t-space>
