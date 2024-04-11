@@ -2,8 +2,8 @@
 
 </p>
 <p align="center">
-  <a href="https://tdesign.tencent.com/react/overview" target="_blank">
-    <img alt="TDesign Logo" width="200" src="https://tdesign.gtimg.com/starter/brand-logo.svg">
+  <a href="https://tdesign.tencent.com/vue/overview" target="_blank">
+<img alt="TDesign Logo" width="200" src="./public/TDesign-logo_light.svg"/>
   </a>
 </p>
 
