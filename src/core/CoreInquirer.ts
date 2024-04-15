@@ -1,4 +1,11 @@
-import inquirer from 'inquirer';
+import inquirer, { QuestionCollection } from 'inquirer';
+
+export type InteractionsHandlerQuestion = {
+  name: string;
+  description: string;
+  type: string;
+  buildToolType: 'vite' | 'webpack';
+};
 
 export class CoreInquirer {
   /**
@@ -7,7 +14,7 @@ export class CoreInquirer {
    */
   public interactionsHandler() {
     // 提问模式
-    const questions: Array<any> = [
+    const questions: QuestionCollection<InteractionsHandlerQuestion> = [
       {
         type: 'input',
         name: 'name',

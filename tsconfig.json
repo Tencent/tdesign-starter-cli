@@ -11,11 +11,13 @@
     "removeComments": false,
     "importHelpers": true,
     "strict": true,
-    "lib": ["ES6", "DOM"]
+    "lib": ["ES6", "DOM"],
+    "baseUrl": ".",
+    "paths": {
+      "tslib": ["node_modules/tslib/tslib.d.ts"]
+    }
   },
-  "types": [
-    "node"
-  ],
+  "types": ["node"],
   "include": ["src"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules","src/core/core-js-transform"]
 }
