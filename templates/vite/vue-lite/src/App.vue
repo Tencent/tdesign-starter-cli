@@ -22,7 +22,7 @@
     </h2>
     <h3>
       Experience it quickly using the
-      <t-link theme="warning" href="https://tdesign.tencent.com/starter/docs/vue/get-started" target="_blank">
+      <t-link theme="warning" href="https://tdesign.tencent.com/starter/vue/" target="_blank">
         <jump-icon slot="suffixIcon" />
         TDesign Starter
       </t-link>

@@ -23,13 +23,13 @@ const App: React.FC = () => {
           </Link>
           +
           <Link size="large" theme="primary" href="https://vitejs.dev/" suffixIcon={<JumpIcon />} target="_blank">
-            TDesign-react
+            Vite
           </Link>
           !
         </h2>
         <h3>
           Experience it quickly using the
-          <Link theme="warning" href="https://tdesign.tencent.com/starter/docs/vue/get-started" suffixIcon={<JumpIcon />} target="_blank">
+          <Link theme="warning" href="https://tdesign.tencent.com/starter/react/" suffixIcon={<JumpIcon />} target="_blank">
             TDesign Starter
           </Link>
           page template.

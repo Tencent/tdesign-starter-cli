@@ -21,14 +21,14 @@
           <template #suffix-icon>
             <JumpIcon />
           </template>
-          TDesign-vue-next
+          Vite
         </t-link>
         !
       </h2>
 
       <h3>
         Experience it quickly using the
-        <t-link theme="warning" href="https://tdesign.tencent.com/starter/docs/vue/get-started" target="_blank">
+        <t-link theme="warning" href="https://tdesign.tencent.com/starter/vue-next/" target="_blank">
           <template #suffix-icon>
             <JumpIcon />
           </template>
