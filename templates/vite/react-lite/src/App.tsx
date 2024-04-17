@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Button, ConfigProvider, Link, Space } from 'tdesign-react';
 import { AddIcon, CloudUploadIcon, DiscountIcon, CloudDownloadIcon, JumpIcon } from 'tdesign-icons-react';
-import TDesignLogo from './assets/svg/tdesign-logo.svg';
+import TDesignLogo from '../public/tdesign-logo.svg';
 import ViteLogo from './assets/svg/vite-logo.svg';
 import './App.css';
 

@@ -66,7 +66,7 @@ import {
   CloudDownloadIcon,
   JumpIcon
 } from "tdesign-icons-vue-next";
-import TDesignLogo from './assets/svg/tdesign-logo.svg';
+import TDesignLogo from '../public/tdesign-logo.svg';
 import ViteLogo from './assets/svg/vite-logo.svg';
 
 </script>

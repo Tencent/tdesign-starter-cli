@@ -3,7 +3,7 @@
 </p>
 <p align="center">
   <a href="https://tdesign.tencent.com/react/overview" target="_blank">
-<img alt="TDesign Logo" width="200" src="./public/TDesign-logo_light.svg"/>
+<img alt="TDesign Logo" width="200" src="./public/tdesign-logo.svg"/>
   </a>
 </p>
 

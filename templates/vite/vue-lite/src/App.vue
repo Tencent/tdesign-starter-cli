@@ -2,7 +2,7 @@
   <t-space direction="vertical" style="width: 100%; text-align: center">
     <t-space>
       <a href="https://tdesign.tencent.com/vue/overview" target="_blank">
-        <img src="./assets/svg/tdesign-logo.svg" class="logo tdesign" alt="TDesign" />
+        <img src="../public/tdesign-logo.svg" class="logo tdesign" alt="TDesign" />
       </a>
       <a href="https://vitejs.dev/" target="_blank">
         <img src="./assets/svg/vite-logo.svg" class="logo vite" alt="Vite" />
