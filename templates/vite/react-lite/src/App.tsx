@@ -1,15 +1,40 @@
 import * as React from "react"
-import { Button, ConfigProvider, Space } from 'tdesign-react';
-import { ReactComponent as Logo } from '../assets/svg/assets-t-logo.svg';
-import { AddIcon, CloudUploadIcon, DiscountIcon, CloudDownloadIcon } from 'tdesign-icons-react';
-import 'tdesign-react/es/style/index.css';
+import { Button, ConfigProvider, Link, Space } from 'tdesign-react';
+import { AddIcon, CloudUploadIcon, DiscountIcon, CloudDownloadIcon, JumpIcon } from 'tdesign-icons-react';
+import TDesignLogo from '../public/tdesign-logo.svg';
+import ViteLogo from './assets/svg/vite-logo.svg';
+import './App.css';
 
 const App: React.FC = () => {
   return (
     <ConfigProvider globalConfig={{ classPrefix: 't' }}>
       <Space direction='vertical' style={{ width: '100%', textAlign: 'center' }}>
-        <Logo />
-        <h3> Welcome to use TDesign! </h3>
+        <Space>
+          <a href="https://tdesign.tencent.com/react/overview" target="_blank">
+            <img src={TDesignLogo} className="logo tdesign" alt="TDesign" />
+          </a>
+          <a href="https://vitejs.dev/" target="_blank">
+            <img src={ViteLogo} className="logo vite" alt="Vite" />
+          </a>
+        </Space>
+        <h2> Welcome to use
+          <Link size="large" theme="primary" href="https://tdesign.tencent.com/react/overview" suffixIcon={<JumpIcon />} target="_blank">
+            TDesign-react
+          </Link>
+          +
+          <Link size="large" theme="primary" href="https://vitejs.dev/" suffixIcon={<JumpIcon />} target="_blank">
+            Vite
+          </Link>
+          !
+        </h2>
+        <h3>
+          Experience it quickly using the
+          <Link theme="warning" href="https://tdesign.tencent.com/starter/react/" suffixIcon={<JumpIcon />} target="_blank">
+            TDesign Starter
+          </Link>
+          page template.
+        </h3>
+
         <Space>
           <Button theme='primary' icon={<AddIcon />}>
             新建

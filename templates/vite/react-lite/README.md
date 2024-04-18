@@ -2,8 +2,8 @@
 
 </p>
 <p align="center">
-  <a href="https://tdesign.tencent.com/starter/react/#/dashboard/base" target="_blank">
-    <img alt="TDesign Logo" width="200" src="https://tdesign.gtimg.com/starter/brand-logo.svg">
+  <a href="https://tdesign.tencent.com/react/overview" target="_blank">
+<img alt="TDesign Logo" width="200" src="./public/tdesign-logo.svg"/>
   </a>
 </p>
 
@@ -14,27 +14,32 @@
   </a>
 </p>
 
-### 项目简介
+## 项目简介
 
-TDesign React Starter 是一个基于 tdesign-react，使用 `React`、`Vite2`开发，可进行个性化主题配置，旨在提供项目开箱即用的初始项目。
+`tdesign-react` 是一个TDesign 适配桌面端的组件库，适合在 React 技术栈项目中使用。
 
-### 开发
+## 开发
+
+### 安装依赖
 
 ```bash
-## 安装依赖
 npm install
+```
 
-## 启动项目
-npm run dev
-
-
-### 构建
+### 启动项目
 
 ```bash
-## 构建正式环境
+npm run dev
+```
+
+## 构建
+
+### 构建正式环境
+
+```bash
 npm run build
+```
 
+## 开源协议
 
-### 开源协议
-
-TDesign 遵循 [MIT 协议](https://github.com/Tencent/tdesign-starter-cli/LICENSE)。
+TDesign 遵循 [MIT 协议](https://github.com/Tencent/tdesign-starter-cli/blob/develop/LICENSE)。
