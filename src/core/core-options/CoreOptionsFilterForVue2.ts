@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import coreTemplateVue2Config from '../core-template/CoreTemplateVue2Config';
 import { IParsedSourceData } from '../CoreParsedConfig';
-import del from 'del';
+import { deleteAsync } from 'del';
 import { ICoreTemplate } from '../core-template/CoreTemplateVue2Config';
 
 // ===================== 拆分内容 ==============================
@@ -137,9 +137,9 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     // console.log('options.name==', localPath);
 
     try {
-      await del(path.join(localPath, '.github'));
-      await del(path.join(localPath, '.husky'));
-      await del(path.join(localPath, '.vscode'));
+      await deleteAsync(path.join(localPath, '.github'));
+      await deleteAsync(path.join(localPath, '.husky'));
+      await deleteAsync(path.join(localPath, '.vscode'));
     } catch (error) {
       console.log('clearUnusedDirectories..', error);
     }
@@ -186,7 +186,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
       try {
         if (needToExcludeItem.name) {
           const delPath = path.join(`${process.env.PWD}/${options.name}`, `./src/pages/${needToExcludeItem.name}`);
-          await del(delPath);
+          await deleteAsync(delPath);
           // console.log('delPath==', delPath);
         }
       } catch (error) {
@@ -312,7 +312,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
       const elementPath = `${process.env.PWD}/${options.name}/src/pages`;
       const delPath = path.join(elementPath, element.path || '');
       try {
-        await del(delPath);
+        await deleteAsync(delPath);
         console.log('excludeSouceDeleteFolder delPath==', delPath);
       } catch (error) {
         console.log('excludeSouceDeleteFolder..', error);

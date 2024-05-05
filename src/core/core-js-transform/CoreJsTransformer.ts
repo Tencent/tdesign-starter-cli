@@ -3,7 +3,7 @@ import CoreSfcCompiler from './CoreSfcCompiler';
 import CoreCodeReplace from './CoreCodeReplace';
 import path from 'path';
 import shell from 'shelljs';
-import glob from 'glob';
+import { glob } from 'glob';
 import fs from 'fs';
 export interface IJsTransformer {
   /**
@@ -49,11 +49,11 @@ export class CoreJsTransformer implements IJsTransformer {
   public async clearTsFiles(options: { name: string }) {
     const destDir = path.resolve(process.cwd(), options.name);
     const removeFiles = path.resolve(destDir, '**', '*');
-    glob.glob(removeFiles, function (er, files) {
+    glob(removeFiles).then((files) => {
       files.forEach((file) => {
         if (/\.(ts|d.js)$/.test(file))
           // eslint-disable-next-line @typescript-eslint/no-empty-function
-          fs.unlink(file, () => {});
+          fs.unlink(file, () => { });
       });
     });
   }

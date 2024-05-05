@@ -1,6 +1,10 @@
 import path from 'path';
 import fs from 'fs';
 import pkg from '../../package.json';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /**
  * 路径
