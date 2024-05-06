@@ -8,7 +8,7 @@ import { CoreOptionsFilterForVue2, IOptionsFilter } from './core-options/CoreOpt
 import { CoreOptionsFilterForVue3 } from './core-options/CoreOptionsFilterForVue3';
 import { CoreOptionsFilterForReact } from './core-options/CoreOptionsFilterForReact';
 // import { CoreJsTransformer } from './core-js-transform/CoreJsTransformer';
-import{sync} from 'rimraf';
+import { sync } from 'rimraf';
 
 export class CoreGitDownloader {
   /**
