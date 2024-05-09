@@ -17,37 +17,39 @@
   </a>
 </p>
 
-English | [简体中文](./README-zh_CN.md) 
+[English](./README.md)  | 简体中文
 
 
-## Install
+> 注意您的本机安装的Node版本需要`>=16`。
+
+## 安装
 
 ```shell
 npm install tdesign-starter-cli -g
 ```
 
-## Usage
-
+## 使用
 
 ```sh
-# project initialization
+# 初始化项目
 td-starter init
 
-# fill project name and description
-? 请输入项目名称： [project-name]
+# 填写 项目名称、项目描述
+? 请输入项目名称： [项目名称]
 ? 请输入项目描述： Base on tdesign-starter-cli
 
-cd [project-name]
+# 进入项目
+cd [项目名称]
 
-# install dependencies
+# 安装依赖
 npm install
 
-# Mac OS or Windows
+# 运行
 npm run dev 
 
 ```
 
 
-### License
+## 开源协议
 
-The MIT License. Please see [the license file](LICENSE) for more information.
+TDesign 遵循 [MIT 协议](https://github.com/Tencent/tdesign-starter-cli/LICENSE)。
