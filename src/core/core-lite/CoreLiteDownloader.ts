@@ -4,6 +4,7 @@ import path from 'path';
 import { CoreGitDownloader } from '../CoreGitDownloader';
 import { SupportedTemplate } from '../CoreTemplate';
 import fse from 'fs-extra';
+import { pathResolve } from '../../utils/UtilsFile';
 
 /**
  * 极简版本生成器
@@ -59,7 +60,7 @@ export class CoreLiteDownloader extends CoreGitDownloader {
         copyFolderName = 'react-lite';
         break;
     }
-    const srcDir = path.resolve(__dirname, path.posix.join('templates', options.buildToolType, copyFolderName));
+    const srcDir = pathResolve(path.posix.join('templates', options.buildToolType, copyFolderName));
     try {
       await fse.copy(srcDir, destDir);
       console.log(chalk.green('👉  生成代码完毕...'));

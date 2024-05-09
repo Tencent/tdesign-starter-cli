@@ -1,13 +1,17 @@
 import path from 'path';
-import babel from 'rollup-plugin-babel';
+
+import babel from '@rollup/plugin-babel';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import typescript from 'typescript';
 import json from '@rollup/plugin-json';
-import { terser } from 'rollup-plugin-terser';
-import typescript2 from 'rollup-plugin-typescript2';
-import rollupResolve from 'rollup-plugin-node-resolve';
-import pkg from './package.json';
+import terser from '@rollup/plugin-terser';
+import rollupTypescript from '@rollup/plugin-typescript';
+import pkg from './package.json' assert  { type: 'json' };
 import copy from 'rollup-plugin-copy';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const extensions = ['.js', '.ts'];
 
@@ -21,31 +25,28 @@ const globals = external.reduce((prev, current) => {
 const defaultConfig = {
   input: pkg.main,
   output: {
-    file: path.resolve(__dirname, pkg.lib),
-    format: 'cjs',
+    file: path.join(__dirname, pkg.lib),
+    format: 'es',
     banner: '#!/usr/bin/env node',
     globals
   },
   external,
   plugins: [
-    typescript2({
+    rollupTypescript({
       exclude: 'node_modules/**',
-      useTsconfigDeclarationDir: true,
       typescript,
       tsconfig: './tsconfig.json'
     }),
     json(),
     terser(),
-    rollupResolve({
-      // 查找和打包node_modules中的第三方模块
-      customResolveOptions: {
-        moduleDirectory: 'src'
-      },
-      preferBuiltins: true
-    }),
     nodeResolve({
       extensions,
-      modulesOnly: true
+      modulesOnly: true,
+      // 查找和打包node_modules中的第三方模块
+      customResolveOptions: {
+        moduleDirectories: ['src']
+      },
+      preferBuiltins: true
     }),
     babel({
       exclude: 'node_modules/**',

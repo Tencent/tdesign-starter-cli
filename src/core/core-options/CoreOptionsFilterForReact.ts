@@ -3,7 +3,7 @@ import { ICoreTemplate } from "../core-template/CoreTemplateVue2Config";
 import coreTemplateReactConfig from "../core-template/CoreTemplateReactConfig";
 import { IParsedSourceData } from "../CoreParsedConfig";
 import path from "path";
-import del from "del";
+import { deleteAsync } from 'del';
 import fs from 'fs';
 
 /**
@@ -90,11 +90,11 @@ export class CoreOptionsFilterForReact extends CoreOptionsFilterForVue2 {
         if (needToExcludeItem.name) {
           // 1.删除目录
           const delPath = path.join(`${process.env.PWD}/${options.name}`, `./src/pages/${this.firstUpperCase(needToExcludeItem.name)}`);
-          await del(delPath);
+          await deleteAsync(delPath);
           // console.log('delPath==', delPath);
           // 2.删除目录，还要删moudles模块内路由
           const delPathFile = path.join(`${process.env.PWD}/${options.name}`, `./src/router/modules/${needToExcludeItem.name}.ts`);
-          await del(delPathFile);
+          await deleteAsync(delPathFile);
           // console.log('delPathFile==', delPathFile);
         }
       } catch (error) {
@@ -132,7 +132,7 @@ export class CoreOptionsFilterForReact extends CoreOptionsFilterForVue2 {
    *
    * @memberOf CoreOptionsFilter
    */
-   protected saveRouterFilter(saveedList: any[], configData: string, options: any, finalOptions: any) {
+  protected saveRouterFilter(saveedList: any[], configData: string, options: any, finalOptions: any) {
     // 加工configData
     // 找出不在列表中的目录，即为需要排除内容
     const selectTypeList: Array<IParsedSourceData> = [];
