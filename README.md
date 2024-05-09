@@ -19,7 +19,8 @@
 
 ---
 
-> 注意您的本机安装的Node版本需要`>=16`。[Why Node 16?](https://www.lema.fun/post/how-to-use-es6-import-in-nodejs-5hombt7ua)
+> 注意您的本机安装的Node版本需要`>=16`。[Why Node 16?](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)
+
 ## 安装
 
 ```shell
