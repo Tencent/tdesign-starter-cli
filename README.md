@@ -10,7 +10,7 @@
     <img src="https://img.shields.io/npm/v/tdesign-starter-cli.svg?sanitize=true" alt="Version">
   </a>
     <a href="https://www.npmjs.com/package/tdesign-starter-cli">
-    <img src="https://img.shields.io/badge/node-%3E%3D%2016-brightgreen" alt="Node">
+    <img src="https://img.shields.io/node/v/tdesign-starter-cli" alt="Node">
   </a>
   <a href="https://www.npmjs.com/package/tdesign-starter-cli">
     <img src="https://img.shields.io/npm/dm/tdesign-starter-cli" alt="Downloads">
@@ -19,8 +19,7 @@
 
 ---
 
-> 注意您的本机安装的Node版本需要`>=16`。
-
+> 注意您的本机安装的Node版本需要`>=16`。[Why Node 16?](https://www.lema.fun/post/how-to-use-es6-import-in-nodejs-5hombt7ua)
 ## 安装
 
 ```shell

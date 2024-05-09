@@ -94,5 +94,8 @@
     "package.json",
     "docs/*",
     "template/*"
-  ]
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  }
 }
