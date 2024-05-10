@@ -19,7 +19,8 @@ export class CoreBuildToolInquirer {
         message: '请选择构建工具',
         choices: [
           { name: ' vite', value: 'vite' },
-          { name: ' webpack', value: 'webpack' }
+          { name: ' webpack', value: 'webpack' },
+          { name: ' farm', value: 'farm' }
         ],
         default: 'lite'
       }

@@ -18,7 +18,7 @@ export class CoreLiteDownloader extends CoreGitDownloader {
    * 下载工程目录，依据配置选择是否需要筛选不需要目录
    * @returns 命令行数组
    */
-  public async syncDownload(options: { type: SupportedTemplate; name: string; description: string; buildToolType: 'vite' | 'webpack' }) {
+  public async syncDownload(options: { type: SupportedTemplate; name: string; description: string; buildToolType: 'vite' | 'webpack'| 'farm'}) {
     console.log();
     console.log(chalk.green('👉  开始构建，请稍侯...'));
     console.log();
@@ -45,7 +45,7 @@ export class CoreLiteDownloader extends CoreGitDownloader {
     type: SupportedTemplate;
     name: string;
     description: string;
-    buildToolType: 'vite' | 'webpack';
+    buildToolType: 'vite' | 'webpack'|'farm';
   }): Promise<any> {
     let copyFolderName = 'vue-lite';
     const destDir = path.resolve(process.cwd(), options.name);
