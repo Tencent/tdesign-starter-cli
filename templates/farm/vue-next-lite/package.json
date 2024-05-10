@@ -1,0 +1,24 @@
+{
+  "name": "vue-next-lite",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "farm start",
+    "start": "farm start",
+    "build": "farm build",
+    "preview": "farm preview",
+    "clean": "farm clean"
+  },
+  "dependencies": {
+    "tdesign-icons-vue-next": "latest",
+    "tdesign-vue-next": "latest",
+    "vite-svg-loader": "^5.1.0",
+    "vue": "^3.4.21"
+  },
+  "devDependencies": {
+    "@farmfe/cli": "^1.0.2",
+    "@farmfe/core": "^1.1.4",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "typescript": "^5.4.4",
+    "vue-tsc": "^2.0.10"
+  }
+}
