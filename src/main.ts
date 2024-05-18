@@ -10,7 +10,7 @@ program.version(chalk.green(`v${pkg.version}`), '-v, --version');
  * @description '--d', '--description', '项目描述'
  * @description '--type', '--type', '代码版本 vue2 | vue3 | react | miniProgram | mobileVue'
  * @description '--temp', '--template', '项目模版类型 lite | all'
- * @description '--bts', '--buildToolType', '构建工具类型 vite | webpack'
+ * @description '--bt', '--buildToolType', '构建工具类型 vite | webpack'
  */
 program
 	.command('init [templateName]')
@@ -19,7 +19,7 @@ program
 	.option('-d,--description <description>', 'description of a project', 'Base on tdesign-starter-cli')
 	.option('-type,--type <type>', 'Code version vue2 | vue3 | react | miniProgram | mobileVue ', 'vue2')
 	.option('-temp,--template <template>', 'Project template type: lite | all', 'lite')
-	.option('-bts,--buildToolType <buildToolType>', 'The construction tool for lite: vite | webpack', 'vite')
+	.option('-bt,--buildToolType <buildToolType>', 'The construction tool for lite: vite | webpack', 'vite')
 	.action((name, options, command) => {
 		new Creator(name, options, command);
 	});

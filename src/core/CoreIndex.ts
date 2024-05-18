@@ -34,8 +34,6 @@ class Creator {
 
     const spinner = ora('👉 检查构建环境...').start();
 
-    spinner.succeed(chalk.green('构建环境正常！'));
-    console.log();
 
     // 如果有name参数，直接下载模板
     if (name) {
@@ -51,34 +49,37 @@ class Creator {
             break;
           case 'type':
             if (!['vue2', 'vue3', 'react', 'miniProgram', 'mobileVue'].includes(options[key])) {
-              ora().fail(chalk.red('type参数错误，请输入vue2 | vue3 | react | miniProgram | mobileVue'));
+              spinner.fail(chalk.red('type 参数错误，请输入vue2 | vue3 | react | miniProgram | mobileVue'));
               isValid = false;
-              break outerLoop; // 跳出整个循环
+              break outerLoop;
             }
             break;
           case 'template':
             if (!['lite', 'all'].includes(options[key])) {
-              ora().fail(chalk.red('template参数错误，请输入lite | all'));
+              spinner.fail(chalk.red('template 参数错误，请输入lite | all'));
               isValid = false;
-              break outerLoop; // 跳出整个循环
+              break outerLoop;
             }
             break;
           case 'buildToolType':
             if (!['vite', 'webpack'].includes(options[key])) {
-              ora().fail(chalk.red('buildToolType参数错误，请输入vite | webpack'));
+              spinner.fail(chalk.red('buildToolType 参数错误，请输入vite | webpack'));
               isValid = false;
-              break outerLoop; // 跳出整个循环
+              break outerLoop;
             }
             break;
           default:
             ora().fail(chalk.red('命令无效'));
             isValid = false;
-            break outerLoop; // 跳出整个循环
+            break outerLoop;
         }
       }
       if (!isValid) {
         return
-      }
+      };
+
+      spinner.succeed(chalk.green('构建环境正常！'));
+      console.log();
 
       if (['miniProgram', 'mobileVue'].includes(options?.type)) {
         new CoreGitDownloader().syncDownload(options);
@@ -96,9 +97,11 @@ class Creator {
       }
       return;
     }
-    
+
+    spinner.succeed(chalk.green('构建环境正常！'));
+    console.log();
     this.init();
-   
+
   }
 
   /**
