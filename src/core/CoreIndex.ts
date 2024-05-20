@@ -48,21 +48,21 @@ class Creator {
           case 'description':
             break;
           case 'type':
-            if (!['vue2', 'vue3', 'react', 'miniProgram', 'mobileVue'].includes(options[key])) {
+            if (!['vue2', 'vue3', 'react', 'miniProgram', 'mobileVue'].includes(options['type'])) {
               spinner.fail(chalk.red('type 参数错误，请输入vue2 | vue3 | react | miniProgram | mobileVue'));
               isValid = false;
               break outerLoop;
             }
             break;
           case 'template':
-            if (!['lite', 'all'].includes(options[key])) {
+            if (!['lite', 'all'].includes(options['template'])) {
               spinner.fail(chalk.red('template 参数错误，请输入lite | all'));
               isValid = false;
               break outerLoop;
             }
             break;
           case 'buildToolType':
-            if (!['vite', 'webpack'].includes(options[key])) {
+            if (!['vite', 'webpack'].includes(options['buildToolType'])) {
               spinner.fail(chalk.red('buildToolType 参数错误，请输入vite | webpack'));
               isValid = false;
               break outerLoop;
