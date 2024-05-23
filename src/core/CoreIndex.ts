@@ -15,8 +15,17 @@ import { CoreJsTransformInquirer } from './core-js-transform/CoreJsTransformInqu
 import type { SupportedTemplateSize } from './CoreTemplate';
 import { CoreLiteDownloader } from './core-lite/CoreLiteDownloader';
 
+
+type CreatorOptions = {
+  name: string;
+  description: string;
+  type: 'vue2' | 'vue3' | 'react' | 'miniProgram' | 'mobileVue';
+  buildToolType: 'vite' | 'webpack';
+  template: 'lite' | 'all';
+}
+
 class Creator {
-  constructor() {
+  constructor(name: string, options: CreatorOptions, command: any) {
     clear();
     console.log('*****************************');
     console.log(chalk.green(figlet.textSync('TDesign Starter', { horizontalLayout: 'full' })));
@@ -25,10 +34,74 @@ class Creator {
 
     const spinner = ora('👉 检查构建环境...').start();
 
+
+    // 如果有name参数，直接下载模板
+    if (name) {
+      const answer: CreatorOptions = {
+        ...options,
+        name,
+      };
+      let isValid = true;
+
+      outerLoop: for (const key of Object.keys(options)) {
+        switch (key) {
+          case 'description':
+            break;
+          case 'type':
+            if (!['vue2', 'vue3', 'react', 'miniProgram', 'mobileVue'].includes(options['type'])) {
+              spinner.fail(chalk.red('type 参数错误，请输入vue2 | vue3 | react | miniProgram | mobileVue'));
+              isValid = false;
+              break outerLoop;
+            }
+            break;
+          case 'template':
+            if (!['lite', 'all'].includes(options['template'])) {
+              spinner.fail(chalk.red('template 参数错误，请输入lite | all'));
+              isValid = false;
+              break outerLoop;
+            }
+            break;
+          case 'buildToolType':
+            if (!['vite', 'webpack'].includes(options['buildToolType'])) {
+              spinner.fail(chalk.red('buildToolType 参数错误，请输入vite | webpack'));
+              isValid = false;
+              break outerLoop;
+            }
+            break;
+          default:
+            ora().fail(chalk.red('命令无效'));
+            isValid = false;
+            break outerLoop;
+        }
+      }
+      if (!isValid) {
+        return
+      };
+
+      spinner.succeed(chalk.green('构建环境正常！'));
+      console.log();
+
+      if (['miniProgram', 'mobileVue'].includes(options?.type)) {
+        new CoreGitDownloader().syncDownload(options);
+        return;
+      }
+
+      switch (answer.template) {
+        case 'lite':
+          new CoreLiteDownloader().syncDownload(answer);
+          break;
+        default:
+          new CoreSelector().interactionsSelect(answer).then((contentAnswer) => {
+            new CoreGitDownloader().syncDownload(answer, contentAnswer);
+          });
+      }
+      return;
+    }
+
     spinner.succeed(chalk.green('构建环境正常！'));
     console.log();
     this.init();
-   
+
   }
 
   /**
@@ -41,11 +114,11 @@ class Creator {
     // 1.基本配置数据获取
     const answer = await new CoreInquirer().interactionsHandler();
 
-    if(['miniProgram', 'mobileVue'].includes(answer?.type)) {
+    if (['miniProgram', 'mobileVue'].includes(answer?.type)) {
       await new CoreGitDownloader().syncDownload(answer);
       return;
     }
-   
+
     // 2.询问生成简化版还是自定义版本
     const listOptions: { type: SupportedTemplateSize; name: string; description: string } = await new CoreLiteInquirer().interactionsHandler();
 
@@ -62,7 +135,7 @@ class Creator {
         // 自定义版本处理逻辑
         // 3-1.依据基本配置载下配置文件路由模板
         const contentAnswer = await new CoreSelector().interactionsSelect(answer);
-       
+
         // 选择开发语言 javascript/typescript 【暂未发布】
         // const languageAnswer = await new CoreJsTransformInquirer().interactionsHandler();
         // const finalAnswer = { ...contentAnswer, ...languageAnswer };

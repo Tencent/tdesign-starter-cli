@@ -20,6 +20,8 @@ export class CoreGitDownloader {
     console.log(chalk.green('👉  开始构建，请稍侯...'));
     console.log();
     const spinner = ora('正在构建模板...').start();
+    console.log();
+
     const { downloadUrl, fePermissionDownloadUrl, url } = templates[`${options.type || 'vue2'}`];
     const executeDownloadUrl = Array.isArray(finalOptions.selectTypes) && options.type === 'vue3' ? (fePermissionDownloadUrl as string) : downloadUrl;
     // 清除测试目录

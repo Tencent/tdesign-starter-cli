@@ -23,6 +23,7 @@ export class CoreLiteDownloader extends CoreGitDownloader {
     console.log(chalk.green('👉  开始构建，请稍侯...'));
     console.log();
     const spinner = ora('正在构建模板...').start();
+    console.log();
 
     // 清除测试目录
     await this.clearTestFolder();
@@ -63,6 +64,7 @@ export class CoreLiteDownloader extends CoreGitDownloader {
     const srcDir = pathResolve(path.posix.join('templates', options.buildToolType, copyFolderName));
     try {
       await fse.copy(srcDir, destDir);
+      console.log();
       console.log(chalk.green('👉  生成代码完毕...'));
     } catch (err) {
       console.error(err);
