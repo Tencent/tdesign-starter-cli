@@ -1,4 +1,9 @@
 
+## 🌈 0.5.1 `2024-06-05` 
+### 🚀 Features
+- 新增`farm`模版 @RSS1102 ([#61](https://github.com/Tencent/tdesign-starter-cli/pull/61))
+- 新增命令行创建具体模版的功能支持 @RSS1102 ([#63](https://github.com/Tencent/tdesign-starter-cli/pull/63))
+
 ## 0.5.0 `2024-05-09`
 
 ### Breaking Change
