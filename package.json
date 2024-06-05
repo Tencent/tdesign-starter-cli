@@ -15,7 +15,8 @@
     "dev": "node ./bin/index.js",
     "prebuild": "rimraf bin/",
     "build": "rollup -c ",
-    "lint": "eslint 'src/**/*.{js,ts}'"
+    "lint": "eslint 'src/**/*.{js,ts}'",
+    "site": "echo 'no need to build site'"
   },
   "repository": {
     "type": "git",
@@ -43,8 +44,7 @@
     "eslint": "^8.56.0",
     "prettier": "^3.2.5",
     "rollup": "4.14.3",
-    "rollup-plugin-copy": "3.5.0",
-    "rollup-plugin-uglify": "6.0.4"
+    "rollup-plugin-copy": "3.5.0"
   },
   "dependencies": {
     "@babel/plugin-transform-typescript": "^7.24.4",
