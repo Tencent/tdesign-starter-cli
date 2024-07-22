@@ -17,8 +17,9 @@
   </a>
 </p>
 
-English | [简体中文](./README-zh_CN.md) 
+English | [简体中文](./README-zh_CN.md)
 
+> Please note that the Node version installed on your local machine needs to be `>=16`.
 
 ## Install
 
@@ -27,7 +28,6 @@ npm install tdesign-starter-cli -g
 ```
 
 ## Usage
-
 
 ```sh
 # project initialization
@@ -47,6 +47,11 @@ npm run dev
 
 ```
 
+### Preview
+
+- [vite-react](https://tencent-tdesign-starter-cli.surge.sh/template-vite-react/index.html)
+- [vite-vue2](https://tencent-tdesign-starter-cli.surge.sh/template-vite-vue2/index.html)
+- [vite-vue3](https://tencent-tdesign-starter-cli.surge.sh/template-vite-vue3/index.html)
 
 ### License
 
