@@ -33,3 +33,8 @@ pnpm-lock.yaml
 src/config/ConfigDev.ts
 /test
 /bin/*
+
+# 测试文件
+template-vite-*
+template-webpack-*
+template-farm-*
