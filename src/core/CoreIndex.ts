@@ -20,7 +20,7 @@ type CreatorOptions = {
   name: string;
   description: string;
   type: 'vue2' | 'vue3' | 'react' | 'miniProgram' | 'mobileVue';
-  buildToolType: 'vite' | 'webpack';
+  buildToolType: 'vite' | 'webpack' | 'farm';
   template: 'lite' | 'all';
 }
 
@@ -62,8 +62,8 @@ class Creator {
             }
             break;
           case 'buildToolType':
-            if (!['vite', 'webpack'].includes(options['buildToolType'])) {
-              spinner.fail(chalk.red('buildToolType 参数错误，请输入vite | webpack'));
+            if (!['vite', 'webpack', 'farm'].includes(options['buildToolType'])) {
+              spinner.fail(chalk.red('buildToolType 参数错误，请输入vite | webpack | farm'));
               isValid = false;
               break outerLoop;
             }
