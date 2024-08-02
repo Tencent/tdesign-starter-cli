@@ -9,12 +9,12 @@ const execAsync = promisify(exec);
 const cpAsync = promisify(cp);
 
 /**
- * 匹配文件
+ * 匹配文件 vite.config.js/ts  farm.config.js/ts
  */
 const filesReg = (root, reg, isPath = false) => {
   // 获取根目录下的文件夹名称
   const dirs = fs.readdirSync(root, { withFileTypes: true })
-    .map(dirent => dirent.name); // 获取目录名称
+    .map(dirent => dirent.name);
 
   if (!isPath) {
     return dirs.filter(dir => reg.test(dir));
@@ -23,14 +23,14 @@ const filesReg = (root, reg, isPath = false) => {
 }
 
 /**
- *  匹配处理vite farm的config.js/ts 文件 
+ *  处理文件 vite.config.js/ts farm.config.js/ts 
  */
 const configFilesReg = (configReg, reg, getNewConfigFile) => {
-  filesReg(process.cwd(), configReg).forEach(async (template) => {
-    // 重写config.* 文件
-    const configFilePath = filesReg(path.join(process.cwd(), template), reg, true)?.[0];
-    console.log('configFilePath', configFilePath);
+  const cwd = process.cwd();
+  filesReg(cwd, configReg).forEach(async (template) => {
 
+    // 重写config.* 文件
+    const configFilePath = filesReg(path.join(cwd, template), reg, true)?.[0];
     const readConfigFile = fs.readFileSync(configFilePath, 'utf-8');
     const newConfigFile = getNewConfigFile(readConfigFile, template);
     fs.writeFileSync(configFilePath, newConfigFile);
@@ -44,33 +44,32 @@ const configFilesReg = (configReg, reg, getNewConfigFile) => {
   });
 }
 
-
 const preview = async () => {
-
   // todo:从 template 循环执行
   try {
     await execAsync('pnpm run dev init template-vite-vue3 --description 这是一个vite构建的vue3项目 --type vue3 --template lite --buildToolType vite');
     await execAsync('pnpm run dev init template-vite-vue2 --description 这是一个vite构建的vue2项目 --type vue2 --template lite --buildToolType vite');
     await execAsync('pnpm run dev init template-vite-react --description 这是一个vite构建的react项目 --type react --template lite --buildToolType vite');
 
-    // await execAsync('pnpm run dev init template-farm-vue3 --description 这是一个farm构建的vue3项目 --type vue3 --template lite --buildToolType farm');
-    // await execAsync('pnpm run dev init template-farm-vue2 --description 这是一个farm构建的vue2项目 --type vue2 --template lite --buildToolType farm');
-    // await execAsync('pnpm run dev init template-farm-react --description 这是一个farm构建的react项目 --type react --template lite --buildToolType farm');
+    await execAsync('pnpm run dev init template-farm-vue3 --description 这是一个farm构建的vue3项目 --type vue3 --template lite --buildToolType farm');
+    await execAsync('pnpm run dev init template-farm-vue2 --description 这是一个farm构建的vue2项目 --type vue2 --template lite --buildToolType farm');
+    await execAsync('pnpm run dev init template-farm-react --description 这是一个farm构建的react项目 --type react --template lite --buildToolType farm');
 
     // await execAsync('pnpm run dev init template-webpack-vue3 --description 这是一个webpack构建的vue3项目 --type vue3 --template lite --buildToolType webpack');
     // await execAsync('pnpm run dev init template-webpack-vue2 --description 这是一个webpack构建的vue2项目 --type vue2 --template lite --buildToolType webpack');
     // await execAsync('pnpm run dev init template-webpack-react --description 这是一个webpack构建的react项目 --type react --template lite --buildToolType webpack');
 
-    // vite 模版    
+    // vite 模版
     const generateViteConfig = (readConfigFile, template) => readConfigFile.replace('defineConfig({', `defineConfig({\n base: '/${template}',`);
     configFilesReg(/^template-vite/, /^vite.config.*/, generateViteConfig);
 
     // farm 模版
-    // const generateFarmConfig = (template) => `defineConfig({\n base: '/${template}',`;
-    // configFilesReg(/^farm.config.*/, 'defineConfig({', generateFarmConfig);
+    const generateFarmConfig = (readConfigFile, template) =>
+      readConfigFile.replace('defineConfig({', `defineConfig({ \n compilation: {\n   output: {\n     publicPath: '/${template}',\n   },\n  },\n`);
+    configFilesReg(/^template-farm/, /^farm.config.*/, generateFarmConfig);
 
     // webpack 模版
-
+    // todo
 
   } catch (e) {
     console.error(e);
