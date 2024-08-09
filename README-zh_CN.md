@@ -19,7 +19,6 @@
 
 [English](./README.md)  | 简体中文
 
-
 > 注意您的本机安装的Node版本需要`>=16`。
 
 ## 安装
@@ -49,6 +48,19 @@ npm run dev
 
 ```
 
+### 预览
+
+#### Vite + React/Vue2/Vue3
+
+- [vite-react](https://tencent-tdesign-starter-cli.surge.sh/template-vite-react/index.html)
+- [vite-vue2](https://tencent-tdesign-starter-cli.surge.sh/template-vite-vue2/index.html)
+- [vite-vue3](https://tencent-tdesign-starter-cli.surge.sh/template-vite-vue3/index.html)
+
+#### Farm + React/Vue2/Vue3
+
+- [farm-react](https://tencent-tdesign-starter-cli.surge.sh/template-farm-react/index.html)
+- [farm-vue2](https://tencent-tdesign-starter-cli.surge.sh/template-farm-vue2/index.html)
+- [farm-vue3](https://tencent-tdesign-starter-cli.surge.sh/template-farm-vue3/index.html)
 
 ## 开源协议
 
