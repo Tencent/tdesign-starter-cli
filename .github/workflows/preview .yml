@@ -18,6 +18,6 @@ jobs:
        - run: sleep 3s
        - run: |
           export DEPLOY_DOMAIN=${{ secrets.SURGE_DOMAIN }}
-          npx surge --project ./dist --domain $DEPLOY_DOMAIN --token ${{ secrets.SURGE_TOKEN }}
+          npx surge --project ./dist --domain $DEPLOY_DOMAIN --token ${{ secrets.TDESIGN_SURGE_TOKEN }}
           ls dist
           echo the preview URL is $DEPLOY_DOMAIN
