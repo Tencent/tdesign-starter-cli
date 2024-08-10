@@ -22,4 +22,5 @@ jobs:
       - run: sleep 3s
       - run: |
           npx surge --project ./dist --domain tencent-tdesign-starter-cli --token ${{ secrets.TDESIGN_SURGE_TOKEN }}
+          echo "deploy success"
           ls dist
