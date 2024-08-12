@@ -10,21 +10,31 @@ const execAsync = promisify(exec);
 const cpAsync = promisify(cp);
 
 /**
- * 匹配文件 vite.config.js/ts  farm.config.js/ts
+ * 匹配文件路径 vite.config.js/ts  farm.config.js/ts
  * @param root 根目录
  * @param reg 匹配规则
- * @param isPath 是否返回路径还是文件名
+ * @return 返回路径
  */
-const filesReg = (root: string, reg: RegExp, isPath = false) => {
+const filePathReg = (root: string, reg: RegExp) => {
   // 获取根目录下的文件夹名称
   const dirs = fs.readdirSync(root, { withFileTypes: true })
     .map(dirent => dirent.name);
-
-  if (!isPath) {
-    return dirs.filter(dir => reg.test(dir));
-  }
   return dirs.filter(dir => reg.test(dir)).map(dir => path.join(root, dir));
 }
+/**
+ * 匹配文件名称 vite.config.js/ts  farm.config.js/ts
+ * @param root 根目录
+ * @param reg 匹配规则
+ * @return 返回文件名
+ */
+const fileNameReg = (root: string, reg: RegExp, isPath = false) => {
+  // 获取根目录下的文件夹名称
+  const dirs = fs.readdirSync(root, { withFileTypes: true })
+    .map(dirent => dirent.name);
+  return dirs.filter(dir => reg.test(dir));
+}
+
+type GetNewConfigFileFn = (readConfigFile: string, template: string) => string;
 
 /**
  * 处理重写文件(添加path) vite.config.js/ts farm.config.js/ts 
@@ -32,14 +42,14 @@ const filesReg = (root: string, reg: RegExp, isPath = false) => {
  * @param reg 匹配规则
  * @param getNewConfigFile 获取新的config.* 文件
  */
-const configFilesReg = async (configReg: RegExp, reg: RegExp,
-  getNewConfigFile: (readConfigFile: string, template: string) => string) => {
+const configFilesReg = async (configReg: RegExp, reg: RegExp, getNewConfigFile: GetNewConfigFileFn) => {
   const cwd = process.cwd();
-  const templates = filesReg(cwd, configReg);
+  const templates = fileNameReg(cwd, configReg);
 
-  await Promise.all(templates.map(async (template) => {
+  templates.forEach(async (template) => {
+    // 匹配config.* 文件
+    const configFilePath = filePathReg(path.join(cwd, template), reg)?.[0];
     // 重写config.* 文件
-    const configFilePath = filesReg(path.join(cwd, template), reg, true)?.[0];
     const readConfigFile = fs.readFileSync(configFilePath, 'utf-8');
     const newConfigFile = getNewConfigFile(readConfigFile, template);
     fs.writeFileSync(configFilePath, newConfigFile);
@@ -50,7 +60,7 @@ const configFilesReg = async (configReg: RegExp, reg: RegExp,
     const distFilePath = path.join(process.cwd(), template, 'dist');
     const newDistFilePath = path.join(process.cwd(), 'dist', template);
     await cpAsync(distFilePath, newDistFilePath, { recursive: true });
-  }));
+  });
 }
 
 const initTemplates = async (templates: { name: string, description: string, type: string, buildToolType: string }[]) => {
@@ -75,16 +85,45 @@ const preview = async () => {
 
     await initTemplates(templates);
 
-    // vite 模版
-    const generateViteConfig = (readConfigFile: string, template: string) =>
-      readConfigFile.replace('defineConfig({', `defineConfig({\n base: '/${template}',`);
+    // vite 模版重写
+    const generateViteConfig = (readConfigFile: string, template: string) => {
+      const replacementRules = [
+        {
+          mate: 'defineConfig({',
+          sub: `defineConfig({\n base: '/${template}',`
+        },
+        {
+          mate: 'export default {',
+          sub: `export default {\n base: '/${template}',`
+        }
+      ]
+
+      replacementRules.map(replacementRule => {
+        if (readConfigFile.includes(replacementRule.mate)) {
+          readConfigFile = readConfigFile.replace(replacementRule.mate, replacementRule.sub);
+        }
+      });
+      return readConfigFile;
+    }
+
+    // farm 模版重写
+    const generateFarmConfig = (readConfigFile: string, template: string) => {
+      const replacementRules = [
+        {
+          mate: 'defineConfig({',
+          sub: `defineConfig({ \n compilation: {\n output: {\n publicPath: '/${template}',\n },\n },\n`
+        }
+      ]
+
+      replacementRules.map(replacementRule => {
+        if (readConfigFile.includes(replacementRule.mate)) {
+          readConfigFile = readConfigFile.replace(replacementRule.mate, replacementRule.sub);
+        }
+      });
+      return readConfigFile;
+    }
 
     await configFilesReg(/^template-vite/, /^vite.config.*/, generateViteConfig);
-
-    // farm 模版
-    const generateFarmConfig = (readConfigFile: string, template: string) =>
-      readConfigFile.replace('defineConfig({', `defineConfig({ \n compilation: {\n output: {\n publicPath: '/${template}',\n },\n },\n`);
-
     await configFilesReg(/^template-farm/, /^farm.config.*/, generateFarmConfig);
 
     // webpack 模版
@@ -95,4 +134,4 @@ const preview = async () => {
   }
 };
 
-preview();
+preview().catch(e => console.error(e));
