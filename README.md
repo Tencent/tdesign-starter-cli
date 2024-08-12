@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="http://tdesgin.tencent.com/starter/vue/#/dashboard/base"><img src="https://tdesign.gtimg.com/starter/brand-logo.svg" /></a>
+  <a href="https://tdesign.tencent.com/starter"><img src="https://tdesign.gtimg.com/starter/brand-logo.svg" /></a>
 </p>
 
 <p align="center">
@@ -51,15 +51,15 @@ npm run dev
 
 #### Vite + React/Vue2/Vue3
 
-- <a href="https://tencent-tdesign-starter-cli.surge.sh/template-vite-react/index.html" target="_blank">vite-react</a>
-- <a href="https://tencent-tdesign-starter-cli.surge.sh/template-vite-vue2/index.html" target="_blank">vite-vue2</a>
-- <a href="https://tencent-tdesign-starter-cli.surge.sh/template-vite-vue3/index.html" target="_blank">vite-vue3</a>
+- [vite-react](https://tencent-tdesign-starter-cli.surge.sh/template-vite-react/index.html)
+- [vite-vue2](https://tencent-tdesign-starter-cli.surge.sh/template-vite-vue2/index.html)
+- [vite-vue3](https://tencent-tdesign-starter-cli.surge.sh/template-vite-vue3/index.html)
 
 #### Farm + React/Vue2/Vue3
 
-- <a href="https://tencent-tdesign-starter-cli.surge.sh/template-farm-react/index.html" target="_blank">farm-react</a>
-- <a href="https://tencent-tdesign-starter-cli.surge.sh/template-farm-vue2/index.html" target="_blank">farm-vue2</a>
-- <a href="https://tencent-tdesign-starter-cli.surge.sh/template-farm-vue3/index.html" target="_blank">farm-vue3</a>
+- [farm-react](https://tencent-tdesign-starter-cli.surge.sh/template-farm-react/index.html)
+- [farm-vue2](https://tencent-tdesign-starter-cli.surge.sh/template-farm-vue2/index.html)
+- [farm-vue3](https://tencent-tdesign-starter-cli.surge.sh/template-farm-vue3/index.html)
 
 ### License
 
