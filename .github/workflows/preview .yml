@@ -1,0 +1,24 @@
+name: Build & deploy
+on:
+  pull_request:
+    branches:
+      - develop
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: npm install pnpm -g && pnpm install && pnpm build
+      - run: bun scripts/deploy.ts
+      - run: sleep 3s
+      - run: |
+          npx surge --project ./dist --domain tencent-tdesign-starter-cli.surge.sh --token ${{ secrets.TDESIGN_SURGE_TOKEN }}
+          ls dist
