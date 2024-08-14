@@ -1,6 +1,6 @@
 import { promisify } from 'util';
 import { exec } from 'child_process';
-import fs from 'fs';
+import fs, { mkdirSync } from 'fs';
 import { cp } from 'fs/promises';
 import path from 'path';
 
@@ -47,12 +47,45 @@ const configFilesReg = async (configReg: RegExp, reg: RegExp, getNewConfigFile: 
   const templates = fileNameReg(cwd, configReg);
 
   templates.forEach(async (template) => {
+    // 特殊处理 template-webpack-react 使用craco重写 create-react-app 配置
+    if (template === 'template-webpack-react') {
+      const cracoConfig = `
+         const path = require('path');
+         const fs = require('fs');
+
+         const appDirectory = fs.realpathSync(process.cwd());
+         const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
+         module.exports = {
+           webpack: {
+             configure: (webpackConfig, { env, paths }) => {
+             paths.appBuild = webpackConfig.output.path = path.resolve(__dirname, 'dist');
+             webpackConfig.output.publicPath = resolveApp('/template-webpack-react');
+              return webpackConfig;
+             },
+           },
+         };
+          `
+
+      const cracoConfigPath = path.join(cwd, template, 'craco.config.js');
+      fs.writeFileSync(cracoConfigPath, cracoConfig);
+      await execAsync(` pnpm i -D @types/node && pnpm i -D @craco/craco`, { cwd: path.join(process.cwd(), template) });
+      const packageJsonPath = path.join(cwd, template, 'package.json');
+      fs.writeFileSync(packageJsonPath, fs.readFileSync(packageJsonPath, 'utf-8').replace('react-scripts build', 'craco build'));
+      // 处理 create-react-app需要 .eslintrc.cjs的问题 删除 .eslintrc.js
+      const eslintrcPath = path.join(cwd, '.eslintrc.js');
+      if (fs.existsSync(eslintrcPath)) {
+        fs.unlinkSync(eslintrcPath);
+      }
+    }
+
     // 匹配config.* 文件
     const configFilePath = filePathReg(path.join(cwd, template), reg)?.[0];
-    // 重写config.* 文件
-    const readConfigFile = fs.readFileSync(configFilePath, 'utf-8');
-    const newConfigFile = getNewConfigFile(readConfigFile, template);
-    fs.writeFileSync(configFilePath, newConfigFile);
+    if (configFilePath) {
+      // 重写config.* 文件
+      const readConfigFile = fs.readFileSync(configFilePath, 'utf-8');
+      const newConfigFile = getNewConfigFile(readConfigFile, template);
+      fs.writeFileSync(configFilePath, newConfigFile);
+    }
 
     await execAsync(`pnpm install && pnpm run build`, { cwd: path.join(process.cwd(), template) });
 
@@ -78,9 +111,9 @@ const preview = async () => {
       { name: 'template-farm-vue3', description: '这是一个farm构建的vue3项目', type: 'vue3', buildToolType: 'farm' },
       { name: 'template-farm-vue2', description: '这是一个farm构建的vue2项目', type: 'vue2', buildToolType: 'farm' },
       { name: 'template-farm-react', description: '这是一个farm构建的react项目', type: 'react', buildToolType: 'farm' },
-      // { name: 'template-webpack-vue3', description: '这是一个webpack构建的vue3项目', type: 'vue3', buildToolType: 'webpack' },
-      // { name: 'template-webpack-vue2', description: '这是一个webpack构建的vue2项目', type: 'vue2', buildToolType: 'webpack' },
-      // { name: 'template-webpack-react', description: '这是一个webpack构建的react项目', type: 'react', buildToolType: 'webpack' },
+      { name: 'template-webpack-vue3', description: '这是一个webpack构建的vue3项目', type: 'vue3', buildToolType: 'webpack' },
+      { name: 'template-webpack-vue2', description: '这是一个webpack构建的vue2项目', type: 'vue2', buildToolType: 'webpack' },
+      { name: 'template-webpack-react', description: '这是一个webpack构建的react项目', type: 'react', buildToolType: 'webpack' },
     ];
 
     await initTemplates(templates);
@@ -123,11 +156,27 @@ const preview = async () => {
       return readConfigFile;
     }
 
+    // webpack 模版重写
+    const generateWebpackConfig = (readConfigFile: string, template: string) => {
+      const replacementRules = [
+        {
+          mate: 'module.exports = {',
+          sub: `module.exports = {\n publicPath: '/${template}',\n`
+        }
+      ]
+
+      replacementRules.map(replacementRule => {
+        if (readConfigFile.includes(replacementRule.mate)) {
+          readConfigFile = readConfigFile.replace(replacementRule.mate, replacementRule.sub);
+        }
+      });
+      return readConfigFile;
+    }
+
     await configFilesReg(/^template-vite/, /^vite.config.*/, generateViteConfig);
     await configFilesReg(/^template-farm/, /^farm.config.*/, generateFarmConfig);
+    await configFilesReg(/^template-webpack/, /^vue.config.*/, generateWebpackConfig);
 
-    // webpack 模版
-    // todo
 
   } catch (e) {
     console.error(e);
