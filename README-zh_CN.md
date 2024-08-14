@@ -60,6 +60,12 @@ npm run dev
 - [farm-vue2](https://tencent-tdesign-starter-cli.surge.sh/template-farm-vue2/index.html)
 - [farm-vue3](https://tencent-tdesign-starter-cli.surge.sh/template-farm-vue3/index.html)
 
+#### Webpack + React/Vue2/Vue3
+
+- [webpack-react](https://tencent-tdesign-starter-cli.surge.sh/template-webpack-react/index.html)
+- [webpack-vue2](https://tencent-tdesign-starter-cli.surge.sh/template-webpack-vue2/index.html)
+- [webpack-vue3](https://tencent-tdesign-starter-cli.surge.sh/template-webpack-vue3/index.html)
+
 ## 开源协议
 
 TDesign 遵循 [MIT 协议](https://github.com/Tencent/tdesign-starter-cli/LICENSE)。
