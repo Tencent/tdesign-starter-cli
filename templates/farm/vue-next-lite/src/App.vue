@@ -79,11 +79,12 @@ import FarmLogo from './assets/svg/farm-logo.png';
   transition: filter 300ms;
 }
 
-.logo:hover {
+.logo.tdesign:hover {
   filter: drop-shadow(0 0 2em #194de9);
 }
 
 .logo.farm:hover {
   filter: drop-shadow(0 0 2em #bd34fe);
 }
+
 </style>
