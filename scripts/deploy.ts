@@ -59,7 +59,7 @@ const configFilesReg = async (configReg: RegExp, reg: RegExp, getNewConfigFile: 
            webpack: {
              configure: (webpackConfig, { env, paths }) => {
              paths.appBuild = webpackConfig.output.path = path.resolve(__dirname, 'dist');
-             webpackConfig.output.publicPath = resolveApp('/template-webpack-react');
+             webpackConfig.output.publicPath = resolveApp('/template-webpack-react/');
               return webpackConfig;
              },
            },
