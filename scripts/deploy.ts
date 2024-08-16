@@ -59,7 +59,7 @@ const configFilesReg = async (configReg: RegExp, reg: RegExp, getNewConfigFile: 
            webpack: {
              configure: (webpackConfig, { env, paths }) => {
              paths.appBuild = webpackConfig.output.path = path.resolve(__dirname, 'dist');
-             webpackConfig.output.publicPath = resolveApp('/template-webpack-react/');
+             webpackConfig.output.publicPath = resolveApp('/template-webpack-react')+ '/';
               return webpackConfig;
              },
            },
@@ -68,7 +68,7 @@ const configFilesReg = async (configReg: RegExp, reg: RegExp, getNewConfigFile: 
 
       const cracoConfigPath = path.join(cwd, template, 'craco.config.js');
       fs.writeFileSync(cracoConfigPath, cracoConfig);
-      await execAsync(` pnpm i -D @types/node && pnpm i -D @craco/craco`, { cwd: path.join(process.cwd(), template) });
+      await execAsync(`pnpm i -D @types/node && pnpm i -D @craco/craco`, { cwd: path.join(process.cwd(), template) });
       const packageJsonPath = path.join(cwd, template, 'package.json');
       fs.writeFileSync(packageJsonPath, fs.readFileSync(packageJsonPath, 'utf-8').replace('react-scripts build', 'craco build'));
       // 处理 create-react-app需要 .eslintrc.cjs的问题 删除 .eslintrc.js
