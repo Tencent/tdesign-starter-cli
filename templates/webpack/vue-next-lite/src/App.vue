@@ -68,7 +68,7 @@ import {
   JumpIcon
 } from "tdesign-icons-vue-next";
 
-import TDesignLogo from '../public/tdesign-logo.svg';
+import TDesignLogo from './assets/svg/tdesign-logo.svg';
 import WebpackLogo from './assets/svg/webpack-logo.svg';
 
 </script>

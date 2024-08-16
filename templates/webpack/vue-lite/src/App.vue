@@ -60,7 +60,7 @@ import {
 } from "tdesign-icons-vue";
 
 import WebpackLogo from "./assets/svg/webpack-logo.svg";
-import TDesignLogo from "../public/tdesign-logo.svg";
+import TDesignLogo from "./assets/svg/tdesign-logo.svg";
 
 export default Vue.extend({
   components: {
