@@ -18,20 +18,26 @@ const App: React.FC = () => {
           </a>
         </Space>
         <h2> Welcome to use
+          &nbsp;
           <Link size="large" theme="primary" href="https://tdesign.tencent.com/react/overview" suffixIcon={<JumpIcon />} target="_blank">
             TDesign-react
           </Link>
+          &nbsp;
           +
+          &nbsp;
           <Link size="large" theme="primary" href="https://webpack.js.org/" suffixIcon={<JumpIcon />} target="_blank">
             Webpack
           </Link>
+          &nbsp;
           !
         </h2>
         <h3>
           Experience it quickly using the
+          &nbsp;
           <Link theme="warning" href="https://tdesign.tencent.com/starter/react/" suffixIcon={<JumpIcon />} target="_blank">
             TDesign Starter
           </Link>
+          &nbsp;
           page template.
         </h3>
 
