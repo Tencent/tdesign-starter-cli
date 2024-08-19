@@ -26,7 +26,8 @@ export type CreatorOptions = {
 }
 
 class Creator {
-  constructor(name: string, options: CreatorOptions, command: any) {
+  constructor(name: string, options: Omit<CreatorOptions, 'name'>, command: any) {
+    console.log(name, options, command);
     clear();
     console.log('*****************************');
     console.log(chalk.green(figlet.textSync('TDesign Starter', { horizontalLayout: 'full' })));
@@ -38,6 +39,7 @@ class Creator {
 
     // 如果有name参数，直接下载模板
     if (name) {
+
       const answer: CreatorOptions = {
         ...options,
         name,
@@ -47,7 +49,8 @@ class Creator {
       outerLoop: for (const key of Object.keys(options)) {
         switch (key) {
           case 'description':
-            reWritePackageFile(options);
+            console.log(options);
+            reWritePackageFile(answer);
             break;
           case 'type':
             if (!['vue2', 'vue3', 'react', 'miniProgram', 'mobileVue'].includes(options['type'])) {
@@ -84,7 +87,7 @@ class Creator {
       console.log();
 
       if (['miniProgram', 'mobileVue'].includes(options?.type)) {
-        new CoreGitDownloader().syncDownload(options);
+        new CoreGitDownloader().syncDownload(answer);
         return;
       }
 

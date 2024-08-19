@@ -60,8 +60,10 @@ export function directoryExists(filePath: string): boolean {
  * @returns
  */
 export function reWritePackageFile(options: CreatorOptions) {
+	console.log('重写package.json file', options);
 	const packagePath = path.join(options.name, 'package.json');
 	const packageContent = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+	console.log('重写package.json file', packageContent);
 	packageContent.name = options.name;
 	packageContent.description = options.description;
 
