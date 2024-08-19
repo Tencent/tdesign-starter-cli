@@ -3,6 +3,7 @@ import fs from 'fs';
 import pkg from '../../package.json';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { CreatorOptions } from '../core/CoreIndex';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -51,4 +52,24 @@ export function getCurrentDirectoryBase(): string {
  */
 export function directoryExists(filePath: string): boolean {
 	return fs.existsSync(filePath);
+}
+
+/**
+ * 重写package.json file
+ * @param filePath
+ * @returns
+ */
+export function reWritePackageFile(options: CreatorOptions) {
+	const packagePath = path.join(options.name, 'package.json');
+	const packageContent = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+	packageContent.name = options.name;
+	packageContent.description = options.description;
+
+	// 去掉预装husky,因为不存在.git
+	packageContent.scripts.prepare = "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || is-ci || husky install";
+
+	// 写入配置
+	fs.writeFileSync(packagePath, JSON.stringify(packageContent, null, 2), {
+		encoding: 'utf8'
+	});
 }

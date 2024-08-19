@@ -9,6 +9,7 @@ import { CoreOptionsFilterForVue3 } from './core-options/CoreOptionsFilterForVue
 import { CoreOptionsFilterForReact } from './core-options/CoreOptionsFilterForReact';
 // import { CoreJsTransformer } from './core-js-transform/CoreJsTransformer';
 import { sync } from 'rimraf';
+import { reWritePackageFile } from '../utils/UtilsIndex';
 
 export class CoreGitDownloader {
   /**
@@ -128,19 +129,8 @@ export class CoreGitDownloader {
   protected executeBuildSuccess(spinner: any, options: any) {
     console.log();
     spinner.succeed(chalk.green('构建成功！'));
-    const packagePath = path.join(options.name, 'package.json');
     try {
-      const packageContent = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
-      packageContent.name = options.name;
-      packageContent.description = options.description;
-
-      // 去掉预装husky,因为不存在.git
-      packageContent.scripts.prepare = "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || is-ci || husky install";
-
-      // 写入配置
-      fs.writeFileSync(packagePath, JSON.stringify(packageContent, null, 2), {
-        encoding: 'utf8'
-      });
+      reWritePackageFile(options);
     } catch (error) {
       console.log('write file error==', error);
     }

@@ -14,9 +14,10 @@ import { CoreJsTransformInquirer } from './core-js-transform/CoreJsTransformInqu
 
 import type { SupportedTemplateSize } from './CoreTemplate';
 import { CoreLiteDownloader } from './core-lite/CoreLiteDownloader';
+import { reWritePackageFile } from '../utils/UtilsIndex';
 
 
-type CreatorOptions = {
+export type CreatorOptions = {
   name: string;
   description: string;
   type: 'vue2' | 'vue3' | 'react' | 'miniProgram' | 'mobileVue';
@@ -46,6 +47,7 @@ class Creator {
       outerLoop: for (const key of Object.keys(options)) {
         switch (key) {
           case 'description':
+            reWritePackageFile(options);
             break;
           case 'type':
             if (!['vue2', 'vue3', 'react', 'miniProgram', 'mobileVue'].includes(options['type'])) {
