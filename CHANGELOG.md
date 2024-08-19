@@ -1,8 +1,10 @@
 
 ## 🌈 0.5.2 `2024-08-19` 
-### 🚧 Others
-- fix:  修复 `cli` 命令行中构建工具类型 (buildToolType) 缺少 `farm` 参数的问题  @RSS1102 ([#74](https://github.com/Tencent/tdesign-starter-cli/pull/74))
+### 🚀 Features
 - style: 统一模板页面样式 @RSS1102 ([#78](https://github.com/Tencent/tdesign-starter-cli/pull/78))
+### 🐞 Bug Fixes
+- fix:  修复 `cli` 命令行中构建工具类型 (buildToolType) 缺少 `farm` 参数的问题  @RSS1102 ([#74](https://github.com/Tencent/tdesign-starter-cli/pull/74))
+
 ## 🌈 0.5.1 `2024-06-05` 
 ### 🚀 Features
 - 新增`farm`模版 @RSS1102 ([#61](https://github.com/Tencent/tdesign-starter-cli/pull/61))
