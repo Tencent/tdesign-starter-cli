@@ -59,18 +59,23 @@ const configFilesReg = async (configReg: RegExp, reg: RegExp, getNewConfigFile: 
            webpack: {
              configure: (webpackConfig, { env, paths }) => {
              paths.appBuild = webpackConfig.output.path = path.resolve(__dirname, 'dist');
-             webpackConfig.output.publicPath = resolveApp('/template-webpack-react');
+             webpackConfig.output.publicPath = resolveApp('/template-webpack-react')+ '/';
               return webpackConfig;
              },
            },
          };
           `
-
       const cracoConfigPath = path.join(cwd, template, 'craco.config.js');
       fs.writeFileSync(cracoConfigPath, cracoConfig);
-      await execAsync(` pnpm i -D @types/node && pnpm i -D @craco/craco`, { cwd: path.join(process.cwd(), template) });
+      await execAsync(`pnpm i -D @types/node && pnpm i -D @craco/craco`, { cwd: path.join(process.cwd(), template) });
       const packageJsonPath = path.join(cwd, template, 'package.json');
       fs.writeFileSync(packageJsonPath, fs.readFileSync(packageJsonPath, 'utf-8').replace('react-scripts build', 'craco build'));
+
+      // 处理 PUBLIC_URL 在构建的过程中因实际的项目路径在 /template-webpack-react/ 下，所以需要修改 PUBLIC_URL 的值
+      const envPath = path.join(cwd, template, ".env");
+      fs.writeFileSync(envPath, `PUBLIC_URL="/template-webpack-react/"`);
+
+
       // 处理 create-react-app需要 .eslintrc.cjs的问题 删除 .eslintrc.js
       const eslintrcPath = path.join(cwd, '.eslintrc.js');
       if (fs.existsSync(eslintrcPath)) {

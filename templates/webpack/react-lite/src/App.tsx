@@ -1,8 +1,8 @@
 import * as React from "react"
 import { Button, ConfigProvider, Link, Space } from 'tdesign-react';
 import { AddIcon, CloudUploadIcon, DiscountIcon, CloudDownloadIcon, JumpIcon } from 'tdesign-icons-react';
-import TDesignLogo from '../public/tdesign-logo.svg';
-import FarmLogo from './assets/svg/farm-logo.png';
+import TDesignLogo from './assets/svg/tdesign-logo.svg';
+import WebpackLogo from './assets/svg/webpack-logo.svg';
 import './App.css';
 
 const App: React.FC = () => {
@@ -10,11 +10,11 @@ const App: React.FC = () => {
     <ConfigProvider globalConfig={{ classPrefix: 't' }}>
       <Space direction='vertical' style={{ width: '100%', textAlign: 'center' }}>
         <Space>
-          <a href="https://tdesign.tencent.com/react/overview" target="_blank">
+          <a href="https://tdesign.tencent.com/react/overview" target="_blank" rel="noreferrer">
             <img src={TDesignLogo} className="logo tdesign" alt="TDesign" />
           </a>
-          <a href="https://www.farmfe.org/" target="_blank">
-            <img src={FarmLogo} className="logo farm" alt="Farm" />
+          <a href="https://webpack.js.org/" target="_blank" rel="noreferrer">
+            <img src={WebpackLogo} className="logo webpack" alt="Webpack" />
           </a>
         </Space>
         <h2> Welcome to use
@@ -25,8 +25,8 @@ const App: React.FC = () => {
           &nbsp;
           +
           &nbsp;
-          <Link size="large" theme="primary" href="https://www.farmfe.org/" suffixIcon={<JumpIcon />} target="_blank">
-            Farm
+          <Link size="large" theme="primary" href="https://webpack.js.org/" suffixIcon={<JumpIcon />} target="_blank">
+            Webpack
           </Link>
           &nbsp;
           !

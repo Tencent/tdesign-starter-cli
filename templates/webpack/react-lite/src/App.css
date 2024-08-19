@@ -9,6 +9,7 @@
   filter: drop-shadow(0 0 2em #194de9);
 }
 
-.logo.farm:hover {
+
+.logo.webpack:hover {
   filter: drop-shadow(0 0 2em #bd34fe);
 }

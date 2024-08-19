@@ -79,7 +79,7 @@ import ViteLogo from './assets/svg/vite-logo.svg';
   transition: filter 300ms;
 }
 
-.logo:hover {
+.logo.tdesign:hover {
   filter: drop-shadow(0 0 2em #194de9);
 }
 

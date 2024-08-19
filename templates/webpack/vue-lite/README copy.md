@@ -2,7 +2,7 @@
 
 </p>
 <p align="center">
-  <a href="https://tdesign.tencent.com/react/overview" target="_blank">
+  <a href="https://tdesign.tencent.com/vue/overview" target="_blank">
 <img alt="TDesign Logo" width="200" src="./src/assets/svg/tdesign-logo.svg"/>
   </a>
 </p>
@@ -16,7 +16,7 @@
 
 ## 项目简介
 
-`tdesign-react` 是一个TDesign 适配桌面端的组件库，适合在 React 技术栈项目中使用。
+`tdesign-vue` 是一个 TDesign 适配桌面端的组件库，适合在 vue 2 技术栈项目中使用。
 
 ## 开发
 
