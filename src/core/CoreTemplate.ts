@@ -1,14 +1,4 @@
-export type SupportedTemplate = 'vue2' | 'vue3' | 'react' | 'miniProgram'| 'mobileVue' | string;
-
-export type SupportedTemplateSize = 'all' | 'lite' 
-
-export interface ITemplateContent {
-  url: string;
-  description: string;
-  downloadUrl: string;
-  fePermissionDownloadUrl?: string; // 下载前端权限模型的 适用于部分模板下载场景
-  routerData: string;
-}
+import { SupportedTemplate, ITemplateContent } from "../types/type";
 
 /**
  * 模板地址

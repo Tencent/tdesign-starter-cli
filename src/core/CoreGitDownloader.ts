@@ -3,19 +3,21 @@ import download from 'download-git-repo';
 import ora from 'ora';
 import chalk from 'chalk';
 import path from 'path';
-import { SupportedTemplate, templates } from './CoreTemplate';
+import { SupportedTemplate } from '../types/type';
 import { CoreOptionsFilterForVue2, IOptionsFilter } from './core-options/CoreOptionsFilterForVue2';
 import { CoreOptionsFilterForVue3 } from './core-options/CoreOptionsFilterForVue3';
 import { CoreOptionsFilterForReact } from './core-options/CoreOptionsFilterForReact';
 // import { CoreJsTransformer } from './core-js-transform/CoreJsTransformer';
 import { sync } from 'rimraf';
+import { CreatorOptions } from '../types/type';
+import { templates } from './CoreTemplate';
 
 export class CoreGitDownloader {
   /**
    * 下载工程目录，依据配置选择是否需要筛选不需要目录
    * @returns 命令行数组
    */
-  public async syncDownload(options: { type: SupportedTemplate; name: string; description: string }, finalOptions: any = {}) {
+  public async syncDownload(options: Pick<CreatorOptions, 'name' | 'description' | 'type'>, finalOptions: any = {}) {
     console.log();
     console.log(chalk.green('👉  开始构建，请稍侯...'));
     console.log();
@@ -167,7 +169,7 @@ export class CoreGitDownloader {
    *
    * @memberOf CoreGitDownloader
    */
-  private executeDownload(spinner: any, downloadUrl: string, url: string, options: { type: SupportedTemplate; name: string; description: string }) {
+  private executeDownload(spinner: any, downloadUrl: string, url: string, options: Pick<CreatorOptions, 'name' | 'description' | 'type'>) {
     return new Promise((resolve) => {
       download(downloadUrl, options.name, { clone: false }, async (err: Error) => {
         if (err) {

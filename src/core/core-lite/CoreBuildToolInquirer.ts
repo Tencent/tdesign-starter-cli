@@ -1,4 +1,5 @@
-import inquirer from 'inquirer';
+import inquirer, { QuestionCollection } from 'inquirer';
+import { CreatorOptions } from '../../types/type';
 
 /**
  * 简化版询问器
@@ -12,10 +13,10 @@ export class CoreBuildToolInquirer {
    * @returns 命令行数组
    */
   public interactionsHandler() {
-    const questions: { type: string; name: string; message: string; choices: Array<Record<string, string>>; default: string }[] = [
+    const questions: QuestionCollection<Pick<CreatorOptions, 'buildToolType'>> = [
       {
         type: 'list',
-        name: 'type',
+        name: 'buildToolType',
         message: '请选择构建工具',
         choices: [
           { name: ' vite', value: 'vite' },
