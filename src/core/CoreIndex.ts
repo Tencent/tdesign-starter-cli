@@ -35,8 +35,6 @@ class Creator {
 
       outerLoop: for (const key of Object.keys(options)) {
         switch (key) {
-          case 'description':
-            break;
           case 'type':
             if (!['vue2', 'vue3', 'react', 'miniProgram', 'mobileVue'].includes(options['type'])) {
               spinner.fail(chalk.red('type 参数错误，请输入vue2 | vue3 | react | miniProgram | mobileVue'));
