@@ -159,7 +159,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
   /**
    * 排除不用内容
    *
-   * @param {{ type: SupportedTemplate, name: string, description: string }} options
+   * @param { CreatorOptions } options
    * @param {*} finalOptions
    *
    * @memberOf CoreOptionsFilter

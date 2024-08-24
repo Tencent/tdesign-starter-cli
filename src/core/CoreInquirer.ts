@@ -1,4 +1,5 @@
-import inquirer from 'inquirer';
+import inquirer, { QuestionCollection } from 'inquirer';
+import { CreatorOptions } from '../types/type';
 
 export class CoreInquirer {
   /**
@@ -7,7 +8,7 @@ export class CoreInquirer {
    */
   public interactionsHandler() {
     // 提问模式
-    const questions: Array<any> = [
+    const questions: QuestionCollection<Pick<CreatorOptions, 'name' | 'description' | 'type' | 'template'>> = [
       {
         type: 'input',
         name: 'name',

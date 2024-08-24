@@ -62,7 +62,7 @@ export class CoreOptionsFilterForReact extends CoreOptionsFilterForVue2 {
   /**
    * override 排除不用内容
    *
-   * @param {{ type: SupportedTemplate, name: string, description: string }} options
+   * @param { CreatorOptions } options
    * @param {*} finalOptions
    *
    * @memberOf CoreOptionsFilter

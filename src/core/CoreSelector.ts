@@ -1,5 +1,5 @@
 import inquirer from 'inquirer';
-import { SupportedTemplate, templates } from './CoreTemplate';
+import { templates } from './CoreTemplate';
 import axios from 'axios';
 import { CoreOptionsFilterForVue2 } from './core-options/CoreOptionsFilterForVue2';
 import { CoreOptionsFilterForVue3 } from './core-options/CoreOptionsFilterForVue3';
@@ -8,6 +8,7 @@ import { IParsedSourceData } from './CoreParsedConfig';
 import coreTemplateVue2Config from './core-template/CoreTemplateVue2Config';
 import coreTemplateVue3Config from './core-template/CoreTemplateVue3Config';
 import coreTemplateReactConfig from './core-template/CoreTemplateReactConfig';
+import { CreatorOptions, SupportedTemplate } from '../types/type';
 
 /**
  * 分段内容选择
@@ -19,12 +20,12 @@ export class CoreSelector {
   /**
    * 处理选择交互-依据基本配置载下配置文件路由模板
    *
-   * @param {{ type: SupportedTemplate, name: string, description: string }} options
+   * @param { Pick<CreatorOptions, 'name' | 'description' | 'type'>} options
    * @returns
    *
    * @memberOf CoreSelector
    */
-  public async interactionsSelect(options: { type: SupportedTemplate; name: string; description: string }) {
+  public async interactionsSelect(options: Pick<CreatorOptions, 'name' | 'description' | 'type'>) {
     const { routerData } = templates[`${options.type || 'vue2'}`];
     const questions: Array<any> = this.generateStartQuestions();
     const result = await inquirer.prompt(questions);
@@ -109,7 +110,11 @@ export class CoreSelector {
    *
    * @memberOf CoreSelector
    */
-  public parseConfigSourceReact(downloadConfigSource: string): any {
+  public parseConfigSourceReact(downloadConfigSource: string): {
+    path: any;
+    name: any;
+    meta: any;
+  }[] {
     // 存,存时空值判断
     if (downloadConfigSource) {
       coreTemplateReactConfig.setConfig(downloadConfigSource);

@@ -11,21 +11,11 @@ import { CoreLiteInquirer } from './core-lite/CoreLiteInquirer';
 import { CoreBuildToolInquirer } from './core-lite/CoreBuildToolInquirer';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { CoreJsTransformInquirer } from './core-js-transform/CoreJsTransformInquirer';
-
-import type { SupportedTemplateSize } from './CoreTemplate';
+import { CreatorOptions, SupportedTemplateSize } from '../types/type';
 import { CoreLiteDownloader } from './core-lite/CoreLiteDownloader';
 
-
-type CreatorOptions = {
-  name: string;
-  description: string;
-  type: 'vue2' | 'vue3' | 'react' | 'miniProgram' | 'mobileVue';
-  buildToolType: 'vite' | 'webpack' | 'farm';
-  template: 'lite' | 'all';
-}
-
 class Creator {
-  constructor(name: string, options: CreatorOptions, command: any) {
+  constructor(name: string, options: Omit<CreatorOptions, 'name'>, command: any) {
     clear();
     console.log('*****************************');
     console.log(chalk.green(figlet.textSync('TDesign Starter', { horizontalLayout: 'full' })));
@@ -82,7 +72,7 @@ class Creator {
       console.log();
 
       if (['miniProgram', 'mobileVue'].includes(options?.type)) {
-        new CoreGitDownloader().syncDownload(options);
+        new CoreGitDownloader().syncDownload(answer);
         return;
       }
 
@@ -120,16 +110,17 @@ class Creator {
     }
 
     // 2.询问生成简化版还是自定义版本
-    const listOptions: { type: SupportedTemplateSize; name: string; description: string } = await new CoreLiteInquirer().interactionsHandler();
+    const listOptions: { template: SupportedTemplateSize; name: string; description?: string } = await new CoreLiteInquirer().interactionsHandler();
 
     // 3.执行下载生成动作
-    switch (listOptions.type) {
+    switch (listOptions.template) {
       case 'lite':
         // 极简版本处理逻辑
         // eslint-disable-next-line no-case-declarations
-        const { type } = await new CoreBuildToolInquirer().interactionsHandler();
-        answer.buildToolType = type;
-        await new CoreLiteDownloader().syncDownload(answer);
+        const { buildToolType } = await new CoreBuildToolInquirer().interactionsHandler();
+        const typed_Answer = answer as Pick<CreatorOptions, 'name' | 'description' | 'type' | 'buildToolType'>;
+        typed_Answer.buildToolType = buildToolType;
+        await new CoreLiteDownloader().syncDownload(typed_Answer);
         break;
       default:
         // 自定义版本处理逻辑

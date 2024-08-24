@@ -1,5 +1,6 @@
-import inquirer from 'inquirer';
+import inquirer, { QuestionCollection } from 'inquirer';
 import { CoreInquirer } from '../CoreInquirer';
+import { CreatorOptions } from '../../types/type';
 
 /**
  * 简化版询问器
@@ -13,10 +14,10 @@ export class CoreLiteInquirer extends CoreInquirer {
    * @returns 命令行数组
    */
   public interactionsHandler() {
-    const questions: Array<{ type: string; name: string; message: string; choices: Array<Record<string, string>>; default: string }> = [
+    const questions: QuestionCollection<Pick<CreatorOptions, 'name' | 'description' | 'type' | 'template'>> = [
       {
         type: 'list',
-        name: 'type',
+        name: 'template',
         message: '生成代码版本：',
         choices: [
           { name: ' Lite版本 (只包含TDesign的基本使用和项目工程)', value: 'lite' },
