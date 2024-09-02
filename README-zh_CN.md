@@ -29,16 +29,19 @@ npm install tdesign-starter-cli -g
 
 ## 使用
 
+### 交互式操作
+
 ```sh
+
 # 初始化项目
 td-starter init
 
 # 填写 项目名称、项目描述
-? 请输入项目名称： [项目名称]
+? 请输入项目名称： [project-name]
 ? 请输入项目描述： Base on tdesign-starter-cli
+...
 
-# 进入项目
-cd [项目名称]
+cd [project-name]
 
 # 安装依赖
 npm install
@@ -48,19 +51,48 @@ npm run dev
 
 ```
 
-### 预览
+### Command Operation
+
+```sh
+
+# 初始化项目
+td-starter init [root]
+
+cd [project-name]
+
+# 安装依赖
+npm install
+
+# 运行    
+npm run dev 
+
+```
+
+### 选项
+
+| 选项                              | 描述                                                               |
+|-------------------------------------|-----------------------------------------------------------------------------|
+| -d, --description <description>     | 项目描述 (默认: "Base on tdesign-starter-cli")           |
+| -type, --type <type>                | 项目框架 vue2 \| vue3 \| react \| miniProgram \| mobileVue (默认: "vue2") |
+| -temp, --template <template>        | 项目模板类型: lite \| all (默认: "lite")                        |
+| -bt, --buildToolType <buildToolType>| Lite 的构建工具: vite \| webpack (默认: "vite")           |
+| -h, --help                          | 显示命令的帮助                                                 |
+
+## 预览
+
+### Vite + React/Vue2/Vue3
 
 - [vite-react](https://tencent-tdesign-starter-cli.surge.sh/template-vite-react/index.html)
 - [vite-vue2](https://tencent-tdesign-starter-cli.surge.sh/template-vite-vue2/index.html)
 - [vite-vue3](https://tencent-tdesign-starter-cli.surge.sh/template-vite-vue3/index.html)
 
-#### Farm + React/Vue2/Vue3
+### Farm + React/Vue2/Vue3
 
 - [farm-react](https://tencent-tdesign-starter-cli.surge.sh/template-farm-react/index.html)
 - [farm-vue2](https://tencent-tdesign-starter-cli.surge.sh/template-farm-vue2/index.html)
 - [farm-vue3](https://tencent-tdesign-starter-cli.surge.sh/template-farm-vue3/index.html)
 
-#### Webpack + React/Vue2/Vue3
+### Webpack + React/Vue2/Vue3
 
 - [webpack-react](https://tencent-tdesign-starter-cli.surge.sh/template-webpack-react/index.html)
 - [webpack-vue2](https://tencent-tdesign-starter-cli.surge.sh/template-webpack-vue2/index.html)
