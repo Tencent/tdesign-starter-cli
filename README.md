@@ -72,10 +72,10 @@ npm run dev
 
 | Option                              | Description                                                                 |
 |-------------------------------------|-----------------------------------------------------------------------------|
-| -d, --description <description>     | description of a project (default: "Base on tdesign-starter-cli")           |
-| -type, --type <type>                | Code version vue2 \| vue3 \| react \| miniProgram \| mobileVue (default: "vue2") |
-| -temp, --template <template>        | Project template type: lite \| all (default: "lite")                        |
-| -bt, --buildToolType <buildToolType>| The construction tool for lite: vite \| webpack (default: "vite")           |
+| -d, --description \<description>     | description of a project (default: "Base on tdesign-starter-cli")           |
+| -type, --type \<type>                | Code version vue2 \| vue3 \| react \| miniProgram \| mobileVue (default: "vue2") |
+| -temp, --template \<template>        | Project template type: lite \| all (default: "lite")                        |
+| -bt, --buildToolType \<buildToolType>| The construction tool for lite: vite \| webpack (default: "vite")           |
 | -h, --help                          | display help for command                                                    |
 
 ## Preview
