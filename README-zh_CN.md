@@ -72,10 +72,10 @@ npm run dev
 
 | 选项                              | 描述                                                               |
 |-------------------------------------|-----------------------------------------------------------------------------|
-| -d, --description <description>     | 项目描述 (默认: "Base on tdesign-starter-cli")           |
-| -type, --type <type>                | 项目框架 vue2 \| vue3 \| react \| miniProgram \| mobileVue (默认: "vue2") |
-| -temp, --template <template>        | 项目模板类型: lite \| all (默认: "lite")                        |
-| -bt, --buildToolType <buildToolType>| Lite 的构建工具: vite \| webpack (默认: "vite")           |
+| -d, --description \<description>     | 项目描述 (默认: "Base on tdesign-starter-cli")           |
+| -type, --type \<type>                | 项目框架 vue2 \| vue3 \| react \| miniProgram \| mobileVue (默认: "vue2") |
+| -temp, --template \<template>        | 项目模板类型: lite \| all (默认: "lite")                        |
+| -bt, --buildToolType \<buildToolType>| Lite 的构建工具: vite \| webpack (默认: "vite")           |
 | -h, --help                          | 显示命令的帮助                                                 |
 
 ## 预览
