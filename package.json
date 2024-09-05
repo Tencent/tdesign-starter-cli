@@ -16,7 +16,8 @@
     "prebuild": "rimraf bin/",
     "build": "rollup -c ",
     "lint": "eslint 'src/**/*.{js,ts}'",
-    "site": "echo 'no need to build site'"
+    "site": "echo 'no need to build site'",
+    "site:preview": "echo 'no need to run site preview'"
   },
   "repository": {
     "type": "git",
