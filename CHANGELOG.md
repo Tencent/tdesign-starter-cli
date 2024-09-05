@@ -1,4 +1,7 @@
 
+## 🌈 0.5.3 `2024-09-05` 
+### 🚧 Others
+- docs: 添加`tdesign-starter-cli`的使用说明 @RSS1102 ([#84](https://github.com/Tencent/tdesign-starter-cli/pull/84))
 ## 🌈 0.5.2 `2024-08-19` 
 ### 🚀 Features
 - style: 统一模板页面样式 @RSS1102 ([#78](https://github.com/Tencent/tdesign-starter-cli/pull/78))
