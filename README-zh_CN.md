@@ -56,7 +56,7 @@ npm run dev
 ```sh
 
 # 初始化项目
-td-starter init [root]
+td-starter init [project name] [root]
 
 cd [project-name]
 
@@ -66,6 +66,16 @@ npm install
 # 运行    
 npm run dev 
 
+```
+
+#### 示例
+
+``` sh
+td-starter init tdesign-vue3-farm --type vue3 --buildToolType farm
+```
+
+``` sh
+td-starter init tdesign-vue3-farm -type vue3 -bt farm
 ```
 
 ### 选项
