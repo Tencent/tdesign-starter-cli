@@ -56,7 +56,7 @@ npm run dev
 ```sh
 
 # project initialization
-td-starter init [root]
+td-starter init [project name] [root]
 
 cd [project-name]
 
@@ -66,6 +66,16 @@ npm install
 # run dev     
 npm run dev 
 
+```
+
+#### Example
+
+``` sh
+td-starter init tdesign-vue3-farm --type vue3 --buildToolType farm
+```
+
+``` sh
+td-starter init tdesign-vue3-farm -type vue3 -bt farm
 ```
 
 ### Command Options
