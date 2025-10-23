@@ -95,7 +95,6 @@
     "node": ">=16.0.0"
   },
   "module": "./bin/index.js",
-  "types": "./bin/index.d.ts",
   "exports": {
     ".": "./bin/index.js",
     "./package.json": "./package.json"
