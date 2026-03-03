@@ -9,6 +9,7 @@
     "clean": "farm clean"
   },
   "dependencies": {
+    "core-js": "^3.48.0",
     "tdesign-icons-vue-next": "latest",
     "tdesign-vue-next": "latest",
     "vite-svg-loader": "^5.1.0",
