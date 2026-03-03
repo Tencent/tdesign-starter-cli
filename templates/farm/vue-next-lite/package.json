@@ -12,13 +12,14 @@
     "tdesign-icons-vue-next": "latest",
     "tdesign-vue-next": "latest",
     "vite-svg-loader": "^5.1.0",
-    "vue": "^3.4.21"
+    "vue": "^3.5.29"
   },
   "devDependencies": {
-    "@farmfe/cli": "^1.0.2",
-    "@farmfe/core": "^1.1.4",
-    "@vitejs/plugin-vue": "^5.0.4",
-    "typescript": "^5.4.4",
-    "vue-tsc": "^2.0.10"
+    "@farmfe/cli": "^1.0.5",
+    "@farmfe/core": "^1.7.11",
+    "@farmfe/js-plugin-vue": "^3.13.0",
+    "@jridgewell/gen-mapping": "^0.3.2",
+    "typescript": "^5.9.3",
+    "vue-tsc": "^3.2.5"
   }
 }
