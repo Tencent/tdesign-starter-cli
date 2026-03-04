@@ -1,8 +1,8 @@
 name: Build & deploy
 on:
-  pull_request:
+  push:
     branches:
-      - develop
+      - main
 jobs:
   build:
     name: Build
@@ -20,5 +20,5 @@ jobs:
       - run: bun scripts/deploy.ts
       - run: sleep 3s
       - run: |
-          npx surge --project ./dist --domain tdesign-starter-cli.surge.sh --token ${{ secrets.TDESIGN_SURGE_TOKEN }}
-          ls dist
+          ls _site
+          npx surge --project ./_site --domain tdesign-starter-cli.surge.sh --token ${{ secrets.TDESIGN_SURGE_TOKEN }}
