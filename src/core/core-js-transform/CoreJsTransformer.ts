@@ -1,5 +1,4 @@
 import CoreTsCompiler from './CoreTsCompiler';
-import CoreSfcCompiler from './CoreSfcCompiler';
 import CoreCodeReplace from './CoreCodeReplace';
 import path from 'path';
 import shell from 'shelljs';
@@ -10,10 +9,6 @@ export interface IJsTransformer {
    * 转换ts文件
    */
   transformTsFiles(options: { name: string }): Promise<any>;
-  /**
-   * vue项目 转换sfc文件
-   */
-  transformSfcFiles(options: { name: string }): Promise<any>;
   /**
    * 转换部分项目内特定存在的代码 如main.ts -> main.js
    */
@@ -34,10 +29,6 @@ export class CoreJsTransformer implements IJsTransformer {
     CoreTsCompiler(destDir);
   }
 
-  public async transformSfcFiles(options: { name: string }) {
-    const destDir = path.resolve(process.cwd(), options.name);
-    CoreSfcCompiler(destDir);
-  }
   public async codeReplace(options: { name: string }) {
     const destDir = path.resolve(process.cwd(), options.name);
     CoreCodeReplace(destDir);
