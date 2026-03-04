@@ -12,15 +12,15 @@
   "dependencies": {
     "tdesign-icons-react": "latest",
     "tdesign-react": "latest",
-    "react": "18",
-    "react-dom": "18"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
   },
   "devDependencies": {
-    "@farmfe/cli": "^1.0.1",
-    "@farmfe/core": "^1.1.1",
-    "@farmfe/plugin-react": "^1.0.1",
-    "@types/react": "18",
-    "@types/react-dom": "18",
-    "react-refresh": "^0.14.0"
+    "@farmfe/cli": "^1.0.5",
+    "@farmfe/core": "^1.7.11",
+    "@farmfe/plugin-react": "^1.2.6",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "react-refresh": "^0.18.0"
   }
 }
