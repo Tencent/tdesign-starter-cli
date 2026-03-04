@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@tangllty/vite-plugin-svg": "^1.0.0",
-    "vite": "^4.0.0",
+    "@tangllty/vite-plugin-svg": "^1.0.5",
+    "vite": "^7.3.1",
     "vite-plugin-vue2": "^2.0.3",
     "vue-template-compiler": "~2.6.14"
   },

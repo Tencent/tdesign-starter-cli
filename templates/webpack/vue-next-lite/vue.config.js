@@ -1,18 +1,5 @@
 module.exports = {
   chainWebpack: (config) => {
-    config.module.rules.delete('svg')
-  },
-  configureWebpack: {
-    module: {
-      rules: [
-        {
-          test: /\.svg$/,
-          use: [
-            "vue-loader-v16",
-            "vue-svg-loader"  
-          ]
-        }
-      ]
-    }
+    // 使用默认的 SVG 处理方式（asset/resource）
   }
 }

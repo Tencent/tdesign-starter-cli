@@ -3,10 +3,10 @@
     <t-space direction="vertical" style="width: 100%; text-align: center">
       <t-space>
         <a href="https://tdesign.tencent.com/vue-next/overview" target="_blank">
-          <TDesignLogo class="logo tdesign" alt="TDesign" />
+          <img :src="TDesignLogo" class="logo tdesign" alt="TDesign" />
         </a>
         <a href="https://webpack.js.org/" target="_blank">
-          <WebpackLogo class="logo webpack" alt="Webpack" />
+          <img :src="WebpackLogo" class="logo webpack" alt="Webpack" />
         </a>
       </t-space>
       <h2> Welcome to use
