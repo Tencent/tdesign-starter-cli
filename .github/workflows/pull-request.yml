@@ -11,3 +11,5 @@ on:
 jobs:
   call-test-build:
     uses: TDesignOteam/workflows/.github/workflows/reusable-unit-test.yml@main
+    with:
+      package-manager: pnpm
