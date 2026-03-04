@@ -17,7 +17,7 @@
     "build": "rollup -c ",
     "lint": "eslint 'src/**/*.{js,ts}'",
     "site": "echo 'no need to build site'",
-    "site:preview": "echo 'no need to run site preview'"
+    "site:preview": "tsx scripts/deploy.ts"
   },
   "repository": {
     "type": "git",
@@ -46,7 +46,8 @@
     "eslint": "^8.56.0",
     "prettier": "^3.2.5",
     "rollup": "^4.29.1",
-    "rollup-plugin-copy": "3.5.0"
+    "rollup-plugin-copy": "3.5.0",
+    "tsx": "^4.21.0"
   },
   "dependencies": {
     "@babel/plugin-transform-typescript": "^7.24.4",
