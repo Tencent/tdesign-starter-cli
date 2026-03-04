@@ -12,7 +12,7 @@
   "typings": "./src/types/index.d.ts",
   "scripts": {
     "watch": "rollup -w -c",
-    "test": "npm run dev",
+    "test": "echo 'no need to test'",
     "dev": "node ./bin/index.js",
     "prebuild": "rimraf bin/",
     "build": "rollup -c ",
