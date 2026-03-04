@@ -147,7 +147,7 @@ const TEMPLATES: TemplateConfig[] = [
 const preview = async () => {
   try {
     // 创建 dist 目录
-    mkdirSync('dist', { recursive: true });
+    mkdirSync('_site', { recursive: true });
 
     await initTemplates(TEMPLATES);
 
