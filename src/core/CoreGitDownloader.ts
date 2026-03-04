@@ -4,7 +4,6 @@ import download from 'download-git-repo';
 import ora from 'ora';
 import chalk from 'chalk';
 import path from 'path';
-import { SupportedTemplate } from '../types/type';
 import { CoreOptionsFilterForVue2, IOptionsFilter } from './core-options/CoreOptionsFilterForVue2';
 import { CoreOptionsFilterForVue3 } from './core-options/CoreOptionsFilterForVue3';
 import { CoreOptionsFilterForReact } from './core-options/CoreOptionsFilterForReact';
