@@ -13,3 +13,4 @@ jobs:
     uses: TDesignOteam/workflows/.github/workflows/reusable-unit-test.yml@main
     with:
       package-manager: pnpm
+      node-version-file: .node-version
