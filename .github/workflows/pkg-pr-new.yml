@@ -1,0 +1,28 @@
+name: pkg-pr-new
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
+
+jobs:
+  build:
+    if: ${{ github.repository == 'Tencent/tdesign-starter-cli' && !startsWith(github.head_ref, 'release/')}}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+
+      - run: pnpm install
+
+      - run: pnpm run build
+
+
+      - run: pnpm dlx pkg-pr-new publish --compact --packageManager=pnpm,npm,yarn
