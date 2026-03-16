@@ -92,7 +92,7 @@ export class CoreOptionsFilterForReact extends CoreOptionsFilterForVue2 {
           const delPath = path.join(`${process.env.PWD}/${options.name}`, `./src/pages/${this.firstUpperCase(needToExcludeItem.name)}`);
           await deleteAsync(delPath);
           // console.log('delPath==', delPath);
-          // 2.删除目录，还要删moudles模块内路由
+          // 2.删除目录，还要删modules模块内路由
           const delPathFile = path.join(`${process.env.PWD}/${options.name}`, `./src/router/modules/${needToExcludeItem.name}.ts`);
           await deleteAsync(delPathFile);
           // console.log('delPathFile==', delPathFile);

@@ -28,7 +28,7 @@ const formIconFlagRestore = 'icon: "FormIcon"';
 const detailIconFlag = new RegExp(/icon: DetailIcon/gi);
 const detailIconFlagRestore = 'icon: "DetailIcon"';
 
-// layout falg
+// layout flag
 const layoutFlag = new RegExp(/component: Layout/gi);
 const layoutFlagRestore = 'component: "Layout"';
 
@@ -61,7 +61,7 @@ const formIconFlagRestoreBack = 'icon: FormIcon';
 const detailIconFlagBack = new RegExp(/icon: "DetailIcon"/gi);
 const detailIconFlagRestoreBack = 'icon: DetailIcon';
 
-// layout falg
+// layout flag
 const layoutFlagBack = new RegExp(/component: "Layout"/gi);
 const layoutFlagRestoreBack = 'component: Layout';
 
@@ -261,7 +261,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
     // console.log('保留的目录==', deletedTypeList);
 
     // 依据原始配置移除需要排除的目录
-    await this.excludeSouceDeleteFolder(deletedTypeList, options, finalOptions);
+    await this.excludeSourceDeleteFolder(deletedTypeList, options, finalOptions);
 
     // 生成排除后的路由配置
     const saveedList = await this.generateExcludeRouter(deletedTypeList, sourceModulesData, options, finalOptions);
@@ -306,16 +306,16 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilter
    */
-  protected async excludeSouceDeleteFolder(keepedTypeList: Array<IParsedSourceData>, options: any, finalOptions: any) {
+  protected async excludeSourceDeleteFolder(keepedTypeList: Array<IParsedSourceData>, options: any, finalOptions: any) {
     for (const iterator of keepedTypeList) {
       const element: IParsedSourceData = iterator;
       const elementPath = `${process.env.PWD}/${options.name}/src/pages`;
       const delPath = path.join(elementPath, element.path || '');
       try {
         await deleteAsync(delPath);
-        console.log('excludeSouceDeleteFolder delPath==', delPath);
+        console.log('excludeSourceDeleteFolder delPath==', delPath);
       } catch (error) {
-        console.log('excludeSouceDeleteFolder..', error);
+        console.log('excludeSourceDeleteFolder..', error);
       }
     }
   }
