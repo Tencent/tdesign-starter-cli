@@ -10,7 +10,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/checkout@v6
 
       - uses: pnpm/action-setup@v4
 
