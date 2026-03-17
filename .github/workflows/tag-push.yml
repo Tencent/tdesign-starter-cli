@@ -15,8 +15,6 @@ jobs:
     with:
       package-manager: pnpm
       node-version-file: .node-version
-      token: ${{ secrets.PERSONAL_TOKEN }}
-      surge-token: ${{ secrets.TDESIGN_SURGE_TOKEN }}
     permissions:
       contents: read
       id-token: write
