@@ -19,6 +19,9 @@ jobs:
       - run: npm install pnpm -g && pnpm install && pnpm build
       - run: bun scripts/deploy.ts
       - run: sleep 3s
-      - run: |
-          ls _site
-          npx surge --project ./_site --domain tdesign-starter-cli.surge.sh --token ${{ secrets.TDESIGN_SURGE_TOKEN }}
+
+      - uses: TDesignOteam/workflows/actions/setup-surge@main
+        with:
+          project: _site
+          domain: tdesign-starter-cli.surge.sh
+          token: ${{ secrets.TDESIGN_SURGE_TOKEN }}
