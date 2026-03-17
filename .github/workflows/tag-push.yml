@@ -7,6 +7,7 @@ on: create
 
 jobs:
   call-publish:
+    if: github.event.ref_type == 'tag'
     uses:  TDesignOteam/workflows/.github/workflows/reusable-publish-npm.yml@main
     with:
       package-manager: pnpm
