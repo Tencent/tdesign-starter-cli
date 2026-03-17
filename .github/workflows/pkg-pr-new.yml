@@ -25,4 +25,4 @@ jobs:
       - run: pnpm run build
 
 
-      - run: pnpm dlx pkg-pr-new publish --bin --compact --packageManager=pnpm,npm,yarn
+      - run: pnpm dlx pkg-pr-new publish --bin --compact --packageManager=pnpm,npm
