@@ -306,7 +306,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilter
    */
-  protected async excludeSouceDeleteFolder(keepedTypeList: Array<IParsedSourceData>, options: any, finalOptions: any) {
+  protected async excludeSouceDeleteFolder(keepedTypeList: Array<IParsedSourceData>, options: any, _finalOptions: any) {
     for (const iterator of keepedTypeList) {
       const element: IParsedSourceData = iterator;
       const elementPath = `${process.env.PWD}/${options.name}/src/pages`;
@@ -446,7 +446,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilter
    */
-  protected saveRouterFilter(saveedList: any[], configData: string, options: any, finalOptions: any) {
+  protected saveRouterFilter(saveedList: any[], configData: string, options: any, _finalOptions: any) {
     let configDataContent = JSON.stringify(saveedList);
     configDataContent = this.formatJson(configDataContent);
 

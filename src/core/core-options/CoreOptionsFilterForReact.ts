@@ -1,8 +1,8 @@
-import { CoreOptionsFilterForVue2 } from "./CoreOptionsFilterForVue2";
-import { ICoreTemplate } from "../core-template/CoreTemplateVue2Config";
-import coreTemplateReactConfig from "../core-template/CoreTemplateReactConfig";
-import { IParsedSourceData } from "../CoreParsedConfig";
-import path from "path";
+import { CoreOptionsFilterForVue2 } from './CoreOptionsFilterForVue2';
+import { ICoreTemplate } from '../core-template/CoreTemplateVue2Config';
+import coreTemplateReactConfig from '../core-template/CoreTemplateReactConfig';
+import { IParsedSourceData } from '../CoreParsedConfig';
+import path from 'path';
 import { deleteAsync } from 'del';
 import fs from 'fs';
 
@@ -13,9 +13,8 @@ import fs from 'fs';
  * @class CoreOptionsFilter
  */
 export class CoreOptionsFilterForReact extends CoreOptionsFilterForVue2 {
-
   /** override 生成原始配置 */
-  public generateSourceModulesData(options: any, finalOptions: any, downloadConfigSource: any = '') {
+  public generateSourceModulesData(options: any, finalOptions: any, _downloadConfigSource: any = '') {
     // REACT比较特殊，使用配置驱动
     const configDataContent: any = [
       {

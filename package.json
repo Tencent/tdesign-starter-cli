@@ -6,15 +6,12 @@
   "bin": {
     "td-starter": "./bin/index.mjs"
   },
-  "typings": "./src/types/index.d.ts",
   "scripts": {
     "watch": "tsdown -w",
-    "test": "npm run dev",
     "dev": "node ./bin/index.mjs",
     "build": "tsdown",
     "lint": "eslint 'src/**/*.{js,ts}'",
-    "site": "echo 'no need to build site'",
-    "site:preview": "echo 'no need to run site preview'"
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -27,21 +24,21 @@
     "@babel/plugin-transform-typescript": "^7.24.4",
     "@babel/preset-typescript": "^7.24.1",
     "@types/babel__core": "^7.20.5",
+    "@types/fs-extra": "11.0.4",
+    "@types/inquirer": "9.0.7",
     "@types/node": "^22.1.0",
     "@types/shelljs": "^0.8.15",
     "@typescript-eslint/eslint-plugin": "7.7.0",
     "@typescript-eslint/parser": "7.7.0",
     "eslint": "^8.56.0",
+    "husky": "9.0.11",
+    "lint-staged": "15.2.2",
     "prettier": "^3.2.5",
-    "rollup-plugin-copy": "3.5.0",
-    "tsdown": "^0.21.7"
+    "tsdown": "^0.21.7",
+    "typescript": "~5.7.0"
   },
   "dependencies": {
     "@babel/core": "7.24.4",
-    "@babel/plugin-transform-typescript": "^7.24.4",
-    "@types/fs-extra": "11.0.4",
-    "@types/inquirer": "9.0.7",
-    "@types/node": "^22.1.0",
     "axios": "~1.7.4",
     "chalk": "5.3.0",
     "clear": "0.1.0",
@@ -50,23 +47,11 @@
     "download-git-repo": "3.0.2",
     "figlet": "1.7.0",
     "fs-extra": "11.2.0",
-    "glob": "^10.3.12",
-    "husky": "9.0.11",
+    "glob": "^13.0.6",
     "inquirer": "9.2.19",
-    "is-ci": "3.0.1",
-    "lint-staged": "15.2.2",
-    "lodash": "4.17.21",
-    "minimist": "1.2.8",
     "ora": "8.0.1",
     "rimraf": "5.0.5",
-    "shelljs": "^0.8.5",
-    "tslib": "2.6.2",
-    "typescript": "5.4.5"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "shelljs": "^0.8.5"
   },
   "lint-staged": {
     "*.{js,ts,json}": [

@@ -38,3 +38,6 @@ src/config/ConfigDev.ts
 template-vite-*
 template-webpack-*
 template-farm-*
+
+# npm/pnpm pack 产物
+*.tgz

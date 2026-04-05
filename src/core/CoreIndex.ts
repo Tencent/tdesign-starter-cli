@@ -15,7 +15,7 @@ import { CreatorOptions, SupportedTemplateSize } from '../types/type';
 import { CoreLiteDownloader } from './core-lite/CoreLiteDownloader';
 
 class Creator {
-  constructor(name: string, options: Omit<CreatorOptions, 'name'>, command: any) {
+  constructor(name: string, options: Omit<CreatorOptions, 'name'>, _command: any) {
     clear();
     console.log('*****************************');
     console.log(chalk.green(figlet.textSync('TDesign Starter', { horizontalLayout: 'full' })));
@@ -24,12 +24,11 @@ class Creator {
 
     const spinner = ora('👉 检查构建环境...').start();
 
-
     // 如果有name参数，直接下载模板
     if (name) {
       const answer: CreatorOptions = {
         ...options,
-        name,
+        name
       };
       let isValid = true;
 
@@ -65,8 +64,8 @@ class Creator {
         }
       }
       if (!isValid) {
-        return
-      };
+        return;
+      }
 
       spinner.succeed(chalk.green('构建环境正常！'));
       console.log();
@@ -91,7 +90,6 @@ class Creator {
     spinner.succeed(chalk.green('构建环境正常！'));
     console.log();
     this.init();
-
   }
 
   /**
