@@ -17,7 +17,8 @@
     "build": "rollup -c ",
     "lint": "eslint 'src/**/*.{js,ts}'",
     "site": "echo 'no need to build site'",
-    "site:preview": "npm run build && tsx scripts/deploy.ts"
+    "site:preview": "npm run build && tsx scripts/deploy.ts",
+    "test": "echo \"No tests yet\" && exit 0"
   },
   "repository": {
     "type": "git",
