@@ -21,3 +21,4 @@ jobs:
       - run: sleep 3s
       - run: |
           npx surge --project ./dist --domain tdesign-starter-cli.surge.sh --token ${{ secrets.TDESIGN_SURGE_TOKEN }}
+          ls dist
