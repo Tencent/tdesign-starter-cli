@@ -15,7 +15,7 @@ import { CreatorOptions, SupportedTemplateSize } from '../types/type';
 import { CoreLiteDownloader } from './core-lite/CoreLiteDownloader';
 
 class Creator {
-  constructor(name: string, options: Omit<CreatorOptions, 'name'>) {
+  constructor(name: string, options: Omit<CreatorOptions, 'name'>, _command?: any) {
     clear();
     console.log('*****************************');
     console.log(chalk.green(figlet.textSync('TDesign Starter', { horizontalLayout: 'full' })));

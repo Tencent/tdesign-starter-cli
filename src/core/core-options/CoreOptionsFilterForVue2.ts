@@ -127,12 +127,12 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    * 去除生成目录内容 .github  .husky .vscode
    *
    * @param {*} options
-   * @param {*} finalOptions
+   * @param {*} _finalOptions
    *
    * @memberOf CoreOptionsFilter
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public async clearUnusedDirectories(options: any, finalOptions: any): Promise<any> {
+  public async clearUnusedDirectories(options: any, _finalOptions: any): Promise<any> {
     const localPath = `${process.env.PWD}/${options.name}`;
     // console.log('options.name==', localPath);
 
@@ -274,13 +274,13 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    * 还原排除目录后的路由配置
    *
    * @private
-   * @param {string} sourceModulesData
-   * @param {*} options
+   * @param {string} _sourceModulesData
+   * @param {*} _options
    * @param {*} finalOptions
    *
    * @memberOf CoreOptionsFilter
    */
-  protected restoreSourceModulesRouterData(sourceModulesData: string, options: any, finalOptions: any) {
+  protected restoreSourceModulesRouterData(_sourceModulesData: string, _options: any, finalOptions: any) {
     // 找出不在列表中的目录，即为需要排除内容
     const keepedTypeList: Array<IParsedSourceData> = [];
     // 找出需要保留的
@@ -302,11 +302,11 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    * @private
    * @param {string} sourceModulesData
    * @param {*} options
-   * @param {*} finalOptions
+   * @param {*} _finalOptions
    *
    * @memberOf CoreOptionsFilter
    */
-  protected async excludeSouceDeleteFolder(keepedTypeList: Array<IParsedSourceData>, options: any) {
+  protected async excludeSouceDeleteFolder(keepedTypeList: Array<IParsedSourceData>, options: any, _finalOptions?: any) {
     for (const iterator of keepedTypeList) {
       const element: IParsedSourceData = iterator;
       const elementPath = `${process.env.PWD}/${options.name}/src/pages`;
@@ -326,7 +326,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @memberOf CoreOptionsFilter
    */
-  protected async generateExcludeRouter(deletedTypeList: Array<IParsedSourceData>, sourceModulesData: any, options: any, finalOptions: any) {
+  protected async generateExcludeRouter(_deletedTypeList: Array<IParsedSourceData>, sourceModulesData: any, _options: any, finalOptions: any) {
     // 找出不在列表中的目录，即为需要排除内容
     const saveedList = [];
     const selectTypeList: Array<IParsedSourceData> = [];
@@ -370,7 +370,7 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
   }
 
   /** 生成原始配置-START */
-  public generateSourceModulesData(options: any, finalOptions: any, downloadConfigSource: any = '') {
+  public generateSourceModulesData(_options: any, _finalOptions: any, downloadConfigSource: any = '') {
     // 取单例配置
     let configDataVue = this.getConfigTemplateInstanceData().getConfig();
 
@@ -442,11 +442,11 @@ export class CoreOptionsFilterForVue2 implements IOptionsFilter {
    *
    * @private
    * @param {any[]} saveedList
-   * @param {string} configData
+   * @param {string} _configData
    *
    * @memberOf CoreOptionsFilter
    */
-  protected saveRouterFilter(saveedList: any[], configData: string, options: any) {
+  protected saveRouterFilter(saveedList: any[], _configData: string, options: any, _finalOptions: any) {
     let configDataContent = JSON.stringify(saveedList);
     configDataContent = this.formatJson(configDataContent);
 

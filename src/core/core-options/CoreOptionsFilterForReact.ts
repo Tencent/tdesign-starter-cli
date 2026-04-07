@@ -15,7 +15,7 @@ import fs from 'fs';
 export class CoreOptionsFilterForReact extends CoreOptionsFilterForVue2 {
 
   /** override 生成原始配置 */
-  public generateSourceModulesData() {
+  public generateSourceModulesData(options: any, finalOptions: any, _downloadConfigSource: any = '') {
     // REACT比较特殊，使用配置驱动
     const configDataContent: any = [
       {
