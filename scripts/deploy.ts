@@ -95,8 +95,7 @@ const configFilesReg = async (configReg: RegExp, reg: RegExp, getNewConfigFile: 
       await execAsync(`pnpm install && pnpm run build`, { cwd: templateDir });
       console.log(`构建完成`);
     } catch (buildError) {
-      console.error(`构建失败: ${buildError}`);
-      continue;
+      throw new Error(`模板 ${template} 构建失败: ${buildError}`);
     }
 
     // 拷贝dist文件夹到根目录并且重命名
@@ -107,16 +106,14 @@ const configFilesReg = async (configReg: RegExp, reg: RegExp, getNewConfigFile: 
     console.log(`准备拷贝 ${outputDir}: ${distFilePath} -> ${newDistFilePath}`);
 
     if (!fs.existsSync(distFilePath)) {
-      console.error(`${outputDir} 目录不存在: ${distFilePath}`);
-      continue;
+      throw new Error(`模板 ${template} 的 ${outputDir} 目录不存在: ${distFilePath}`);
     }
 
     try {
       await fse.copy(distFilePath, newDistFilePath);
       console.log(`dist 目录已拷贝到 ${newDistFilePath}`);
     } catch (copyError) {
-      console.error(`拷贝 dist 目录失败: ${copyError}`);
-      continue;
+      throw new Error(`模板 ${template} 拷贝 ${outputDir} 目录失败: ${copyError}`);
     }
     console.log(`========== 模板 ${template} 处理完成 ==========\n`);
   }
@@ -126,7 +123,7 @@ const configFilesReg = async (configReg: RegExp, reg: RegExp, getNewConfigFile: 
 const initTemplates = async (templates: TemplateConfig[]) => {
   for (const template of templates) {
     await execAsync(
-      `node ./bin/index.js init ${template.name} --description "${template.description}" --type ${template.type} --template lite --buildToolType ${template.buildToolType}`
+      `node ./bin/index.mjs init ${template.name} --description "${template.description}" --type ${template.type} --template lite --buildToolType ${template.buildToolType}`
     );
   }
 };
