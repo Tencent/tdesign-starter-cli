@@ -31,8 +31,8 @@ interface BuildToolConfig {
   generateConfig: (content: string, template: string) => string;
   /** 额外的配置文件重写（如 webpack-react 的 webpack.config.js） */
   rewriteExtraConfig?: (templateDir: string, template: string) => void;
-  /** 构建输出目录名，默认 dist */
-  outputDir?: string;
+  /** 构建输出目录名，默认 dist；可传函数按模板名动态判断 */
+  outputDir?: string | ((template: string) => string);
 }
 
 // ==================== 工具函数 ====================
@@ -123,7 +123,7 @@ const copyOutput = (cwd: string, template: string, outputDir: string): void => {
 /** 处理单个模板的完整流程 */
 const processTemplate = async (template: string, cwd: string, config: BuildToolConfig): Promise<void> => {
   const templateDir = path.join(cwd, template);
-  const outputDir = config.outputDir ?? 'dist';
+  const outputDir = typeof config.outputDir === 'function' ? config.outputDir(template) : config.outputDir ?? 'dist';
   console.log(`\n========== ${template} ==========`);
 
   // 额外配置重写（如 webpack-react 的 webpack.config.js）
@@ -146,15 +146,15 @@ const processTemplate = async (template: string, cwd: string, config: BuildToolC
 
 /** 需要初始化的模板列表 */
 const TEMPLATES: TemplateInitConfig[] = [
-  { name: 'template-vite-vue3', description: '这是一个vite构建的vue3项目', type: 'vue3', buildToolType: 'vite' },
-  { name: 'template-vite-vue2', description: '这是一个vite构建的vue2项目', type: 'vue2', buildToolType: 'vite' },
-  { name: 'template-vite-react', description: '这是一个vite构建的react项目', type: 'react', buildToolType: 'vite' },
-  { name: 'template-farm-vue3', description: '这是一个farm构建的vue3项目', type: 'vue3', buildToolType: 'farm' },
-  { name: 'template-farm-vue2', description: '这是一个farm构建的vue2项目', type: 'vue2', buildToolType: 'farm' },
-  { name: 'template-farm-react', description: '这是一个farm构建的react项目', type: 'react', buildToolType: 'farm' },
-  { name: 'template-webpack-vue3', description: '这是一个webpack构建的vue3项目', type: 'vue3', buildToolType: 'webpack' },
-  { name: 'template-webpack-vue2', description: '这是一个webpack构建的vue2项目', type: 'vue2', buildToolType: 'webpack' },
-  { name: 'template-webpack-react', description: '这是一个webpack构建的react项目', type: 'react', buildToolType: 'webpack' },
+  { name: 'template-vite-vue3', description: '这是一个 Vite 构建的 Vue3 项目', type: 'vue3', buildToolType: 'vite' },
+  { name: 'template-vite-vue2', description: '这是一个 Vite 构建的 Vue2 项目', type: 'vue2', buildToolType: 'vite' },
+  { name: 'template-vite-react', description: '这是一个 Vite 构建的 React 项目', type: 'react', buildToolType: 'vite' },
+  { name: 'template-farm-vue3', description: '这是一个 Farm 构建的 Vue3 项目', type: 'vue3', buildToolType: 'farm' },
+  { name: 'template-farm-vue2', description: '这是一个 Farm 构建的 Vue2 项目', type: 'vue2', buildToolType: 'farm' },
+  { name: 'template-farm-react', description: '这是一个 Farm 构建的 React 项目', type: 'react', buildToolType: 'farm' },
+  { name: 'template-webpack-vue3', description: '这是一个 Webpack 构建的 Vue3 项目', type: 'vue3', buildToolType: 'webpack' },
+  { name: 'template-webpack-vue2', description: '这是一个 Webpack 构建的 Vue2 项目', type: 'vue2', buildToolType: 'webpack' },
+  { name: 'template-webpack-react', description: '这是一个 Webpack 构建的 React 项目', type: 'react', buildToolType: 'webpack' },
 ];
 
 /** 各构建工具对应的配置重写规则 */
@@ -191,7 +191,7 @@ const BUILD_TOOL_CONFIGS: BuildToolConfig[] = [
       ));
       console.log(`  额外配置已更新: webpack.config.js`);
     },
-    outputDir: 'build',
+    outputDir: (template) => template.includes('react') ? 'build' : 'dist',
   },
 ];
 
