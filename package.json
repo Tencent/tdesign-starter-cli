@@ -2,6 +2,7 @@
   "name": "tdesign-starter-cli",
   "version": "0.5.3",
   "description": "CLI tool for TDesign Starter project",
+  "packageManager": "pnpm@10.30.3",
   "type": "module",
   "main": "./src/main.ts",
   "lib": "./bin/index.js",
@@ -11,13 +12,13 @@
   "typings": "./src/types/index.d.ts",
   "scripts": {
     "watch": "rollup -w -c",
-    "test": "npm run dev",
     "dev": "node ./bin/index.js",
     "prebuild": "rimraf bin/",
     "build": "rollup -c ",
     "lint": "eslint 'src/**/*.{js,ts}'",
     "site": "echo 'no need to build site'",
-    "site:preview": "echo 'no need to run site preview'"
+    "site:preview": "npm run build && tsx scripts/deploy.ts",
+    "test": "echo \"No tests yet\" && exit 0"
   },
   "repository": {
     "type": "git",
@@ -46,7 +47,8 @@
     "eslint": "^8.56.0",
     "prettier": "^3.2.5",
     "rollup": "^4.29.1",
-    "rollup-plugin-copy": "3.5.0"
+    "rollup-plugin-copy": "3.5.0",
+    "tsx": "^4.21.0"
   },
   "dependencies": {
     "@babel/plugin-transform-typescript": "^7.24.4",
