@@ -88,6 +88,149 @@ td-starter init tdesign-vue3-farm -type vue3 -bt farm
 | -bt, --buildToolType \<buildToolType>| The construction tool for lite: vite \| webpack (default: "vite")           |
 | -h, --help                          | display help for command                                                    |
 
+## i18n Localization
+
+The i18n command helps you convert Vue3 projects with i18n implementations to localized versions (removing i18n dependencies).
+
+### Basic Usage
+
+#### Interactive Mode
+```sh
+# Start the i18n localization process
+td-starter i18n
+
+# Then input the target project path when prompted
+? 请输入目标项目路径： ./my-project
+```
+
+#### Command Mode
+```sh
+# Specify the target project path directly
+td-starter i18n --target ./my-project
+
+# Short option
+td-starter i18n -t ./my-project
+```
+
+### Requirements
+
+- **Project Type**: Currently only supports **Vue3** projects with i18n setup
+- **Project Structure**: Your project must have the following directory structure:
+  ```
+  src/
+  └── locales/
+      └── lang/
+          ├── zh_CN.json  (or other language codes)
+          ├── en_US.json
+          └── ...
+  ```
+
+### How It Works
+
+The i18n command performs the following operations:
+
+1. **Project Analysis**: Automatically detects if the project is a Vue3 project with i18n configuration
+2. **Language Detection**: Scans the `src/locales/lang` directory to find all available language files
+3. **Language Selection**: Prompts you to choose a target language for localization
+4. **File Processing**: Replaces all i18n function calls with static strings:
+   - `this.$t('key')` → `'translated_value'`
+   - `$t('key')` → `'translated_value'`
+   - `t('key')` → `'translated_value'`
+
+5. **Result Summary**: Shows statistics including:
+   - Number of files processed
+   - Number of translation replacements made
+
+### Supported Language Formats
+
+The following language code formats are automatically recognized:
+
+| Language Code | Language Name      |
+|---------------|-------------------|
+| zh_CN         | 简体中文          |
+| zh_TW         | 繁體中文          |
+| en_US         | English           |
+| en            | English           |
+| zh            | 中文              |
+| ja            | 日本語            |
+| ko            | 한국어            |
+| fr            | Français          |
+| de            | Deutsch           |
+| es            | Español           |
+| ru            | Русский           |
+
+### Example Workflow
+
+```sh
+# Step 1: Navigate to where tdesign-starter-cli is installed
+td-starter i18n
+
+# Step 2: Input project path
+? 请输入目标项目路径： /Users/username/my-vue3-project
+
+# Step 3: System detects project type
+🔍 目标项目路径: /Users/username/my-vue3-project
+✅ 检测到项目类型: vue3
+
+# Step 4: System scans language configurations
+🌍 可用语言：
+   - 简体中文 (zh_CN)
+   - English (en_US)
+
+# Step 5: Select target language
+? 请选择要本地化的目标语言： (Use arrow keys to select)
+❯ 简体中文 (zh_CN)
+  English (en_US)
+
+# Step 6: Process completed
+✅ 本地化完成！
+   处理文件: 25 个
+   替换条目: 156 个
+```
+
+### Important Notes
+
+⚠️ **After localization:**
+- The i18n configuration files and import statements are **still preserved**
+- Manual cleanup may be required if you want to completely remove i18n dependencies
+- Test your application to ensure all translations are correctly replaced
+- Keep your language configuration files for reference
+
+### Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| "无法识别项目类型" | Ensure your project has `package.json` with Vue 3 dependencies in the correct location |
+| "未检测到语言配置" | Verify the `src/locales/lang` directory exists and contains `.json` language files |
+| "未找到翻译: key.name" | The translation key is missing in the selected language file |
+| No files processed | Check if there are `.vue`, `.ts`, or `.js` files in the `src` directory |
+
+### Advanced Usage
+
+#### Verify Replacement Results
+Use the following methods to check if the replacement was successful:
+```sh
+# Check if there are still i18n function calls
+grep -r "\$t(" src/ --include="*.vue" --include="*.ts" --include="*.js"
+
+# Check if there are still i18n imports
+grep -r "vue-i18n" src/ --include="*.ts" --include="*.js"
+```
+
+#### Manual Cleanup (Optional)
+After replacement, to completely remove i18n, you can execute:
+```sh
+# 1. Remove i18n configuration files
+rm -rf src/locales/
+
+# 2. Remove dependencies from package.json
+npm uninstall vue-i18n
+
+# 3. Update import statements (manually or via script)
+# Delete import { createI18n } from 'vue-i18n'
+# Delete other i18n related imports
+```
+
 ## Preview
 
 ### Vite + React/Vue2/Vue3
