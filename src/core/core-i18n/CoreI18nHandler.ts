@@ -40,6 +40,7 @@ function getLanguageName(code: string): string {
  * 获取语言目录路径
  */
 function getLanguageDir(basePath: string, _projectType: ProjectType): string | null {
+  void _projectType;
   return path.join(basePath, 'src', 'locales', 'lang');
 }
 
@@ -197,6 +198,7 @@ export class CoreI18nHandler {
    * 本地化项目 - 将 i18n 替换为本地字符串
    */
   private async localizeProject(lang: LanguageConfig, _projectType: ProjectType): Promise<void> {
+    void _projectType;
     const spinner = ora(`加载 ${lang.name} 语言包...`).start();
 
     const langContent = await this.getLanguageContent(lang.code);
