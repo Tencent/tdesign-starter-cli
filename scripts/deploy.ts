@@ -5,8 +5,11 @@
  */
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import { fileURLToPath } from 'url';
 import fs from 'fs';
 import path from 'path';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const execAsync = promisify(exec);
 
@@ -224,14 +227,13 @@ const main = async () => {
     }
   }
 
-  // 4. 生成根 index.html 导航页（按构建工具分组）
+  // 4. 生成根 index.html 导航页（读取模板 + 注入侧边栏按钮）
   const templateDirs = fs
     .readdirSync(path.join(cwd, 'dist'), { withFileTypes: true })
     .filter((d) => d.isDirectory())
     .map((d) => d.name)
     .sort();
 
-  // 按构建工具分组
   const groups: Record<string, string[]> = {};
   for (const name of templateDirs) {
     const match = name.match(/^template-(\w+)-/);
@@ -240,7 +242,8 @@ const main = async () => {
   }
 
   const toolDisplayName: Record<string, string> = { vite: 'Vite', webpack: 'Webpack', farm: 'Farm' };
-  const frameworkIcon: Record<string, string> = { vue3: 'Vue 3', vue2: 'Vue 2', react: 'React' };
+  const frameworkLabel: Record<string, string> = { vue3: 'Vue 3', vue2: 'Vue 2', react: 'React' };
+  const fwIconLetter: Record<string, string> = { vue3: 'V', vue2: 'V', react: 'R' };
 
   const getFramework = (name: string): string => {
     if (name.includes('vue3')) return 'vue3';
@@ -249,104 +252,27 @@ const main = async () => {
     return '';
   };
 
-  const groupsHtml = Object.entries(groups)
+  const sidebarHtml = Object.entries(groups)
     .map(
       ([tool, names]) => `
-      <div class="group">
-        <h2>${toolDisplayName[tool] || tool}</h2>
-        <div class="btn-group">
+    <div class="group">
+      <div class="group-title">${toolDisplayName[tool] || tool}</div>
+      <div class="btn-list">
 ${names
   .map((name) => {
     const fw = getFramework(name);
-    const label = frameworkIcon[fw] || name;
-    return `          <a class="btn" href="./${name}/"><span class="fw-tag ${fw}">${label}</span></a>`;
+    const label = frameworkLabel[fw] || name;
+    const letter = fwIconLetter[fw] || '?';
+    return `        <button class="btn" data-template="${name}"><span class="fw-icon ${fw}">${letter}</span>${label}<span class="fw-label ${fw}">${fw.includes('vue') ? 'Vue' : 'React'}</span></button>`;
   })
   .join('\n')}
-        </div>
-      </div>`
+      </div>
+    </div>`
     )
     .join('\n');
 
-  const indexHtml = `<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TDesign Starter Templates</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-      background: linear-gradient(135deg, #f0f5ff 0%, #f5f7fa 100%);
-      color: #1a1a1a;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .container { max-width: 640px; width: 100%; padding: 48px 24px; }
-    .header { text-align: center; margin-bottom: 40px; }
-    .logo { font-size: 32px; font-weight: 700; color: #0052d9; margin-bottom: 4px; }
-    .subtitle { font-size: 15px; color: #888; }
-    .group { margin-bottom: 32px; }
-    h2 {
-      font-size: 14px;
-      font-weight: 600;
-      color: #999;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid #e7e7e7;
-    }
-    .btn-group { display: flex; flex-wrap: wrap; gap: 10px; }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 120px;
-      padding: 12px 24px;
-      background: #0052d9;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 500;
-      text-decoration: none;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      transition: all .2s ease;
-    }
-    .btn:hover { background: #003cab; box-shadow: 0 4px 12px rgba(0, 82, 217, .3); transform: translateY(-2px); }
-    .btn:active { transform: translateY(0); box-shadow: none; }
-    .fw-tag { display: inline-flex; align-items: center; gap: 4px; }
-    .fw-tag.vue3::before, .fw-tag.vue2::before {
-      content: "";
-      display: inline-block;
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: #42b883;
-    }
-    .fw-tag.react::before {
-      content: "";
-      display: inline-block;
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: #61dafb;
-    }
-    .footer { text-align: center; margin-top: 40px; font-size: 13px; color: #bbb; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <div class="logo">TDesign Starter</div>
-      <div class="subtitle">Select a template to preview</div>
-    </div>
-${groupsHtml}
-    <div class="footer">Powered by TDesign Starter CLI</div>
-  </div>
-</body>
-</html>`;
+  const templateHtml = fs.readFileSync(path.join(__dirname, 'index-template.html'), 'utf-8');
+  const indexHtml = templateHtml.replace('{{SIDEBAR_CONTENT}}', sidebarHtml);
 
   fs.writeFileSync(path.join(cwd, 'dist', 'index.html'), indexHtml);
   console.log(`\n导航页已生成: dist/index.html (${templateDirs.length} 个模板, ${Object.keys(groups).length} 个分组)`);
