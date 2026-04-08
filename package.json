@@ -2,6 +2,7 @@
   "name": "tdesign-starter-cli",
   "version": "0.5.3",
   "description": "CLI tool for TDesign Starter project",
+  "packageManager": "pnpm@10.30.3",
   "type": "module",
   "bin": {
     "td-starter": "./bin/index.mjs"
@@ -11,7 +12,11 @@
     "dev": "node ./bin/index.mjs",
     "build": "tsdown",
     "lint": "eslint 'src/**/*.{js,ts}'",
+    "site": "echo 'no need to build site'",
+    "site:preview": "npm run build && tsx scripts/deploy.ts",
+    "test": "echo \"No tests yet\" && exit 0",
     "prepare": "husky"
+
   },
   "repository": {
     "type": "git",
@@ -35,7 +40,8 @@
     "lint-staged": "15.2.2",
     "prettier": "^3.2.5",
     "tsdown": "^0.21.7",
-    "typescript": "~5.7.0"
+    "typescript": "~5.7.0",
+    "tsx": "^4.21.0"
   },
   "dependencies": {
     "@babel/core": "7.24.4",
@@ -76,6 +82,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319"
+  }
 }
