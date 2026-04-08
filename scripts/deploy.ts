@@ -224,6 +224,44 @@ const main = async () => {
     }
   }
 
+  // 4. 生成根 index.html 导航页
+  const templateDirs = fs
+    .readdirSync(path.join(cwd, 'dist'), { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name)
+    .sort();
+
+  const indexHtml = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TDesign Starter Templates</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f7fa; color: #1a1a1a; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .container { max-width: 720px; width: 100%; padding: 48px 24px; }
+    h1 { font-size: 28px; font-weight: 600; margin-bottom: 8px; }
+    p { color: #666; margin-bottom: 32px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+    a { display: block; padding: 16px 20px; background: #fff; border-radius: 8px; text-decoration: none; color: #0052d9; font-weight: 500; border: 1px solid #e7e7e7; transition: all .2s; }
+    a:hover { border-color: #0052d9; box-shadow: 0 2px 8px rgba(0,82,217,.1); transform: translateY(-1px); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>TDesign Starter Templates</h1>
+    <p>Select a template to preview</p>
+    <div class="grid">
+${templateDirs.map((name) => `      <a href="./${name}/">${name}</a>`).join('\n')}
+    </div>
+  </div>
+</body>
+</html>`;
+
+  fs.writeFileSync(path.join(cwd, 'dist', 'index.html'), indexHtml);
+  console.log(`\n导航页已生成: dist/index.html (${templateDirs.length} 个模板)`);
+
   // 重命名 dist → _site，适配上游 CI 工作流（TDesignOteam/workflows）对 _site 目录的约定
   const distDir = path.join(cwd, 'dist');
   const siteDir = path.join(cwd, '_site');
