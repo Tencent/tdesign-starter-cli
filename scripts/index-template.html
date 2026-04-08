@@ -115,6 +115,49 @@
     .open-link:hover { text-decoration: underline; }
     .preview-frame { flex: 1; width: 100%; border: none; }
     .empty-state { flex: 1; display: flex; align-items: center; justify-content: center; color: var(--td-text-color-placeholder); font-size: 14px; }
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      background: #fff;
+      z-index: 10;
+    }
+    .loading-overlay.visible { display: flex; }
+    .spinner {
+      width: 28px; height: 28px;
+      border: 3px solid var(--td-brand-color-1);
+      border-top-color: var(--td-brand-color-7);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    .loading-text { font-size: 13px; color: var(--td-text-color-placeholder); }
+    .loading-error {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .loading-error.visible { display: flex; }
+    .loading-error .error-icon { font-size: 36px; line-height: 1; }
+    .loading-error .error-text { font-size: 13px; color: var(--td-text-color-secondary); }
+    .retry-btn {
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--td-brand-color-7);
+      background: var(--td-brand-color-1);
+      border: 1px solid var(--td-brand-color-6);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all .15s ease;
+    }
+    .retry-btn:hover { background: var(--td-brand-color-7); color: #fff; }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -130,7 +173,18 @@
       <a class="open-link" id="openLink" href="#" target="_blank" style="display:none">Open in new tab &#8599;</a>
     </div>
     <div class="empty-state" id="emptyState">&#8592; Choose a template from the left to preview</div>
-    <iframe class="preview-frame" id="previewFrame" style="display:none"></iframe>
+    <div style="flex:1;position:relative">
+      <iframe class="preview-frame" id="previewFrame" style="display:none"></iframe>
+      <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading template...</div>
+        <div class="loading-error" id="loadingError">
+          <div class="error-icon">&#9888;</div>
+          <div class="error-text">Failed to load template</div>
+          <button class="retry-btn" id="retryBtn">Retry</button>
+        </div>
+      </div>
+    </div>
   </main>
   <script>
     const buttons = document.querySelectorAll('.btn[data-template]');
@@ -138,12 +192,35 @@
     const emptyState = document.getElementById('emptyState');
     const currentName = document.getElementById('currentName');
     const openLink = document.getElementById('openLink');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const loadingError = document.getElementById('loadingError');
+    const retryBtn = document.getElementById('retryBtn');
+    const LOAD_TIMEOUT = 15000;
+    let loadTimer = null;
+
+    function hideLoading() {
+      if (loadTimer) { clearTimeout(loadTimer); loadTimer = null; }
+      loadingOverlay.classList.remove('visible');
+      loadingError.classList.remove('visible');
+    }
+
+    frame.addEventListener('load', () => hideLoading());
+
+    retryBtn.addEventListener('click', () => {
+      if (frame.src) { frame.src = frame.src; }
+    });
+
     buttons.forEach(btn => {
       btn.addEventListener('click', () => {
         const template = btn.dataset.template;
         const url = './' + template + '/';
         buttons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
+        hideLoading();
+        loadingOverlay.classList.add('visible');
+        loadTimer = setTimeout(() => {
+          loadingError.classList.add('visible');
+        }, LOAD_TIMEOUT);
         frame.src = url;
         frame.style.display = 'block';
         emptyState.style.display = 'none';
