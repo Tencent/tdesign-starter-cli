@@ -11,12 +11,11 @@
     "watch": "tsdown -w",
     "dev": "node ./bin/index.mjs",
     "build": "tsdown",
-    "lint": "eslint 'src/**/*.{js,ts}'",
+    "lint": "eslint src --ext .js,.ts",
     "site": "echo 'no need to build site'",
     "site:preview": "npm run build && tsx scripts/deploy.ts",
     "test": "echo \"No tests yet\" && exit 0",
     "prepare": "husky"
-
   },
   "repository": {
     "type": "git",

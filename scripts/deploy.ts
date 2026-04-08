@@ -39,9 +39,10 @@ interface BuildToolConfig {
 
 /** 获取目录下匹配正则的子文件夹名列表 */
 const getMatchedDirs = (root: string, pattern: RegExp): string[] => {
-  return fs.readdirSync(root, { withFileTypes: true })
-    .filter(d => d.isDirectory() && pattern.test(d.name))
-    .map(d => d.name);
+  return fs
+    .readdirSync(root, { withFileTypes: true })
+    .filter((d) => d.isDirectory() && pattern.test(d.name))
+    .map((d) => d.name);
 };
 
 /** 在目录中查找第一个匹配正则的文件，返回完整路径 */
@@ -72,7 +73,7 @@ const initTemplate = async (template: TemplateInitConfig, cliBinPath: string): P
   console.log(`[init] ${template.name} ...`);
   try {
     await execAsync(
-      `node ${cliBinPath} init ${template.name} --description "${template.description}" --type ${template.type} --template lite --buildToolType ${template.buildToolType}`,
+      `node ${cliBinPath} init ${template.name} --description "${template.description}" --type ${template.type} --template lite --buildToolType ${template.buildToolType}`
     );
   } catch (err) {
     throw new Error(`模板 ${template.name} 初始化失败: ${err}`);
@@ -123,7 +124,7 @@ const copyOutput = (cwd: string, template: string, outputDir: string): void => {
 /** 处理单个模板的完整流程 */
 const processTemplate = async (template: string, cwd: string, config: BuildToolConfig): Promise<void> => {
   const templateDir = path.join(cwd, template);
-  const outputDir = typeof config.outputDir === 'function' ? config.outputDir(template) : config.outputDir ?? 'dist';
+  const outputDir = typeof config.outputDir === 'function' ? config.outputDir(template) : (config.outputDir ?? 'dist');
   console.log(`\n========== ${template} ==========`);
 
   // 额外配置重写（如 webpack-react 的 webpack.config.js）
@@ -154,7 +155,7 @@ const TEMPLATES: TemplateInitConfig[] = [
   { name: 'template-farm-react', description: '这是一个 Farm 构建的 React 项目', type: 'react', buildToolType: 'farm' },
   { name: 'template-webpack-vue3', description: '这是一个 Webpack 构建的 Vue3 项目', type: 'vue3', buildToolType: 'webpack' },
   { name: 'template-webpack-vue2', description: '这是一个 Webpack 构建的 Vue2 项目', type: 'vue2', buildToolType: 'webpack' },
-  { name: 'template-webpack-react', description: '这是一个 Webpack 构建的 React 项目', type: 'react', buildToolType: 'webpack' },
+  { name: 'template-webpack-react', description: '这是一个 Webpack 构建的 React 项目', type: 'react', buildToolType: 'webpack' }
 ];
 
 /** 各构建工具对应的配置重写规则 */
@@ -162,37 +163,35 @@ const BUILD_TOOL_CONFIGS: BuildToolConfig[] = [
   {
     templateDirPattern: /^template-vite/,
     configFilePattern: /^vite\.config/,
-    generateConfig: (content, template) => replaceContent(content, [
-      { match: 'defineConfig({', replacement: `defineConfig({\n base: '/${template}',` },
-      { match: 'export default {', replacement: `export default {\n base: '/${template}',` },
-    ]),
+    generateConfig: (content, template) =>
+      replaceContent(content, [
+        { match: 'defineConfig({', replacement: `defineConfig({\n base: '/${template}',` },
+        { match: 'export default {', replacement: `export default {\n base: '/${template}',` }
+      ])
   },
   {
     templateDirPattern: /^template-farm/,
     configFilePattern: /^farm\.config/,
-    generateConfig: (content, template) => replaceContent(content, [
-      { match: 'defineConfig({', replacement: `defineConfig({\n compilation: {\n output: {\n publicPath: '/${template}/',\n },\n },\n` },
-    ]),
+    generateConfig: (content, template) =>
+      replaceContent(content, [
+        { match: 'defineConfig({', replacement: `defineConfig({\n compilation: {\n output: {\n publicPath: '/${template}/',\n },\n },\n` }
+      ])
   },
   {
     templateDirPattern: /^template-webpack/,
     configFilePattern: /^vue\.config/,
-    generateConfig: (content, template) => replaceContent(content, [
-      { match: 'module.exports = {', replacement: `module.exports = {\n publicPath: '/${template}',\n` },
-    ]),
+    generateConfig: (content, template) =>
+      replaceContent(content, [{ match: 'module.exports = {', replacement: `module.exports = {\n publicPath: '/${template}',\n` }]),
     // webpack-react 额外需要处理 webpack.config.js
     rewriteExtraConfig: (templateDir, template) => {
       const webpackConfigPath = path.join(templateDir, 'webpack.config.js');
       if (!fs.existsSync(webpackConfigPath)) return;
       const content = fs.readFileSync(webpackConfigPath, 'utf-8');
-      fs.writeFileSync(webpackConfigPath, content.replace(
-        /publicPath:\s*['"]\/['"]/,
-        `publicPath: '/${template}/'`,
-      ));
+      fs.writeFileSync(webpackConfigPath, content.replace(/publicPath:\s*['"]\/['"]/, `publicPath: '/${template}/'`));
       console.log(`  额外配置已更新: webpack.config.js`);
     },
-    outputDir: (template) => template.includes('react') ? 'build' : 'dist',
-  },
+    outputDir: (template) => (template.includes('react') ? 'build' : 'dist')
+  }
 ];
 
 // ==================== 入口 ====================
@@ -211,7 +210,7 @@ const main = async () => {
 
   // 2. 并行初始化所有模板项目
   console.log(`开始初始化 ${TEMPLATES.length} 个模板...`);
-  await Promise.all(TEMPLATES.map(t => initTemplate(t, cliBinPath)));
+  await Promise.all(TEMPLATES.map((t) => initTemplate(t, cliBinPath)));
   console.log(`所有模板初始化完成`);
 
   // 3. 按构建工具分组，串行处理（每组内串行构建）
@@ -224,6 +223,15 @@ const main = async () => {
       await processTemplate(template, cwd, config);
     }
   }
+
+  // 重命名 dist → _site，适配上游 CI 工作流（TDesignOteam/workflows）对 _site 目录的约定
+  const distDir = path.join(cwd, 'dist');
+  const siteDir = path.join(cwd, '_site');
+  if (fs.existsSync(siteDir)) {
+    fs.rmSync(siteDir, { recursive: true });
+  }
+  fs.renameSync(distDir, siteDir);
+  console.log(`\n产物目录已重命名: dist/ → _site/`);
 
   console.log('\n✅ 全部部署完成');
 };
