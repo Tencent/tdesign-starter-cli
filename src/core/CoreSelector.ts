@@ -8,7 +8,7 @@ import { IParsedSourceData } from './CoreParsedConfig';
 import coreTemplateVue2Config from './core-template/CoreTemplateVue2Config';
 import coreTemplateVue3Config from './core-template/CoreTemplateVue3Config';
 import coreTemplateReactConfig from './core-template/CoreTemplateReactConfig';
-import { CreatorOptions, SupportedTemplate } from '../types/type';
+import { CreatorOptions } from '../types/type';
 
 /**
  * 分段内容选择

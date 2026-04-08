@@ -103,7 +103,7 @@ const configFilesReg = async (configReg: RegExp, reg: RegExp, getNewConfigFile: 
     // webpack-react 使用 build 目录
     const outputDir = template === 'template-webpack-react' ? 'build' : 'dist';
     const distFilePath = path.join(cwd, template, outputDir);
-    const newDistFilePath = path.join(cwd, 'dist', template);
+    const newDistFilePath = path.join(cwd, '_site', template);
     console.log(`准备拷贝 ${outputDir}: ${distFilePath} -> ${newDistFilePath}`);
 
     if (!fs.existsSync(distFilePath)) {
@@ -147,7 +147,7 @@ const TEMPLATES: TemplateConfig[] = [
 const preview = async () => {
   try {
     // 创建 dist 目录
-    mkdirSync('dist', { recursive: true });
+    mkdirSync('_site', { recursive: true });
 
     await initTemplates(TEMPLATES);
 

@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "removeComments": false,
-    "importHelpers": true,
+    "importHelpers": false,
     "strict": true,
     "skipLibCheck": true,
     "lib": ["ES6", "DOM"]
