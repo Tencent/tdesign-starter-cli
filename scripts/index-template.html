@@ -113,8 +113,16 @@
     .current-name { font-size: 13px; font-weight: 500; color: var(--td-text-color-secondary); }
     .open-link { margin-left: auto; font-size: 12px; color: var(--td-brand-color-7); text-decoration: none; }
     .open-link:hover { text-decoration: underline; }
-    .preview-frame { flex: 1; width: 100%; border: none; }
-    .empty-state { flex: 1; display: flex; align-items: center; justify-content: center; color: var(--td-text-color-placeholder); font-size: 14px; }
+    .preview-frame { flex: 1; width: 100%; border: none; height: 100%; }
+    .empty-state {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--td-text-color-placeholder);
+      font-size: 14px;
+    }
     .loading-overlay {
       position: absolute;
       inset: 0;
@@ -135,6 +143,8 @@
       animation: spin .7s linear infinite;
     }
     .loading-text { font-size: 13px; color: var(--td-text-color-placeholder); }
+    .loading-spinner { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; }
+    .loading-spinner.hidden { display: none; }
     .loading-error {
       display: none;
       align-items: center;
@@ -172,12 +182,14 @@
       <span class="current-name" id="currentName">Select a template</span>
       <a class="open-link" id="openLink" href="#" target="_blank" style="display:none">Open in new tab &#8599;</a>
     </div>
-    <div class="empty-state" id="emptyState">&#8592; Choose a template from the left to preview</div>
     <div style="flex:1;position:relative">
+      <div class="empty-state" id="emptyState">&#8592; Choose a template from the left to preview</div>
       <iframe class="preview-frame" id="previewFrame" style="display:none"></iframe>
       <div class="loading-overlay" id="loadingOverlay">
-        <div class="spinner"></div>
-        <div class="loading-text">Loading template...</div>
+        <div class="loading-spinner" id="loadingSpinner">
+          <div class="spinner"></div>
+          <div class="loading-text">Loading template...</div>
+        </div>
         <div class="loading-error" id="loadingError">
           <div class="error-icon">&#9888;</div>
           <div class="error-text">Failed to load template</div>
@@ -193,6 +205,7 @@
     const currentName = document.getElementById('currentName');
     const openLink = document.getElementById('openLink');
     const loadingOverlay = document.getElementById('loadingOverlay');
+    const loadingSpinner = document.getElementById('loadingSpinner');
     const loadingError = document.getElementById('loadingError');
     const retryBtn = document.getElementById('retryBtn');
     const LOAD_TIMEOUT = 15000;
@@ -202,11 +215,14 @@
       if (loadTimer) { clearTimeout(loadTimer); loadTimer = null; }
       loadingOverlay.classList.remove('visible');
       loadingError.classList.remove('visible');
+      loadingSpinner.classList.remove('hidden');
     }
 
     frame.addEventListener('load', () => hideLoading());
 
     retryBtn.addEventListener('click', () => {
+      loadingError.classList.remove('visible');
+      loadingSpinner.classList.remove('hidden');
       if (frame.src) { frame.src = frame.src; }
     });
 
@@ -219,6 +235,7 @@
         hideLoading();
         loadingOverlay.classList.add('visible');
         loadTimer = setTimeout(() => {
+          loadingSpinner.classList.add('hidden');
           loadingError.classList.add('visible');
         }, LOAD_TIMEOUT);
         frame.src = url;
