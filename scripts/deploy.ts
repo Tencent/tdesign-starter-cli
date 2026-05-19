@@ -1,178 +1,295 @@
-import { promisify } from 'util';
+/**
+ * 部署脚本：初始化所有模板项目 → 重写配置（添加 base/publicPath）→ 安装依赖 → 构建 → 拷贝产物到 dist/
+ *
+ * 用法: pnpm run build && node --import tsx scripts/deploy.ts
+ */
 import { exec } from 'child_process';
-import fs, { mkdirSync } from 'fs';
+import { promisify } from 'util';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
 import path from 'path';
-import fse from 'fs-extra';
 
-/** 异步 exec 命令 */
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 const execAsync = promisify(exec);
 
-/** 模板配置类型 */
-interface TemplateConfig {
+// ==================== 类型定义 ====================
+
+/** init 命令所需的模板参数 */
+interface TemplateInitConfig {
+  /** CLI 传入的模板目录名，如 template-vite-vue3 */
   name: string;
   description: string;
   type: string;
   buildToolType: string;
 }
 
-/** 获取目录下的文件夹列表
- * @param root 根目录
- * @param reg 匹配规则
- * @param fullPath 是否返回完整路径
- * @return 返回文件夹名或路径数组
- */
-const getMatchedDirs = (root: string, reg: RegExp, fullPath = false): string[] => {
-  const dirs = fs.readdirSync(root, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name)
-    .filter(dirName => reg.test(dirName));
-  return fullPath ? dirs.map(dir => path.join(root, dir)) : dirs;
+/** 按构建工具分组的处理配置 */
+interface BuildToolConfig {
+  /** 匹配模板目录名的正则，如 /^template-vite/ */
+  templateDirPattern: RegExp;
+  /** 匹配构建配置文件名的正则，如 /^vite\.config\. */
+  configFilePattern: RegExp;
+  /** 生成添加 base/publicPath 后的配置内容 */
+  generateConfig: (content: string, template: string) => string;
+  /** 额外的配置文件重写（如 webpack-react 的 webpack.config.js） */
+  rewriteExtraConfig?: (templateDir: string, template: string) => void;
+  /** 构建输出目录名，默认 dist；可传函数按模板名动态判断 */
+  outputDir?: string | ((template: string) => string);
 }
 
-type GetNewConfigFileFn = (readConfigFile: string, template: string) => string;
+// ==================== 工具函数 ====================
 
-/** 模板类型配置 */
-const TEMPLATE_CONFIGS: { vite: RegExp; farm: RegExp; webpack: RegExp } = {
-  vite: /^template-vite/,
-  farm: /^template-farm/,
-  webpack: /^template-webpack/,
+/** 获取目录下匹配正则的子文件夹名列表 */
+const getMatchedDirs = (root: string, pattern: RegExp): string[] => {
+  return fs
+    .readdirSync(root, { withFileTypes: true })
+    .filter((d) => d.isDirectory() && pattern.test(d.name))
+    .map((d) => d.name);
 };
 
-/** 工具函数：统一替换配置 */
-const applyReplacementRules = (content: string, rules: { mate: string; sub: string }[]): string => {
+/** 在目录中查找第一个匹配正则的文件，返回完整路径 */
+const findConfigFile = (dir: string, pattern: RegExp): string | undefined => {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.isFile() && pattern.test(entry.name)) {
+      return path.join(dir, entry.name);
+    }
+  }
+  return undefined;
+};
+
+/** 对内容按规则做文本替换（每条规则仅替换首次匹配） */
+const replaceContent = (content: string, rules: { match: string; replacement: string }[]): string => {
   let result = content;
-  for (const rule of rules) {
-    if (result.includes(rule.mate)) {
-      result = result.replace(rule.mate, rule.sub);
+  for (const { match, replacement } of rules) {
+    if (result.includes(match)) {
+      result = result.replace(match, replacement);
     }
   }
   return result;
 };
 
-/** 处理重写文件(添加path) vite.config.js/ts farm.config.js/ts
- * @param configReg 匹配规则
- * @param reg 匹配规则
- * @param getNewConfigFile 获取新的config.* 文件
- */
-const configFilesReg = async (configReg: RegExp, reg: RegExp, getNewConfigFile: GetNewConfigFileFn) => {
-  const cwd = process.cwd();
-  const templates = getMatchedDirs(cwd, configReg);
-  console.log(`找到 ${templates.length} 个模板: ${templates.join(', ')}`);
+// ==================== 核心流程 ====================
 
-  for (const template of templates) {
-    console.log(`\n========== 开始处理模板: ${template} ==========`);
-
-    // 特殊处理 template-webpack-react 使用 webpack 配置
-    if (template === 'template-webpack-react') {
-      const webpackConfigPath = path.join(cwd, template, 'webpack.config.js');
-      if (fs.existsSync(webpackConfigPath)) {
-        let webpackConfig = fs.readFileSync(webpackConfigPath, 'utf-8');
-        // 添加 publicPath 配置
-        webpackConfig = webpackConfig.replace(
-          /publicPath:\s*['"]\/['"]/,
-          `publicPath: '/${template}/'`
-        );
-        fs.writeFileSync(webpackConfigPath, webpackConfig);
-        console.log(`webpack.config.js 已更新`);
-      }
-    }
-
-    // 匹配config.* 文件
-    const templateDir = path.join(cwd, template);
-    const configFilePath = getMatchedDirs(templateDir, reg, true)?.[0];
-    console.log(`配置文件路径: ${configFilePath || '未找到'}`);
-
-    if (configFilePath) {
-      // 重写config.* 文件
-      const readConfigFile = fs.readFileSync(configFilePath, 'utf-8');
-      const newConfigFile = getNewConfigFile(readConfigFile, template);
-      fs.writeFileSync(configFilePath, newConfigFile);
-      console.log(`配置文件已更新`);
-    }
-
-    console.log(`开始安装依赖并构建...`);
-    try {
-      await execAsync(`pnpm install && pnpm run build`, { cwd: templateDir });
-      console.log(`构建完成`);
-    } catch (buildError) {
-      console.error(`构建失败: ${buildError}`);
-      continue;
-    }
-
-    // 拷贝dist文件夹到根目录并且重命名
-    // webpack-react 使用 build 目录
-    const outputDir = template === 'template-webpack-react' ? 'build' : 'dist';
-    const distFilePath = path.join(cwd, template, outputDir);
-    const newDistFilePath = path.join(cwd, '_site', template);
-    console.log(`准备拷贝 ${outputDir}: ${distFilePath} -> ${newDistFilePath}`);
-
-    if (!fs.existsSync(distFilePath)) {
-      console.error(`${outputDir} 目录不存在: ${distFilePath}`);
-      continue;
-    }
-
-    try {
-      await fse.copy(distFilePath, newDistFilePath);
-      console.log(`dist 目录已拷贝到 ${newDistFilePath}`);
-    } catch (copyError) {
-      console.error(`拷贝 dist 目录失败: ${copyError}`);
-      continue;
-    }
-    console.log(`========== 模板 ${template} 处理完成 ==========\n`);
-  }
-  console.log(`configFilesReg 完成`);
-}
-
-const initTemplates = async (templates: TemplateConfig[]) => {
-  for (const template of templates) {
+/** 步骤 1：使用 CLI 初始化单个模板项目 */
+const initTemplate = async (template: TemplateInitConfig, cliBinPath: string): Promise<void> => {
+  console.log(`[init] ${template.name} ...`);
+  try {
     await execAsync(
-      `node ./bin/index.js init ${template.name} --description "${template.description}" --type ${template.type} --template lite --buildToolType ${template.buildToolType}`
+      `node ${cliBinPath} init ${template.name} --description "${template.description}" --type ${template.type} --template lite --buildToolType ${template.buildToolType}`
     );
+  } catch (err) {
+    throw new Error(`模板 ${template.name} 初始化失败: ${err}`);
   }
 };
 
-/** 预定义模板列表 */
-const TEMPLATES: TemplateConfig[] = [
-  { name: 'template-vite-vue3', description: '这是一个vite构建的vue3项目', type: 'vue3', buildToolType: 'vite' },
-  { name: 'template-vite-vue2', description: '这是一个vite构建的vue2项目', type: 'vue2', buildToolType: 'vite' },
-  { name: 'template-vite-react', description: '这是一个vite构建的react项目', type: 'react', buildToolType: 'vite' },
-  { name: 'template-farm-vue3', description: '这是一个farm构建的vue3项目', type: 'vue3', buildToolType: 'farm' },
-  { name: 'template-farm-vue2', description: '这是一个farm构建的vue2项目', type: 'vue2', buildToolType: 'farm' },
-  { name: 'template-farm-react', description: '这是一个farm构建的react项目', type: 'react', buildToolType: 'farm' },
-  { name: 'template-webpack-vue3', description: '这是一个webpack构建的vue3项目', type: 'vue3', buildToolType: 'webpack' },
-  { name: 'template-webpack-vue2', description: '这是一个webpack构建的vue2项目', type: 'vue2', buildToolType: 'webpack' },
-  { name: 'template-webpack-react', description: '这是一个webpack构建的react项目', type: 'react', buildToolType: 'webpack' },
+/** 步骤 2：重写配置文件（注入 base / publicPath） */
+const injectBasePath = (configFilePath: string, template: string, generateConfig: (content: string, template: string) => string) => {
+  const content = fs.readFileSync(configFilePath, 'utf-8');
+  fs.writeFileSync(configFilePath, generateConfig(content, template));
+  console.log(`  配置已注入 base path: ${path.basename(configFilePath)}`);
+};
+
+/** 步骤 3：安装依赖 */
+const installDeps = async (templateDir: string, template: string): Promise<void> => {
+  console.log(`  [install] ...`);
+  try {
+    await execAsync('pnpm install', { cwd: templateDir });
+  } catch (err) {
+    throw new Error(`模板 ${template} 依赖安装失败: ${err}`);
+  }
+};
+
+/** 步骤 4：构建 */
+const buildTemplate = async (templateDir: string, template: string): Promise<void> => {
+  console.log(`  [build] ...`);
+  try {
+    await execAsync('pnpm run build', { cwd: templateDir });
+    console.log(`  构建完成`);
+  } catch (err) {
+    throw new Error(`模板 ${template} 构建失败: ${err}`);
+  }
+};
+
+/** 步骤 5：拷贝构建产物到 dist/ */
+const copyOutput = (cwd: string, template: string, outputDir: string): void => {
+  const srcPath = path.join(cwd, template, outputDir);
+  const destPath = path.join(cwd, 'dist', template);
+
+  if (!fs.existsSync(srcPath)) {
+    throw new Error(`模板 ${template} 的构建产物不存在: ${srcPath}`);
+  }
+
+  fs.cpSync(srcPath, destPath, { recursive: true });
+  console.log(`  产物已拷贝: ${outputDir}/ -> dist/${template}/`);
+};
+
+/** 处理单个模板的完整流程 */
+const processTemplate = async (template: string, cwd: string, config: BuildToolConfig): Promise<void> => {
+  const templateDir = path.join(cwd, template);
+  const outputDir = typeof config.outputDir === 'function' ? config.outputDir(template) : (config.outputDir ?? 'dist');
+  console.log(`\n========== ${template} ==========`);
+
+  // 额外配置重写（如 webpack-react 的 webpack.config.js）
+  config.rewriteExtraConfig?.(templateDir, template);
+
+  // 注入 base path 到构建配置
+  const configFilePath = findConfigFile(templateDir, config.configFilePattern);
+  if (configFilePath) {
+    injectBasePath(configFilePath, template, config.generateConfig);
+  } else {
+    console.log(`  未找到构建配置文件，跳过 base path 注入`);
+  }
+
+  await installDeps(templateDir, template);
+  await buildTemplate(templateDir, template);
+  copyOutput(cwd, template, outputDir);
+};
+
+// ==================== 配置数据 ====================
+
+/** 需要初始化的模板列表 */
+const TEMPLATES: TemplateInitConfig[] = [
+  { name: 'template-vite-vue3', description: '这是一个 Vite 构建的 Vue3 项目', type: 'vue3', buildToolType: 'vite' },
+  { name: 'template-vite-vue2', description: '这是一个 Vite 构建的 Vue2 项目', type: 'vue2', buildToolType: 'vite' },
+  { name: 'template-vite-react', description: '这是一个 Vite 构建的 React 项目', type: 'react', buildToolType: 'vite' },
+  { name: 'template-farm-vue3', description: '这是一个 Farm 构建的 Vue3 项目', type: 'vue3', buildToolType: 'farm' },
+  { name: 'template-farm-vue2', description: '这是一个 Farm 构建的 Vue2 项目', type: 'vue2', buildToolType: 'farm' },
+  { name: 'template-farm-react', description: '这是一个 Farm 构建的 React 项目', type: 'react', buildToolType: 'farm' },
+  { name: 'template-webpack-vue3', description: '这是一个 Webpack 构建的 Vue3 项目', type: 'vue3', buildToolType: 'webpack' },
+  { name: 'template-webpack-vue2', description: '这是一个 Webpack 构建的 Vue2 项目', type: 'vue2', buildToolType: 'webpack' },
+  { name: 'template-webpack-react', description: '这是一个 Webpack 构建的 React 项目', type: 'react', buildToolType: 'webpack' }
 ];
 
-const preview = async () => {
-  try {
-    // 创建 dist 目录
-    mkdirSync('_site', { recursive: true });
-
-    await initTemplates(TEMPLATES);
-
-    // vite 模版重写 - 使用统一替换函数
-    const generateViteConfig = (readConfigFile: string, template: string) => applyReplacementRules(readConfigFile, [
-      { mate: 'defineConfig({', sub: `defineConfig({\n base: '/${template}',` },
-      { mate: 'export default {', sub: `export default {\n base: '/${template}',` },
-    ]);
-
-    // farm 模版重写
-    const generateFarmConfig = (readConfigFile: string, template: string) => applyReplacementRules(readConfigFile, [
-      { mate: 'defineConfig({', sub: `defineConfig({ \n compilation: {\n output: {\n publicPath: '/${template}/',\n },\n },\n` },
-    ]);
-
-    // webpack 模版重写
-    const generateWebpackConfig = (readConfigFile: string, template: string) => applyReplacementRules(readConfigFile, [
-      { mate: 'module.exports = {', sub: `module.exports = {\n publicPath: '/${template}',\n` },
-    ]);
-
-    await configFilesReg(TEMPLATE_CONFIGS.vite, /^vite.config.*/, generateViteConfig);
-    await configFilesReg(TEMPLATE_CONFIGS.farm, /^farm.config.*/, generateFarmConfig);
-    await configFilesReg(TEMPLATE_CONFIGS.webpack, /^vue.config.*/, generateWebpackConfig);
-  } catch (e) {
-    console.error(e);
+/** 各构建工具对应的配置重写规则 */
+const BUILD_TOOL_CONFIGS: BuildToolConfig[] = [
+  {
+    templateDirPattern: /^template-vite/,
+    configFilePattern: /^vite\.config/,
+    generateConfig: (content, template) =>
+      replaceContent(content, [
+        { match: 'defineConfig({', replacement: `defineConfig({\n base: '/${template}',` },
+        { match: 'export default {', replacement: `export default {\n base: '/${template}',` }
+      ])
+  },
+  {
+    templateDirPattern: /^template-farm/,
+    configFilePattern: /^farm\.config/,
+    generateConfig: (content, template) =>
+      replaceContent(content, [
+        { match: 'defineConfig({', replacement: `defineConfig({\n compilation: {\n output: {\n publicPath: '/${template}/',\n },\n },\n` }
+      ])
+  },
+  {
+    templateDirPattern: /^template-webpack/,
+    configFilePattern: /^vue\.config/,
+    generateConfig: (content, template) =>
+      replaceContent(content, [{ match: 'module.exports = {', replacement: `module.exports = {\n publicPath: '/${template}',\n` }]),
+    // webpack-react 额外需要处理 webpack.config.js
+    rewriteExtraConfig: (templateDir, template) => {
+      const webpackConfigPath = path.join(templateDir, 'webpack.config.js');
+      if (!fs.existsSync(webpackConfigPath)) return;
+      const content = fs.readFileSync(webpackConfigPath, 'utf-8');
+      fs.writeFileSync(webpackConfigPath, content.replace(/publicPath:\s*['"]\/['"]/, `publicPath: '/${template}/'`));
+      console.log(`  额外配置已更新: webpack.config.js`);
+    },
+    outputDir: (template) => (template.includes('react') ? 'build' : 'dist')
   }
+];
+
+// ==================== 入口 ====================
+
+const main = async () => {
+  const cliBinPath = path.resolve('bin/index.mjs');
+  const cwd = process.cwd();
+
+  // 0. 确保构建产物已存在
+  if (!fs.existsSync(cliBinPath)) {
+    throw new Error(`CLI 未构建，请先运行: pnpm run build`);
+  }
+
+  // 1. 创建产物根目录
+  fs.mkdirSync(path.join(cwd, 'dist'), { recursive: true });
+
+  // 2. 并行初始化所有模板项目
+  console.log(`开始初始化 ${TEMPLATES.length} 个模板...`);
+  await Promise.all(TEMPLATES.map((t) => initTemplate(t, cliBinPath)));
+  console.log(`所有模板初始化完成`);
+
+  // 3. 按构建工具分组，串行处理（每组内串行构建）
+  for (const config of BUILD_TOOL_CONFIGS) {
+    const templates = getMatchedDirs(cwd, config.templateDirPattern);
+    if (templates.length === 0) continue;
+
+    console.log(`\n----- 处理 ${config.templateDirPattern} 模板 (${templates.length} 个) -----`);
+    for (const template of templates) {
+      await processTemplate(template, cwd, config);
+    }
+  }
+
+  // 4. 生成根 index.html 导航页（读取模板 + 注入侧边栏按钮）
+  const templateDirs = fs
+    .readdirSync(path.join(cwd, 'dist'), { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name)
+    .sort();
+
+  const groups: Record<string, string[]> = {};
+  for (const name of templateDirs) {
+    const match = name.match(/^template-(\w+)-/);
+    const tool = match ? match[1] : 'other';
+    (groups[tool] ??= []).push(name);
+  }
+
+  const toolDisplayName: Record<string, string> = { vite: 'Vite', webpack: 'Webpack', farm: 'Farm' };
+  const frameworkLabel: Record<string, string> = { vue3: 'Vue 3', vue2: 'Vue 2', react: 'React' };
+  const fwIconLetter: Record<string, string> = { vue3: 'V', vue2: 'V', react: 'R' };
+
+  const getFramework = (name: string): string => {
+    if (name.includes('vue3')) return 'vue3';
+    if (name.includes('vue2')) return 'vue2';
+    if (name.includes('react')) return 'react';
+    return '';
+  };
+
+  const sidebarHtml = Object.entries(groups)
+    .map(
+      ([tool, names]) => `
+    <div class="group">
+      <div class="group-title">${toolDisplayName[tool] || tool}</div>
+      <div class="btn-list">
+${names
+  .map((name) => {
+    const fw = getFramework(name);
+    const label = frameworkLabel[fw] || name;
+    const letter = fwIconLetter[fw] || '?';
+    return `        <button class="btn" data-template="${name}"><span class="fw-icon ${fw}">${letter}</span>${label}<span class="fw-label ${fw}">${fw.includes('vue') ? 'Vue' : 'React'}</span></button>`;
+  })
+  .join('\n')}
+      </div>
+    </div>`
+    )
+    .join('\n');
+
+  const templateHtml = fs.readFileSync(path.join(__dirname, 'index-template.html'), 'utf-8');
+  const indexHtml = templateHtml.replace('{{SIDEBAR_CONTENT}}', sidebarHtml);
+
+  fs.writeFileSync(path.join(cwd, 'dist', 'index.html'), indexHtml);
+  console.log(`\n导航页已生成: dist/index.html (${templateDirs.length} 个模板, ${Object.keys(groups).length} 个分组)`);
+
+  // 重命名 dist → _site，适配上游 CI 工作流（TDesignOteam/workflows）对 _site 目录的约定
+  const distDir = path.join(cwd, 'dist');
+  const siteDir = path.join(cwd, '_site');
+  if (fs.existsSync(siteDir)) {
+    fs.rmSync(siteDir, { recursive: true });
+  }
+  fs.renameSync(distDir, siteDir);
+  console.log(`\n产物目录已重命名: dist/ → _site/`);
+
+  console.log('\n✅ 全部部署完成');
 };
 
-preview().catch(e => console.error(e));
+main().catch((err) => {
+  console.error(err);
+  process.exitCode = 1;
+});

@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 /dist
+/_site
 /tests/**/coverage/
 
 # local env files
@@ -38,3 +39,6 @@ src/config/ConfigDev.ts
 template-vite-*
 template-webpack-*
 template-farm-*
+
+# npm/pnpm pack 产物
+*.tgz

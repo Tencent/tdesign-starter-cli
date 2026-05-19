@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TDesign Starter Templates</title>
+  <style>
+    :root {
+      --td-brand-color-1: #f2f3ff;
+      --td-brand-color-6: #366ef4;
+      --td-brand-color-7: #0052d9;
+      --td-text-color-primary: #181818;
+      --td-text-color-secondary: #5a5a5a;
+      --td-text-color-placeholder: #a6a6a6;
+      --td-border-color: #dcdcdc;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", Roboto, sans-serif;
+      background: #fff;
+      color: var(--td-text-color-primary);
+      display: flex;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 240px; min-width: 240px; height: 100vh;
+      border-right: 1px solid var(--td-border-color);
+      padding: 24px 16px;
+      overflow-y: auto;
+      display: flex; flex-direction: column;
+    }
+    .logo { font-size: 18px; font-weight: 700; color: var(--td-brand-color-7); margin-bottom: 4px; }
+    .subtitle { font-size: 12px; color: var(--td-text-color-placeholder); margin-bottom: 24px; }
+    .group { margin-bottom: 20px; }
+    .group-title {
+      font-size: 11px; font-weight: 600;
+      color: var(--td-text-color-placeholder);
+      text-transform: uppercase; letter-spacing: 1.5px;
+      margin-bottom: 8px;
+    }
+    .btn-list { display: flex; flex-direction: column; gap: 6px; }
+
+    .btn {
+      display: flex; align-items: center; gap: 10px;
+      width: 100%; padding: 10px 12px;
+      background: #f6f7f9;
+      color: var(--td-text-color-primary);
+      font-size: 13px; font-weight: 500;
+      text-decoration: none; border-radius: 6px;
+      border: 1px solid transparent; border-left: 3px solid transparent;
+      cursor: pointer; transition: all .15s ease;
+    }
+    .btn:hover { background: var(--td-brand-color-1); border-left-color: var(--td-brand-color-6); color: var(--td-brand-color-7); }
+    .btn.active { background: var(--td-brand-color-7); color: #fff; border-color: var(--td-brand-color-7); box-shadow: 0 2px 8px rgba(0, 82, 217, .25); }
+
+    .fw-icon {
+      display: inline-block; width: 20px; height: 20px;
+      border-radius: 4px; font-size: 10px; font-weight: 700;
+      line-height: 20px; text-align: center; color: #fff; flex-shrink: 0;
+    }
+    .fw-icon.vue3, .fw-icon.vue2 { background: #42b883; }
+    .fw-icon.react { background: #61dafb; color: #222; }
+
+    .fw-label { margin-left: auto; font-size: 11px; padding: 1px 6px; border-radius: 3px; font-weight: 600; }
+    .fw-label.vue3, .fw-label.vue2 { background: rgba(66, 184, 131, .12); color: #2a8c5e; }
+    .fw-label.react { background: rgba(97, 218, 251, .15); color: #1a7a9c; }
+    .btn.active .fw-label { background: rgba(255,255,255,.2); color: #fff; }
+
+    .footer { margin-top: auto; padding-top: 16px; font-size: 11px; color: var(--td-text-color-placeholder); text-align: center; }
+
+    /* ── Main ── */
+    .main { flex: 1; display: flex; flex-direction: column; height: 100vh; }
+
+    .toolbar {
+      height: 44px; min-height: 44px;
+      border-bottom: 1px solid var(--td-border-color);
+      display: flex; align-items: center; padding: 0 16px; gap: 12px;
+    }
+    .current-name { font-size: 13px; font-weight: 500; color: var(--td-text-color-secondary); }
+    .open-link { margin-left: auto; font-size: 12px; color: var(--td-brand-color-7); text-decoration: none; display: none; }
+    .open-link:hover { text-decoration: underline; }
+
+    /* ── Preview area: state-driven visibility ── */
+    .preview-area { flex: 1; position: relative; }
+    .preview-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+    .overlay {
+      position: absolute; inset: 0; z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 12px;
+      background: #fff;
+    }
+
+    /* state: empty (default) — show empty, hide frame / loading / error */
+    .preview-area[data-state="empty"] .preview-frame,
+    .preview-area[data-state="empty"] .overlay--loading,
+    .preview-area[data-state="empty"] .overlay--error,
+    /* state: loading — hide empty & error */
+    .preview-area[data-state="loading"] .overlay--empty,
+    .preview-area[data-state="loading"] .overlay--error,
+    /* state: loaded — hide all overlays */
+    .preview-area[data-state="loaded"] .overlay--empty,
+    .preview-area[data-state="loaded"] .overlay--loading,
+    .preview-area[data-state="loaded"] .overlay--error,
+    /* state: error — hide empty & loading */
+    .preview-area[data-state="error"] .overlay--empty,
+    .preview-area[data-state="error"] .overlay--loading { display: none; }
+
+    .spinner {
+      width: 28px; height: 28px;
+      border: 3px solid var(--td-brand-color-1);
+      border-top-color: var(--td-brand-color-7);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    .overlay-text { font-size: 13px; color: var(--td-text-color-placeholder); }
+    .error-icon { font-size: 36px; line-height: 1; }
+    .retry-btn {
+      padding: 6px 16px; font-size: 13px; font-weight: 500;
+      color: var(--td-brand-color-7); background: var(--td-brand-color-1);
+      border: 1px solid var(--td-brand-color-6); border-radius: 4px;
+      cursor: pointer; transition: all .15s ease;
+    }
+    .retry-btn:hover { background: var(--td-brand-color-7); color: #fff; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="logo">TDesign Starter</div>
+    <div class="subtitle">Template Preview</div>
+    {{SIDEBAR_CONTENT}}
+    <div class="footer">Powered by TDesign Starter CLI</div>
+  </aside>
+
+  <main class="main">
+    <div class="toolbar">
+      <span class="current-name" id="currentName">Select a template</span>
+      <a class="open-link" id="openLink" href="#" target="_blank">Open in new tab &#8599;</a>
+    </div>
+
+    <div class="preview-area" id="previewArea" data-state="empty">
+      <div class="overlay overlay--empty">
+        <span class="overlay-text">&#8592; Choose a template from the left to preview</span>
+      </div>
+      <div class="overlay overlay--loading">
+        <div class="spinner"></div>
+        <span class="overlay-text">Loading template...</span>
+      </div>
+      <div class="overlay overlay--error">
+        <span class="error-icon">&#9888;</span>
+        <span class="overlay-text">Failed to load template</span>
+        <button class="retry-btn" id="retryBtn">Retry</button>
+      </div>
+      <iframe class="preview-frame" id="previewFrame"></iframe>
+    </div>
+  </main>
+
+  <script>
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    const previewArea = $('#previewArea');
+    const frame = $('#previewFrame');
+    const openLink = $('#openLink');
+    const currentName = $('#currentName');
+    const buttons = $$('.btn[data-template]');
+
+    const LOAD_TIMEOUT = 15000;
+    let loadTimer = null;
+
+    // ── State machine ──
+    const setState = (state) => {
+      if (loadTimer) { clearTimeout(loadTimer); loadTimer = null; }
+      previewArea.dataset.state = state;
+    };
+
+    // ── Load template ──
+    const loadTemplate = (template) => {
+      const url = './' + template + '/';
+
+      buttons.forEach((b) => b.classList.toggle('active', b.dataset.template === template));
+      currentName.textContent = template;
+      openLink.href = url;
+      openLink.style.display = 'inline';
+
+      setState('loading');
+      loadTimer = setTimeout(() => setState('error'), LOAD_TIMEOUT);
+      frame.src = url;
+    };
+
+    // ── Events ──
+    frame.addEventListener('load', () => {
+      if (frame.src) setState('loaded');
+    });
+
+    $('#retryBtn').addEventListener('click', () => {
+      setState('loading');
+      loadTimer = setTimeout(() => setState('error'), LOAD_TIMEOUT);
+      if (frame.src) frame.src = frame.src;
+    });
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const template = btn.dataset.template;
+        history.pushState(null, '', '#/' + template);
+        loadTemplate(template);
+      });
+    });
+
+    // ── Hash routing ──
+    const loadFromHash = () => {
+      const hash = location.hash.replace(/^#\/?/, '');
+      if (hash && $('[data-template="' + hash + '"]')) {
+        loadTemplate(hash);
+      }
+    };
+
+    loadFromHash();
+    window.addEventListener('hashchange', loadFromHash);
+  </script>
+</body>
+</html>

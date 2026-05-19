@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2022",
     "module": "ESNext",
     "sourceMap": false,
     "declaration": false,
@@ -14,9 +14,7 @@
     "skipLibCheck": true,
     "lib": ["ES6", "DOM"]
   },
-  "types": [
-    "node"
-  ],
+  "types": ["node"],
   "include": ["src"],
   "exclude": ["node_modules"]
 }
