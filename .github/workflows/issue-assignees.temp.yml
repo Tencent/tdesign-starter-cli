@@ -41,7 +41,7 @@ jobs:
 
       - name: 通知贡献者
         if: steps.assignees.outputs.contributors != ''
-        uses: actions-cool/maintain-one-comment@v2.0.0
+        uses: TDesignOteam/workflows/actions/maintain-one-comment@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
@@ -49,4 +49,4 @@ jobs:
             确认有效后将下一步计划和可能需要的时间回复给 @${{ github.event.issue.user.login }} 。
             <!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->
           number: ${{ github.event.issue.number }}
-          body-include: "<!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->"
+          body-include: '<!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->'
